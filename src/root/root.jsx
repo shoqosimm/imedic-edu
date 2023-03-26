@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
+import { Outlet } from "react-router-dom";
 
 const Root = () => {
   return (
     <div>
-      root
+      <h1>Layout</h1>
+      <Outlet />
     </div>
   );
 };
