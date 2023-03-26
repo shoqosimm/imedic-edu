@@ -7,14 +7,14 @@ import React, { useState } from "react";
 import { Outlet } from "react-router-dom";
 import "./style.scss";
 
-const Root = () => {
+const Doctor = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Layout className="layout">
       <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
         <div className="logo" style={{textAlign:'center',padding:'1rem 0',borderBottom:'1px solid lightgrey'}}>
-          <h2>Dashboard</h2>
+          <h2>Doctor</h2>
         </div>
         <Menu
           theme="light"
@@ -68,4 +68,4 @@ const Root = () => {
   );
 };
 
-export default Root;
+export default Doctor;

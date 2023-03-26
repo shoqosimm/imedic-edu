@@ -1,0 +1,59 @@
+.loginPage {
+  width: 100vw;
+  height: 100vh;
+  max-height: 100%;
+  background: url('../../assets/authImg/loginBg.jpg') center no-repeat;
+  background-size: cover;
+}
+
+.form_wrapper {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#loginForm {
+  width: 50%;
+  max-width: 500px;
+  height: 80%;
+  max-height: 500px;
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  overflow: scroll;
+  
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  // media
+  @media screen and (max-width: 767px) {
+    width: 80%;
+    max-width: 80%;
+    height: 90%;
+    max-height: 90%;
+  }
+
+  .ant-input{
+    height: 45px;
+    border-radius: 2px;
+    font-size: 17px;
+  }
+  .ant-btn{
+    height: 40px;
+  }
+  .main_text {
+    text-align: center;
+    h1 {
+      font-weight: normal;
+    }
+  }
+  .other__sign {
+    border-top: 1px solid lightgrey;
+    text-align: center;
+    margin: 10px;
+  }
+}
