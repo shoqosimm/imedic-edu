@@ -7,7 +7,6 @@ import Login from "./components/Login";
 import Main from "./Pages/Main";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Root />}>
@@ -16,5 +15,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </Route>
       </Routes>
     </BrowserRouter>
-  </React.StrictMode>
 );
