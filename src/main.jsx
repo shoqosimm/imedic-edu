@@ -1,11 +1,21 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./style/global.css";
+import { BrowserRouter, Route } from "react-router-dom";
+import { route } from "./utils/routes";
 
-import './style/global.css'
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-)
+    <BrowserRouter>
+      <Routes>
+     {
+      route?.map(item=>{
+        return(
+          <Route path={item.path} element={item.element}/>
+        )
+      })
+     }
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>
+);

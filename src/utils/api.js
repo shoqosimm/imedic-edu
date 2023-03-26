@@ -6,6 +6,7 @@ export const api =axios.create({
   baseURL:""
 })
 
+// request for all api's
 api.interceptors.request.use(
   (config) => {
     const access = localStorage.getItem("access_token");
@@ -23,6 +24,8 @@ api.interceptors.request.use(
   }
 );
 
+
+// response for all api's
 api.interceptors.response.use(
   function (response) {
     return response;
