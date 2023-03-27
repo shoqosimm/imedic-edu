@@ -4,12 +4,12 @@ import { Content, Header } from "antd/es/layout/layout";
 import { BiCamera, BiCar, BiUser } from "react-icons/bi";
 import { AiOutlineMenuFold, AiOutlineMenuUnfold } from "react-icons/ai";
 import React, { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet,Link, useNavigate } from "react-router-dom";
 import "./style.scss";
 
 const Root = () => {
   const [collapsed, setCollapsed] = useState(false);
-
+  const navigate = useNavigate();
   return (
     <Layout className="layout">
       <Sider theme="light" trigger={null} collapsible collapsed={collapsed}>
@@ -17,24 +17,32 @@ const Root = () => {
           <h2>Dashboard</h2>
         </div>
         <Menu
+        onClick={({key})=>{
+            navigate(key)
+            }
+        }
           theme="light"
           mode="inline"
           defaultSelectedKeys={["1"]}
           items={[
             {
-              key: "1",
+              key: "main",
               icon: <BiUser />,
               label: "nav 1",
+              path: 'main'
+              
             },
             {
-              key: "2",
+              key: "/nurse/course",
               icon: <BiCamera />,
               label: "nav 2",
+              path: 'login'
             },
             {
               key: "3",
               icon: <BiCar />,
               label: "nav 3",
+              path: 'register'
             },
           ]}
         />
