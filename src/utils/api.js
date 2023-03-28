@@ -1,10 +1,9 @@
-const { default: axios } = require("axios");
-import {toast} from 'react-toastify'
+import axios from "axios";
+import { toast } from "react-toastify";
 
-
-export const api =axios.create({
-  baseURL:""
-})
+export const api = axios.create({
+  baseURL: "https://api.edu.imedic.uz/",
+});
 
 // request for all api's
 api.interceptors.request.use(
@@ -14,7 +13,7 @@ api.interceptors.request.use(
       Authorization: `Bearer ${access}`,
       Accept: "application/json",
       "Content-Type": "application/json",
-      ...config.headers
+      ...config.headers,
     };
 
     return config;
@@ -23,7 +22,6 @@ api.interceptors.request.use(
     return Promise.reject(error);
   }
 );
-
 
 // response for all api's
 api.interceptors.response.use(
@@ -50,11 +48,11 @@ api.interceptors.response.use(
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else if (error.response.status === 400) {
-      toast.warn(error.response.data.errors[0].message, {
+      toast.warn(error?.response.data?.data.messages.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
-      toast.error(error.message, {
+      toast.error(error?.response.data?.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }
