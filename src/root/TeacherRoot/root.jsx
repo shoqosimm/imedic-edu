@@ -118,14 +118,7 @@ const Teacher = () => {
             </Button>
           </div>
         </Header>
-        <Content
-          style={{
-            margin: "24px 16px",
-            padding: 24,
-            minHeight: 280,
-            background: "#fff",
-          }}
-        >
+        <Content className="layout_content">
           <Outlet />
         </Content>
       </Layout>

@@ -1,9 +1,8 @@
-.select{
-  width: 200px;
-}
-.nurseList{
-  display: flex;
-  flex-direction: column;
-  gap: 1rem 0;
-  margin: 2rem 0;
+.subject_select {
+  width: 100% !important;
+  margin: 1rem 0;
+  .ant-select-selector{
+    height: 40px !important;
+    border-radius: 2px;
+  }
 }
