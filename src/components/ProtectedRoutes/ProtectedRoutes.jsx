@@ -14,6 +14,9 @@ const ProtectedRoutes = () => {
   if (role == 'teacher') {
     return <Navigate to="/teacher" />;
   }
+  if (role == 'admin') {
+    return <Navigate to="/admin" />;
+  }
 };
 
 export default ProtectedRoutes;

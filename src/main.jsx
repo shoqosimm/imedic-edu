@@ -22,6 +22,9 @@ import ErrorElement from "./Pages/ErrorPage";
 import SubjectPage from "./components/Nurse/NurseCourse/SubjectPage";
 import SubjectItemPage from "./components/Nurse/NurseCourse/SubjectItemPage";
 import PrivateRoutes from "./components/PrivateRoutes";
+import AdminRoute from "./root/AdminRoot/root";
+import AdminCategory from "./components/Admin/Category";
+import AdminTeacherList from "./components/Admin/TeachersList";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,6 +34,8 @@ const router = createBrowserRouter(
         element={<ProtectedRoutes />}
         errorElement={<ErrorElement />}
       />
+
+      {/* nurse */}
       <Route
         path="/nurse/*"
         element={
@@ -46,6 +51,8 @@ const router = createBrowserRouter(
         <Route path="mycourse" element={<NurseMyCoursePage />} />
         <Route path="setting" element={<NurseMySettingPage />} />
       </Route>
+
+      {/* teacher */}
       <Route
         path="/teacher/*"
         element={
@@ -59,6 +66,23 @@ const router = createBrowserRouter(
         <Route path="setting" element={<TeacherSettingPage />} />
         <Route path="report" element={<TeacherReportPage />} />
       </Route>
+
+      {/* admin */}
+      <Route
+        path="/admin/*"
+        element={
+          <PrivateRoutes>
+            <AdminRoute />
+          </PrivateRoutes>
+        }
+      >
+        <Route index element={<AdminTeacherList />} />
+        <Route path="admin-teacher" element={<AdminTeacherList />} />
+        <Route path="category" element={<AdminCategory />} />
+      
+      </Route>
+
+      {/* auth */}
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
     </>
