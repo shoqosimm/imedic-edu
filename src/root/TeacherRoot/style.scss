@@ -1,4 +1,4 @@
-.layout{
+.layout {
   width: 100%;
   height: 100vh;
   .layout_content {
@@ -10,5 +10,22 @@
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+}
+.menuBurger {
+  display: none;
+}
+.ant-drawer-body {
+  padding: 0px !important;
+}
+@media screen and (max-width: 565px) {
+  .siderTeacher {
+    display: none;
+  }
+  .sizeChanger {
+    display: none;
+  }
+  .menuBurger {
+    display: block;
   }
 }

@@ -5,6 +5,8 @@ import { api } from "../../../utils/api";
 import { BiCheckCircle } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import ru_RU from "antd/lib/locale/ru_RU";
+import moment from "moment";
 
 const AdminTeacherList = () => {
   const [form] = Form.useForm();
@@ -141,7 +143,7 @@ const AdminTeacherList = () => {
           patronymic: res.data.patronymic,
           series: res.data.series,
           number: res.data.number,
-          // birth_date:res.data.birth_date
+          birth_date: moment(res.data.birth_date),
         });
       }
     } catch (err) {
@@ -157,7 +159,10 @@ const AdminTeacherList = () => {
   };
   const addTeacher = async (values) => {
     setLoading(true);
-    const body = values;
+    const body = {
+      ...values,
+      birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
+    };
     const res = await api.post("api/admin/teacher/add", body);
     try {
       if (res) {
@@ -166,7 +171,6 @@ const AdminTeacherList = () => {
       }
       toast.error("Данные не правильно указаны");
     } catch (err) {
-      toast.error(err);
       console.log(err, "err");
       setLoading(false);
     } finally {
@@ -280,7 +284,7 @@ const AdminTeacherList = () => {
           >
             <Input placeholder="998901234567" disabled={loading} />
           </Form.Item>
-          <Form.Item name="birth_date" label="Дата рождения">
+          <Form.Item name={"birth_date"} label="Дата рождения">
             <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
           <Row gutter={[20]}>

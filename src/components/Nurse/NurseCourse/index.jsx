@@ -1,20 +1,12 @@
 import { Row, Select, Col, Table } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BiPencil } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
+import { api } from "../../../utils/api";
 
 const NurseCourse = () => {
-  const [category, setCategory] = useState([
-    {
-      label: "Test 1",
-      value: 1,
-    },
-    {
-      label: "Test 2",
-      value: 2,
-    },
-  ]);
+  const [category, setCategory] = useState([]);
   const [course, setCourse] = useState([]);
   const [loadingCard, setLoadingCard] = useState(true);
   const [ran, setRan] = useState([
@@ -40,6 +32,28 @@ const NurseCourse = () => {
       text: "Test text number 2",
     },
   ]);
+
+  // getCategoryforSelect
+  const getCategoryforSelect = async () => {
+    const res = await api.get("api/select/category");
+    try {
+      setCategory(
+        res.data.map((item) => {
+          return {
+            key: item.id,
+            label: item.name,
+            value: item.id,
+          };
+        })
+      );
+    } catch (err) {
+      console.log(err, "err");
+    }
+  };
+  // getCoursesByCategory
+  const getCoursesByCategory =async()=>{
+    
+  }
 
   const handleChange = (value) => {
     getCourse(value);
@@ -98,6 +112,11 @@ const NurseCourse = () => {
       ),
     },
   ];
+
+  useEffect(() => {
+    getCategoryforSelect();
+  }, []);
+
   return (
     <>
       <Row gutter={24}>
@@ -110,7 +129,13 @@ const NurseCourse = () => {
           />
         </Col>
         <Col span={24}>
-          <Table scroll={{ x: 400 }} style={{height:'100%'}} loading={loadingCard} columns={columns} dataSource={course} />
+          <Table
+            scroll={{ x: 400 }}
+            style={{ height: "100%" }}
+            loading={loadingCard}
+            columns={columns}
+            dataSource={course}
+          />
         </Col>
       </Row>
     </>

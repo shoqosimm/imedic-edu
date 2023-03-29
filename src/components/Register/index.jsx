@@ -59,7 +59,7 @@ const Register = () => {
           timerProgressBar: true,
         });
         form.setFieldsValue({
-          // birth_date: res.data.birth_date,
+          birth_date: moment(res.data.birth_date),
           first_name: res.data.first_name,
           last_name: res.data.last_name,
           number: res.data.number,
@@ -172,7 +172,7 @@ const Register = () => {
               />
             </Form.Item>
             <Form.Item name="birth_date" label="Дата рождения">
-              <DatePicker />
+              <DatePicker disabled/>
             </Form.Item>
             <div className="d-flex align-center gap-2">
               <Form.Item

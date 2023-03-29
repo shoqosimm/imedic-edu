@@ -20,12 +20,12 @@ const SubjectPage = () => {
 
   return (
     <>
-      <Breadcrumb items={breadcrumbsItems} />
+      <Breadcrumb style={{ marginBottom: "2rem" }} items={breadcrumbsItems} />
       <Row>
         <Col span={24}>
-          <Card title="Subject title">
-            <Row gutter={16}>
-              <Col span={8}>
+          <Card title="Курсы">
+            <Row gutter={[20, 20]}>
+              <Col xl={8} lg={8} md={12} sm={24} xs={24}>
                 <Card
                   extra={
                     <Link to={`/nurse/course/subject/${id}`}>Boshlash</Link>
@@ -36,7 +36,7 @@ const SubjectPage = () => {
                   Card content
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col xl={8} lg={8} md={12} sm={24} xs={24}>
                 <Card
                   extra={<a href="#">Boshlash</a>}
                   title="Card title"

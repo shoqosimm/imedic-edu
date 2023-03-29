@@ -15,3 +15,20 @@
 .icon {
   font-size: 22px !important;
 }
+.menuBurger {
+  display: none;
+}
+.ant-drawer-body {
+  padding: 0px !important;
+}
+@media screen and (max-width: 565px) {
+  .siderAdmin {
+    display: none;
+  }
+  .sizeChanger {
+    display: none;
+  }
+  .menuBurger {
+    display: block;
+  }
+}

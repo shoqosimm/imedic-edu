@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import "./style/global.css";
 import {
@@ -7,24 +7,33 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from "react-router-dom";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Nurse from "./root/NurseRoot/root";
-import NurseCoursePage from "./Pages/NursePages/Course";
-import NurseMyCoursePage from "./Pages/NursePages/MyCourse";
-import NurseMySettingPage from "./Pages/NursePages/Setting";
-import Teacher from "./root/TeacherRoot/root";
-import TeacherCoursePage from "./Pages/TeacherPage/Course";
-import TeacherSettingPage from "./Pages/TeacherPage/Setting";
-import TeacherReportPage from "./Pages/TeacherPage/Report";
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import ErrorElement from "./Pages/ErrorPage";
-import SubjectPage from "./components/Nurse/NurseCourse/SubjectPage";
-import SubjectItemPage from "./components/Nurse/NurseCourse/SubjectItemPage";
 import PrivateRoutes from "./components/PrivateRoutes";
-import AdminRoute from "./root/AdminRoot/root";
-import AdminCategory from "./components/Admin/Category";
-import AdminTeacherList from "./components/Admin/TeachersList";
+import Loading from "./components/Loader";
+
+const Login = lazy(() => import("./components/Login"));
+const Register = lazy(() => import("./components/Register"));
+// nurse-imports
+const Nurse = lazy(() => import("./root/NurseRoot/root"));
+const NurseCoursePage = lazy(() => import("./Pages/NursePages/Course"));
+const NurseMyCoursePage = lazy(() => import("./Pages/NursePages/MyCourse"));
+const NurseMySettingPage = lazy(() => import("./Pages/NursePages/Setting"));
+const SubjectPage = lazy(() =>
+  import("./components/Nurse/NurseCourse/SubjectPage")
+);
+const SubjectItemPage = lazy(() =>
+  import("./components/Nurse/NurseCourse/SubjectItemPage")
+);
+// teacher-imports
+const Teacher = lazy(() => import("./root/TeacherRoot/root"));
+const TeacherCoursePage = lazy(() => import("./Pages/TeacherPage/Course"));
+const TeacherSettingPage = lazy(() => import("./Pages/TeacherPage/Setting"));
+const TeacherReportPage = lazy(() => import("./Pages/TeacherPage/Report"));
+// admin-imports
+const AdminRoute = lazy(() => import("./root/AdminRoot/root"));
+const AdminCategory = lazy(() => import("./components/Admin/Category"));
+const AdminTeacherList = lazy(() => import("./components/Admin/TeachersList"));
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -40,7 +49,9 @@ const router = createBrowserRouter(
         path="/nurse/*"
         element={
           <PrivateRoutes>
-            <Nurse />
+            <Suspense fallback={<Loading />}>
+              <Nurse />
+            </Suspense>
           </PrivateRoutes>
         }
       >
@@ -57,7 +68,9 @@ const router = createBrowserRouter(
         path="/teacher/*"
         element={
           <PrivateRoutes>
-            <Teacher />
+            <Suspense fallback={<Loading />}>
+              <Teacher />
+            </Suspense>
           </PrivateRoutes>
         }
       >
@@ -72,14 +85,15 @@ const router = createBrowserRouter(
         path="/admin/*"
         element={
           <PrivateRoutes>
-            <AdminRoute />
+            <Suspense fallback={<Loading />}>
+              <AdminRoute />
+            </Suspense>
           </PrivateRoutes>
         }
       >
         <Route index element={<AdminTeacherList />} />
         <Route path="admin-teacher" element={<AdminTeacherList />} />
         <Route path="category" element={<AdminCategory />} />
-      
       </Route>
 
       {/* auth */}
@@ -90,5 +104,7 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <RouterProvider router={router} />
+  <Suspense fallback={<Loading />}>
+    <RouterProvider router={router} />
+  </Suspense>
 );
