@@ -4,12 +4,14 @@ import { Button, Table, Modal, Form, Row, Col, Input, DatePicker } from "antd";
 import { api } from "../../../utils/api";
 import { BiCheckCircle } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
 
 const AdminTeacherList = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -125,10 +127,53 @@ const AdminTeacherList = () => {
       setTableLoading(false);
     }
   };
+  // handlePnfl
+  const handlePnfl = async () => {
+    setLoading(true);
+    const body = { pinfl: form.getFieldValue("pinfl") };
+    const res = await api.post("api/get-client-by-pinfl", body);
+    try {
+      if (res) {
+        setLoading(false);
+        form.setFieldsValue({
+          first_name: res.data.first_name,
+          last_name: res.data.last_name,
+          patronymic: res.data.patronymic,
+          series: res.data.series,
+          number: res.data.number,
+          // birth_date:res.data.birth_date
+        });
+      }
+    } catch (err) {
+      console.log(err, "err");
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
   // addTeacher
   const handleAdd = () => {
     setIsModalOpen(true);
   };
+  const addTeacher = async (values) => {
+    setLoading(true);
+    const body = values;
+    const res = await api.post("api/admin/teacher/add", body);
+    try {
+      if (res) {
+        setLoading(false);
+        toast.success("Создано!");
+      }
+      toast.error("Данные не правильно указаны");
+    } catch (err) {
+      toast.error(err);
+      console.log(err, "err");
+      setLoading(false);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getTeacherList(1, 15);
   }, []);
@@ -155,14 +200,21 @@ const AdminTeacherList = () => {
         }}
       />
       <Modal
-      width={720}
+        width={720}
         title="Добавить сотрудника"
         open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
+        onCancel={() => {
+          form.resetFields();
+          setIsModalOpen(false);
+        }}
         footer={
           <div>
             <Button
-              onClick={() => setIsModalOpen(false)}
+              disabled={loading}
+              onClick={() => {
+                form.resetFields();
+                setIsModalOpen(false);
+              }}
               style={{ borderRadius: "2px", height: "40px" }}
             >
               Отменить
@@ -172,39 +224,45 @@ const AdminTeacherList = () => {
               form="addTeacher"
               style={{ borderRadius: "2px", height: "40px" }}
               type="primary"
+              loading={loading}
             >
               Добавить
             </Button>
           </div>
         }
       >
-        <Form form={form} layout="vertical" id="addTeacher">
+        <Form
+          onFinish={addTeacher}
+          form={form}
+          layout="vertical"
+          id="addTeacher"
+        >
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="first_name" label="Имя">
-                <Input />
+                <Input disabled />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="last_name" label="Фамилия">
-                <Input />
+                <Input disabled />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="patronymic" label="Отчество">
-                <Input />
+                <Input disabled />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item name="series" label="Серия пасспорта">
-                <Input />
+                <Input disabled />
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item name="number" label="Номер пасспорта">
-                <Input />
+                <Input disabled />
               </Form.Item>
             </Col>
           </Row>
@@ -213,17 +271,17 @@ const AdminTeacherList = () => {
             label="ПНФЛ"
             rules={[{ required: true, min: 14, max: 14 }]}
           >
-            <Input suffix={<Button>Проверить</Button>} />
+            <Input suffix={<Button onClick={handlePnfl}>Проверить</Button>} />
           </Form.Item>
           <Form.Item
             name="phone"
             label="Номер телефона"
             rules={[{ required: true, min: 12 }]}
           >
-            <Input placeholder="998901234567" />
+            <Input placeholder="998901234567" disabled={loading} />
           </Form.Item>
           <Form.Item name="birth_date" label="Дата рождения">
-            <DatePicker style={{ width: "100%" }} />
+            <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
@@ -232,7 +290,7 @@ const AdminTeacherList = () => {
                 label="Пароль"
                 required={[{ required: true, min: 6 }]}
               >
-                <Input />
+                <Input disabled={loading} />
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
@@ -241,12 +299,13 @@ const AdminTeacherList = () => {
                 label="Подтвердите пароль"
                 required={[{ required: true, min: 6 }]}
               >
-                <Input />
+                <Input disabled={loading} />
               </Form.Item>
             </Col>
           </Row>
         </Form>
       </Modal>
+      <ToastContainer />
     </div>
   );
 };
