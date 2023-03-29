@@ -26,6 +26,8 @@ import CreateCourse from "./Pages/TeacherPage/CreateCourse";
 import EditCooursePage from "./Pages/TeacherPage/EditCouresePage";
 import ViewCoursePage from "./Pages/TeacherPage/ViewCoursePage";
 import CreateSubjectPage from "./Pages/TeacherPage/Subject/CreateSubjectPage";
+import EditSubjectPage from "./Pages/TeacherPage/Subject/EditSubjectPage";
+import ViewSubjectPage from "./Pages/TeacherPage/Subject/ViewSubjectPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -66,6 +68,8 @@ const router = createBrowserRouter(
         <Route path="report" element={<TeacherReportPage />} />
         <Route path="course/create" element={<CreateCourse />} />
         <Route path="subject/create/:id" element={<CreateSubjectPage />} />
+        <Route path="subject/edit/:id" element={<EditSubjectPage />} />
+        <Route path="subject/view/:id" element={<ViewSubjectPage/>}/>
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
