@@ -22,6 +22,10 @@ import ErrorElement from "./Pages/ErrorPage";
 import SubjectPage from "./components/Nurse/NurseCourse/SubjectPage";
 import SubjectItemPage from "./components/Nurse/NurseCourse/SubjectItemPage";
 import PrivateRoutes from "./components/PrivateRoutes";
+import CreateCourse from "./Pages/TeacherPage/CreateCourse";
+import EditCooursePage from "./Pages/TeacherPage/EditCouresePage";
+import ViewCoursePage from "./Pages/TeacherPage/ViewCoursePage";
+import CreateSubjectPage from "./Pages/TeacherPage/Subject/CreateSubjectPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -56,8 +60,12 @@ const router = createBrowserRouter(
       >
         <Route index element={<TeacherCoursePage />} />
         <Route path="course" element={<TeacherCoursePage />} />
+        <Route path="course/:id/edit" element={<EditCooursePage/>} />
+        <Route path="course/:id/view" element={<ViewCoursePage />} />
         <Route path="setting" element={<TeacherSettingPage />} />
         <Route path="report" element={<TeacherReportPage />} />
+        <Route path="course/create" element={<CreateCourse />} />
+        <Route path="subject/create/:id" element={<CreateSubjectPage />} />
       </Route>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
