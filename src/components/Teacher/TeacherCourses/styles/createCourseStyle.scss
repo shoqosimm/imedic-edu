@@ -1,0 +1,17 @@
+.createCourse_teacher {
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+  .create_input {
+    height: 40px;
+    border-radius: 2px;
+    .ant-select-selector {
+      height: 40px;
+      border-radius: 2px;
+    }
+  }
+  .create_btn{
+    height: 40px;
+    border-radius: 2px;
+  }
+}

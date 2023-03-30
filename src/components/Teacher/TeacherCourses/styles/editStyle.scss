@@ -1,0 +1,17 @@
+.editTeacherCourse{
+  h1{
+    margin-bottom: 1.5rem;
+  }
+  .editInput{
+    height: 40px;
+    border-radius: 2px;
+    .ant-select-selector{
+      height: 40px;
+      border-radius: 2px;
+    }
+  }
+  .editBtn{
+    height: 40px;
+    border-radius: 2px;
+  }
+}

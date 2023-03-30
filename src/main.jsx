@@ -11,9 +11,12 @@ import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import ErrorElement from "./Pages/ErrorPage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import Loading from "./components/Loader";
+import "react-toastify/dist/ReactToastify.css";
+import "sweetalert2/src/sweetalert2.scss";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
+
 // nurse-imports
 const Nurse = lazy(() => import("./root/NurseRoot/root"));
 const NurseCoursePage = lazy(() => import("./Pages/NursePages/Course"));
@@ -49,6 +52,7 @@ const AdminRoute = lazy(() => import("./root/AdminRoot/root"));
 const AdminCategory = lazy(() => import("./components/Admin/Category"));
 const AdminTeacherList = lazy(() => import("./components/Admin/TeachersList"));
 
+// router
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
