@@ -10,6 +10,10 @@ import {
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import ErrorElement from "./Pages/ErrorPage";
 import PrivateRoutes from "./components/PrivateRoutes";
+import CreateCourse from "./Pages/TeacherPage/CreateCourse";
+import EditCooursePage from "./Pages/TeacherPage/EditCouresePage";
+import ViewCoursePage from "./Pages/TeacherPage/ViewCoursePage";
+import CreateSubjectPage from "./Pages/TeacherPage/Subject/CreateSubjectPage";
 import Loading from "./components/Loader";
 
 const Login = lazy(() => import("./components/Login"));
@@ -76,8 +80,12 @@ const router = createBrowserRouter(
       >
         <Route index element={<TeacherCoursePage />} />
         <Route path="course" element={<TeacherCoursePage />} />
+        <Route path="course/:id/edit" element={<EditCooursePage/>} />
+        <Route path="course/:id/view" element={<ViewCoursePage />} />
         <Route path="setting" element={<TeacherSettingPage />} />
         <Route path="report" element={<TeacherReportPage />} />
+        <Route path="course/create" element={<CreateCourse />} />
+        <Route path="subject/create/:id" element={<CreateSubjectPage />} />
       </Route>
 
       {/* admin */}
