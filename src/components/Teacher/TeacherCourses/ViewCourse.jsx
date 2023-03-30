@@ -41,6 +41,11 @@ const ViewCourse = () => {
                             name: item.name,
                             teaser: item.teaser,
                             subject_type:item.subject_type,
+                            count_test:item.count_test,
+                            time:item.time,
+                            right_test:item.right_test,
+                            resubmit:item.resubmit,
+
                         }
                     })
                 );
@@ -56,8 +61,24 @@ const ViewCourse = () => {
 
     }
     
-    const edit = () => {
-        navigate(`/teacher/subject/edit/${params.id}`,{state:{message:params.id}});
+    const edit = (record) => {
+        let body = {}
+        if (record.subject_type == "topic") {
+            body.name = record.name;
+            body.teaser = record.teaser;
+            body.subject_type = record.subject_type;
+            body.course_id = params.id;
+        }else{
+            body.name = record.name;
+            body.teaser = record.teaser;
+            body.subject_type = record.subject_type;
+            body.course_id = params.id;
+            body.count_test = record.count_test;
+            body.time = record.time;
+            body.right_test = record.right_test;
+            body.resubmit = record.resubmit;
+        }
+        navigate(`/teacher/subject/edit/${record.key}`,{state:{message:body}});
     }
     
     const columns = [
@@ -78,7 +99,7 @@ const ViewCourse = () => {
             render: (text, record) => (
                 record.subject_type=="topic" ?(
                     <Space size="middle">
-                   <Button onClick={edit}><BiPencil/></Button>
+                   <Button onClick={()=>edit(record)}><BiPencil/></Button>
                     <Button  onClick={()=>showModal(record)}>
                         <AiFillDelete/>
                     </Button>
@@ -86,12 +107,12 @@ const ViewCourse = () => {
                 </Space>
                 ):(
                     <Space size="middle">
-                   <Button onClick={edit}><BiPencil/></Button>
+                   <Button onClick={()=>edit(record)}><BiPencil/></Button>
                     <Button  onClick={()=>showModal(record)}>
                         <AiFillDelete/>
                     </Button>
                     <Button onClick={()=>view(record)} ><BiWindowOpen/></Button>
-                    <Button onClick={()=>navigate(`/teacher/subject/create/${record.key}`)}><BiPlus/></Button>
+                    <Button onClick={()=>navigate(`/teacher/subject/create/test/${record.key}`)}><BiPlus/></Button>
                 </Space>
                 )
                 

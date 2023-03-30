@@ -11,6 +11,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import ErrorElement from "./Pages/ErrorPage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import Loading from "./components/Loader";
+import CreateTestPage from "./Pages/TeacherPage/Subject/Test/CreateTestPage";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -98,6 +99,7 @@ const router = createBrowserRouter(
         <Route path="subject/create/:id" element={<CreateSubjectPage />} />
         <Route path="subject/edit/:id" element={<EditSubjectPage />} />
         <Route path="subject/view/:id" element={<ViewSubjectPage />} />
+        <Route path="subject/create/test/:id" element={<CreateTestPage />} />
       </Route>
 
       {/* admin */}
