@@ -10,7 +10,7 @@ const TeacherCourses = () => {
   const [course, setCourse] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const [ModalText, setModalText] = useState('Content of the modal');
+  const [ModalText, setModalText] = useState('Вы уверены, что хотите удалить курс?');
   const [idModal, setIdModal] = useState(null);
   const columns = [
     {

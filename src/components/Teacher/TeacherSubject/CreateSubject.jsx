@@ -4,6 +4,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { api } from "../../../utils/api";
 import { useParams } from "react-router-dom";
+import { BiPlus } from "react-icons/bi";
+import { Notification } from "../../Notification/Notification";
 const CreateSubject = () => {
 
     const [openModal, setOpenModal] = useState(true);
@@ -23,30 +25,39 @@ const CreateSubject = () => {
         handleModal();
     }, [type])
     const onFinish = (values) => {
-        values.content = contentValue;
-        values.course_id = parseInt(params.id);
-        values.subject_type = "topic";
-
-        console.log('====================================');
-        console.log(values);
-        console.log('====================================');
-        
+        let body = {}
+        if (type === 0) {
+            body.content = contentValue;
+            body.course_id = parseInt(params.id);
+            body.subject_type = "topic";
+            body.name = values.name;
+            body.teaser = values.teaser;
+        }else{
+            body.course_id = parseInt(params.id);
+            body.subject_type = "test";
+            body.name = values.name;
+            body.count_test = values.count_test;
+            body.right_test  = values.right_test;
+            body.time = values.time;
+            body.resubmit = values.resubmit;
+            body.teaser = values.teaser;
+        }
         api
-            .post("/api/teacher/course-subject/add", values)
+            .post("/api/teacher/course-subject/add", body)
             .then((res) => {
-                
                     if (res.data.success) {
-                        console.log(res.data);
+                        setTimeout(() => {
+                            Notification("success", res.data.message);
+                        }, 1000);
                     }
-                
             }
             )
             .catch((err) => {
                 console.log(err);
             }
             );
-
     }
+  
   return (
     <>
         <Modal
@@ -62,10 +73,10 @@ const CreateSubject = () => {
 
         </Modal>
         <Card loading={openModal} >
-        {type==0 ? 
+       
             <Card title="Create Subject">
                 <Form
-                    form={form}
+                    form={form}Create Test
                      name="create-topic"
                      layout="vertical"
                      initialValues={{
@@ -73,45 +84,51 @@ const CreateSubject = () => {
                      }}
                      onFinish={onFinish}
                 >
-                    <Form.Item name="name" >
-                        <Input placeholder="Subject name" />
-                    </Form.Item>
-                    <Form.Item name="content">
-                        <ReactQuill theme="snow"  value={contentValue} onChange={setContentValue} />
-                    </Form.Item>
-                    <Form.Item name="teaser">
-                        <Input placeholder="тизер" />
-                    </Form.Item>
+                     {type==0 ? (
+                        <>
+                            <Form.Item name="name" >
+                                <Input placeholder="Subject name" />
+                            </Form.Item>
+                            <Form.Item name="content">
+                                <ReactQuill theme="snow"  value={contentValue} onChange={setContentValue} />
+                            </Form.Item>
+                            <Form.Item name="teaser">
+                                <Input placeholder="тизер" />
+                            </Form.Item>
+                            
+                        </>
+                     ):(
+                        <>
+                            <Form.Item name="name">
+                                <Input placeholder="Test name" />
+                            </Form.Item  >
+                            <Form.Item name="count_test">
+                                <Input placeholder="Test count" />
+                            </Form.Item>
+                            <Form.Item name="time" >
+                                <Input placeholder="Test Vaqti (Munit)" />
+                            </Form.Item>
+                            <Form.Item name="right_test" >
+                                <Input placeholder="O`tish soni " />
+                            </Form.Item>
+                            <Form.Item name="resubmit" >
+                                <Input placeholder="Qayta topshirish vaqti" />
+                            </Form.Item>
+                            <Form.Item name="teaser">
+                                <Input placeholder="тизер" />
+                            </Form.Item>
+                            
+                        </>    
+
+                    )}
                     <Form.Item >
-                        <Button type="primary" htmlType="submit" >Создавать</Button>
-                    </Form.Item>
+                                <Button type="primary" htmlType="submit" >Создавать</Button>
+                            </Form.Item>
                 </Form>
             </Card>
                     
-         :(
-            <Card title="Create Test">
-                <Form
-                   
-                >
-                    <Form.Item>
-                        <Input placeholder="Test name" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Input placeholder="Test description" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Input placeholder="Test time" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Input placeholder="Test count question" />
-                    </Form.Item>
-                    <Form.Item>
-                        <Input placeholder="Test count question" />
-                    </Form.Item>
-                </Form>
-            </Card>
-
-         )}
+         
+            
         </Card>
        
         
