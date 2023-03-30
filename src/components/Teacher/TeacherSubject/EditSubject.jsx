@@ -132,29 +132,34 @@ const EditSubject = () => {
               <Form.Item
                 name="name"
                 rules={[{ required: true, whitespace: true }]}
+                label='Наименования теста'
               >
                 <Input placeholder="Test name" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="count_test"
                 rules={[{ required: true, whitespace: true }]}
+                label='Количество теста'
               >
                 <Input placeholder="Test count" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="time"
                 rules={[{ required: true, whitespace: true }]}
+                label='Время теста'
               >
                 <Input placeholder="Test Vaqti (Munit)" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="right_test"
                 rules={[{ required: true, whitespace: true }]}
+                label='Количество правилных ответов'
               >
                 <Input placeholder="O`tish soni " disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="resubmit"
+                label='Время перездачи теста'
                 rules={[{ required: true, whitespace: true }]}
               >
                 <Input
@@ -165,6 +170,7 @@ const EditSubject = () => {
               <Form.Item
                 name="teaser"
                 rules={[{ required: true, whitespace: true }]}
+                label='Тизер'
               >
                 <Input placeholder="тизер" disabled={loading} />
               </Form.Item>

@@ -102,7 +102,7 @@ const ViewCourse = () => {
               <BiPlusCircle
                 className="iconView"
                 onClick={() =>
-                  navigate(`/teacher/subject/create/${record.key}`, {
+                  navigate(`/teacher/subject/create/test/${record.key}`, {
                     state: {
                       message: params.id,
                       subject_type: record.subject_type,

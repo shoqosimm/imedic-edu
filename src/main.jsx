@@ -34,6 +34,9 @@ const TeacherCoursePage = lazy(() => import("./Pages/TeacherPage/Course"));
 const TeacherSettingPage = lazy(() => import("./Pages/TeacherPage/Setting"));
 const TeacherReportPage = lazy(() => import("./Pages/TeacherPage/Report"));
 const CreateCourse = lazy(() => import("./Pages/TeacherPage/CreateCourse"));
+const CreateTestPage = lazy(() =>
+  import("./Pages/TeacherPage/Subject/Test/CreateTestPage")
+);
 const EditCooursePage = lazy(() =>
   import("./Pages/TeacherPage/EditCouresePage")
 );
@@ -102,6 +105,7 @@ const router = createBrowserRouter(
         <Route path="subject/create/:id" element={<CreateSubjectPage />} />
         <Route path="subject/edit/:id" element={<EditSubjectPage />} />
         <Route path="subject/view/:id" element={<ViewSubjectPage />} />
+        <Route path="subject/create/test/:id" element={<CreateTestPage />} />
       </Route>
 
       {/* admin */}
