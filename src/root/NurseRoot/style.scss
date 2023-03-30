@@ -1,0 +1,34 @@
+.layout {
+  width: 100%;
+  height: 100vh;
+  .layout_content {
+    overflow: scroll;
+    margin: 24px 16px;
+    padding: 24px;
+    min-height: 280px;
+    background: #fff;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}
+.icon {
+  font-size: 22px !important;
+}
+.menuBurger{
+  display: none;
+}
+.ant-drawer-body{
+  padding: 0px !important;
+}
+@media screen and (max-width: 565px) {
+  .siderNurse {
+    display: none;
+  }
+  .sizeChanger{
+    display: none;
+  }
+  .menuBurger{
+    display: block;
+  }
+}

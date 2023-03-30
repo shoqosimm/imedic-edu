@@ -1,0 +1,18 @@
+.errorElement {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  font-family: monospace;
+  background: linear-gradient(rgba(125, 233, 243, 0.7),rgba(122, 180, 251, 0.7));
+  .mainError{
+    font-size: 94px;
+    font-family: courier;
+  }
+  span{
+    color: red;
+  }
+}

@@ -1,0 +1,36 @@
+.updateForm {
+  width: 100%;
+  border: 1px solid lightgrey;
+  padding: 1rem 2rem !important;
+  .ant-input {
+    height: 40px;
+  }
+  .ant-picker {
+    height: 40px;
+    width: 100%;
+  }
+  .ant-form-item {
+    width: 100% !important;
+    margin-bottom: 10px;
+  }
+}
+.settingTextPanel {
+  box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.046);
+  padding: 1.5rem !important;
+  height: 450px;
+  ul {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    strong {
+      font-size: 17px;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+  }
+  .passwordBtn {
+    width: 200px;
+    height: 40px;
+  }
+}

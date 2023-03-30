@@ -1,0 +1,61 @@
+.RegisterPage {
+  background: url('../../assets/authImg/registerBg.jpg') center no-repeat;
+  background-size: cover;
+}
+
+.form_wrapper {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#registerForm {
+  width: 50%;
+  max-width: 550px;
+  height: 80%;
+  background: rgb(255, 255, 255);
+  border-radius: 4px;
+  padding: 1rem 2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  overflow: scroll;
+  margin: 2rem 0;
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  // media
+  @media screen and (max-width: 767px) {
+    width: 80%;
+    max-width: 80%;
+  }
+  .ant-form-item{
+    width: 100% ;
+    margin-bottom: 10px;
+  }
+  .ant-input{
+    height: 40px;
+    border-radius: 2px;
+    font-size: 17px;
+  }
+  .ant-picker{
+    width: 100%;
+    height: 40px;
+  }
+  .ant-btn{
+   
+    height: 40px;
+  }
+  .main_text {
+    text-align: center;
+    h1 {
+      font-weight: normal;
+    }
+  }
+  .other__sign {
+    border-top: 1px solid lightgrey;
+    text-align: center;
+    margin: 10px;
+  }
+}
