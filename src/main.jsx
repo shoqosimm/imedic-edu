@@ -11,10 +11,12 @@ import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import ErrorElement from "./Pages/ErrorPage";
 import PrivateRoutes from "./components/PrivateRoutes";
 import Loading from "./components/Loader";
-import CreateTestPage from "./Pages/TeacherPage/Subject/Test/CreateTestPage";
+import "react-toastify/dist/ReactToastify.css";
+import "sweetalert2/src/sweetalert2.scss";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
+
 // nurse-imports
 const Nurse = lazy(() => import("./root/NurseRoot/root"));
 const NurseCoursePage = lazy(() => import("./Pages/NursePages/Course"));
@@ -32,6 +34,9 @@ const TeacherCoursePage = lazy(() => import("./Pages/TeacherPage/Course"));
 const TeacherSettingPage = lazy(() => import("./Pages/TeacherPage/Setting"));
 const TeacherReportPage = lazy(() => import("./Pages/TeacherPage/Report"));
 const CreateCourse = lazy(() => import("./Pages/TeacherPage/CreateCourse"));
+const CreateTestPage = lazy(() =>
+  import("./Pages/TeacherPage/Subject/Test/CreateTestPage")
+);
 const EditCooursePage = lazy(() =>
   import("./Pages/TeacherPage/EditCouresePage")
 );
@@ -50,6 +55,7 @@ const AdminRoute = lazy(() => import("./root/AdminRoot/root"));
 const AdminCategory = lazy(() => import("./components/Admin/Category"));
 const AdminTeacherList = lazy(() => import("./components/Admin/TeachersList"));
 
+// router
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>

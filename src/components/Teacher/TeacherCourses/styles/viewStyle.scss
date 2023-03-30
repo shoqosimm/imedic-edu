@@ -1,0 +1,20 @@
+.viewCourse_teacher {
+  .inside_card {
+    .ant-card-body {
+      padding: 0px !important;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+  }
+}
+.iconView {
+  font-size: 16px !important;
+  fill: #1677ff;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  &:hover {
+    opacity: 0.7;
+  }
+}

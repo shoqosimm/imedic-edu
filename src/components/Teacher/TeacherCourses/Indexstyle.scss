@@ -1,0 +1,6 @@
+.ant-card-body{
+  overflow: scroll;
+  &::-webkit-scrollbar{
+    display: none;
+  }
+}

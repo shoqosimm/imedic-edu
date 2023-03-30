@@ -43,6 +43,19 @@ body {
   justify-content: space-around;
 }
 
+/* ant-styles */
+.ant-btn {
+  height: 40px;
+  border-radius: 2px;
+}
+.ant-input {
+  height: 40px;
+  border-radius: 2px;
+}
+.ant-select-selector {
+  height: 40px;
+  border-radius: 2px;
+}
 /* gap-classes */
 .gap-1 {
   gap: 8px;
