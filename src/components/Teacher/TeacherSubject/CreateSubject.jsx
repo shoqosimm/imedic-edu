@@ -6,6 +6,7 @@ import { api } from "../../../utils/api";
 import { useParams } from "react-router-dom";
 import { BiPlus } from "react-icons/bi";
 import { Notification } from "../../Notification/Notification";
+
 const CreateSubject = () => {
 
     const [openModal, setOpenModal] = useState(true);

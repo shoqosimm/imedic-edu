@@ -119,7 +119,7 @@ const Teacher = () => {
               onClick={() => setOpen(true)}
             ></Button>
             <Button
-            className="sizeChanger"
+              className="sizeChanger"
               icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
               onClick={() => setCollapsed(!collapsed)}
             ></Button>

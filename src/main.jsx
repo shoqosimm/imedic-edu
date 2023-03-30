@@ -10,12 +10,6 @@ import {
 import ProtectedRoutes from "./components/ProtectedRoutes/ProtectedRoutes";
 import ErrorElement from "./Pages/ErrorPage";
 import PrivateRoutes from "./components/PrivateRoutes";
-import CreateCourse from "./Pages/TeacherPage/CreateCourse";
-import EditCooursePage from "./Pages/TeacherPage/EditCouresePage";
-import ViewCoursePage from "./Pages/TeacherPage/ViewCoursePage";
-import CreateSubjectPage from "./Pages/TeacherPage/Subject/CreateSubjectPage";
-import EditSubjectPage from "./Pages/TeacherPage/Subject/EditSubjectPage";
-import ViewSubjectPage from "./Pages/TeacherPage/Subject/ViewSubjectPage";
 import Loading from "./components/Loader";
 
 const Login = lazy(() => import("./components/Login"));
@@ -36,6 +30,20 @@ const Teacher = lazy(() => import("./root/TeacherRoot/root"));
 const TeacherCoursePage = lazy(() => import("./Pages/TeacherPage/Course"));
 const TeacherSettingPage = lazy(() => import("./Pages/TeacherPage/Setting"));
 const TeacherReportPage = lazy(() => import("./Pages/TeacherPage/Report"));
+const CreateCourse = lazy(() => import("./Pages/TeacherPage/CreateCourse"));
+const EditCooursePage = lazy(() =>
+  import("./Pages/TeacherPage/EditCouresePage")
+);
+const ViewCoursePage = lazy(() => import("./Pages/TeacherPage/ViewCoursePage"));
+const CreateSubjectPage = lazy(() =>
+  import("./Pages/TeacherPage/Subject/CreateSubjectPage")
+);
+const EditSubjectPage = lazy(() =>
+  import("./Pages/TeacherPage/Subject/EditSubjectPage")
+);
+const ViewSubjectPage = lazy(() =>
+  import("./Pages/TeacherPage/Subject/ViewSubjectPage")
+);
 // admin-imports
 const AdminRoute = lazy(() => import("./root/AdminRoot/root"));
 const AdminCategory = lazy(() => import("./components/Admin/Category"));
@@ -82,14 +90,14 @@ const router = createBrowserRouter(
       >
         <Route index element={<TeacherCoursePage />} />
         <Route path="course" element={<TeacherCoursePage />} />
-        <Route path="course/:id/edit" element={<EditCooursePage/>} />
+        <Route path="course/:id/edit" element={<EditCooursePage />} />
         <Route path="course/:id/view" element={<ViewCoursePage />} />
         <Route path="setting" element={<TeacherSettingPage />} />
         <Route path="report" element={<TeacherReportPage />} />
         <Route path="course/create" element={<CreateCourse />} />
         <Route path="subject/create/:id" element={<CreateSubjectPage />} />
         <Route path="subject/edit/:id" element={<EditSubjectPage />} />
-        <Route path="subject/view/:id" element={<ViewSubjectPage/>}/>
+        <Route path="subject/view/:id" element={<ViewSubjectPage />} />
       </Route>
 
       {/* admin */}
