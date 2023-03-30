@@ -3,7 +3,7 @@ import React ,{useState,useEffect} from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { api } from "../../../utils/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { BiPlus } from "react-icons/bi";
 import { Notification } from "../../Notification/Notification";
 
@@ -14,6 +14,7 @@ const CreateSubject = () => {
     const [contentValue, setContentValue] = useState("");
     const [form] = Form.useForm();
     const params = useParams();
+    const navigate  = useNavigate();
 
     useEffect(() => {
         const handleModal = () => {
@@ -49,6 +50,7 @@ const CreateSubject = () => {
                     if (res.data.success) {
                         setTimeout(() => {
                             Notification("success", res.data.message);
+                            navigate(`/teacher/course/${params.id}/view`);
                         }, 1000);
                     }
             }
