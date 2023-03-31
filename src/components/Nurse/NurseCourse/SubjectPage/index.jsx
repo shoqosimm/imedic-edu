@@ -1,12 +1,43 @@
 import { Breadcrumb, Card, Col, Row } from "antd";
-import React from "react";
+import React, { useEffect,useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
 
 import { useParams, Link } from "react-router-dom";
+import { api } from "../../../../utils/api";
 
 const SubjectPage = () => {
-  const { id } = useParams();
+  const  param  = useParams();
+  const [subjects, setSubjects] = useState([]);
+  useEffect(() => {
+    getSubjects(param.id);
+  }, [param])
+  const getSubjects = (id) => {
+    api
+      .get(`api/nurse/course/list/${id}`)
+      .then((res) => {
+        setSubjects(
+          res.data.data.map((item)=>{
+            return {
+              id:item.id,
+              name:item.name,
+              teaser:item.teaser,
+              subject_type:item.subject_type,
+
+            }
+          })
+        )
+        console.log(subjects);
+      }
+      )
+      .catch((err) => {
+        console.log(err);
+      }
+      );
+  }
+
+
+  
 
   const breadcrumbsItems = [
     {
@@ -21,34 +52,35 @@ const SubjectPage = () => {
   return (
     <>
       <Breadcrumb style={{ marginBottom: "2rem" }} items={breadcrumbsItems} />
-      <Row>
-        <Col span={24}>
-          <Card title="Курсы">
-            <Row gutter={[20, 20]}>
-              <Col xl={8} lg={8} md={12} sm={24} xs={24}>
-                <Card
-                  extra={
-                    <Link to={`/nurse/course/subject/${id}`}>Boshlash</Link>
-                  }
-                  title="Card title"
-                  hoverable={true}
-                >
-                  Card content
-                </Card>
-              </Col>
-              <Col xl={8} lg={8} md={12} sm={24} xs={24}>
-                <Card
-                  extra={<a href="#">Boshlash</a>}
-                  title="Card title"
-                  hoverable={true}
-                >
-                  Card content
-                </Card>
-              </Col>
-            </Row>
-          </Card>
-        </Col>
-      </Row>
+        <Row gutter={16}>
+
+        
+          
+            
+                {subjects.map((item,index) => {
+                  return (
+                    <Col span={8} key={index}>
+                      <Card
+                      extra={
+                        <Link to={index===0 ?`/nurse/course/subject/${item.id}`:null}>
+                          Boshlash
+                        </Link>
+                      }
+                      title={item.name}
+                      hoverable={index===0?true:false}
+                    >
+                      {item.teaser}
+                      {item.subject_type}
+                    </Card>
+                    </Col>
+                    
+                  );
+                }
+                )}
+               
+              
+             
+          </Row>
     </>
   );
 };
