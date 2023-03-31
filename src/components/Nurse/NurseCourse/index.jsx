@@ -1,6 +1,6 @@
 import { Row, Select, Col, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiPencil } from "react-icons/bi";
+import { BiDoorOpen, BiPencil, BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
@@ -60,30 +60,38 @@ const NurseCourse = () => {
   };
 
   function getCourse(id) {
+    api
+
+      .get(`api/nurse/course/list/category/${id}`)
+      .then((res) => {
+
     setCourse(
-      ran.map((item, key) => {
+      res.data.data.map((item, key) => {
+        let num = key + 1;
+        let user_name = item.user.first_name + " " + item.user.last_name;
         return {
+          num: num,
           id: item.id,
           key: key,
-          text: item.text,
-          teacher: item.teacher,
-          count_tema: item.count,
-          is_active: item.is_active,
+          name: item.name,
+          teacher: user_name,
+          count_tema: item.subject_count,
         };
       }),
       setLoadingCard(false)
     );
+  })
   }
 
   const columns = [
     {
-      title: "ID",
-      dataIndex: "id",
-      key: "id",
+      name: "ID",
+      dataIndex: "num",
+      key: "num",
     },
     {
       title: "Text",
-      dataIndex: "text",
+      dataIndex: "name",
       key: "text",
     },
     {
@@ -96,18 +104,14 @@ const NurseCourse = () => {
       dataIndex: "count_tema",
       key: "count_tema",
     },
-    {
-      title: "Is active",
-      dataIndex: "is_active",
-      key: "is_active",
-    },
+   
     {
       title: "Action",
       dataIndex: "action",
       key: "action",
       render: (text, record) => (
         <Link to={`/nurse/course/${record.id}`}>
-          <BiPencil />
+          <BiWindowOpen />
         </Link>
       ),
     },
