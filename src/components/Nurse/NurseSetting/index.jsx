@@ -17,7 +17,7 @@ const NurseSetting = () => {
 
   // getUserInfo
   const getUserInfo = async () => {
-    const res = await api.get("api/me");
+    const res = await api.get("api/user/me");
     try {
       setUserInfo(res.data);
     } catch (err) {
@@ -74,7 +74,7 @@ const NurseSetting = () => {
       ...values,
       birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
     };
-    const res = await api.post(`api/nurse/user/update/${userInfo.id}`, body);
+    const res = await api.post(`api/user/update/${userInfo.id}`, body);
     try {
       if (res) {
         Swal.fire({ icon: "success", title: "Изменено!" });
@@ -92,7 +92,7 @@ const NurseSetting = () => {
   const handlePassword = async (values) => {
     const body = values;
     const res = await api.post(
-      `api/nurse/user/password-update/${userInfo.id}`,
+      `api/user/password-update/${userInfo.id}`,
       body
     );
     try {
