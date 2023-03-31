@@ -1,13 +1,14 @@
-import { Breadcrumb, Card, Col, Row } from "antd";
+import { Breadcrumb, Button, Card, Col, Row } from "antd";
 import React, { useEffect,useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
 
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { api } from "../../../../utils/api";
 
 const SubjectPage = () => {
   const  param  = useParams();
+  const navigate  = useNavigate();
   const [subjects, setSubjects] = useState([]);
   useEffect(() => {
     getSubjects(param.id);
@@ -48,6 +49,9 @@ const SubjectPage = () => {
       ),
     },
   ];
+  const linkToSubject = (id) => {
+    navigate(`/nurse/course/subject/${id}`, { state: { message: param.id } })
+  }
 
   return (
     <>
@@ -62,9 +66,8 @@ const SubjectPage = () => {
                     <Col span={8} key={index}>
                       <Card
                       extra={
-                        <Link to={index===0 ?`/nurse/course/subject/${item.id}`:null}>
-                          Boshlash
-                        </Link>
+                        <Button type="primary" size="small" onClick={()=>linkToSubject(item.id)}>Boshlash</Button>
+                        
                       }
                       title={item.name}
                       hoverable={index===0?true:false}
