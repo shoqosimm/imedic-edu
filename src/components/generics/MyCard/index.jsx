@@ -10,8 +10,10 @@ const MyCardItem = ({ disabled, item }) => {
 
   // linkToSubject
   const linkToSubject = (id) => {
-    console.log(id);
-    navigate(`subject/${id}`, { state: { message: param.id } });
+    if (item.subject_type === "topic") {
+      return navigate(`subject/${id}`, { state: { message: param.id } });
+    }
+    return navigate(`subject/test/${id}`, { state: { message: param.id } });
   };
 
   return (

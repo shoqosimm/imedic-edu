@@ -14,6 +14,7 @@ import Loading from "./components/Loader";
 import "react-toastify/dist/ReactToastify.css";
 import "sweetalert2/src/sweetalert2.scss";
 import MySubjectItemPage from "./components/Nurse/NurseMyCourse/MySubjectItemPage";
+import MySubjectTest from "./components/Nurse/NurseMyCourse/MySubjectTest";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -83,6 +84,7 @@ const router = createBrowserRouter(
         <Route path="course/subject/:id" element={<SubjectItemPage />} />
         <Route path="mycourse" element={<NurseMyCoursePage />} />
         <Route path="mycourse/subject/:id" element={<MySubjectItemPage />} />
+        <Route path="mycourse/subject/test/:id" element={<MySubjectTest />} />
         <Route path="setting" element={<NurseMySettingPage />} />
       </Route>
 
