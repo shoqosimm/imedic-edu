@@ -1,4 +1,4 @@
-import { Row, Select, Col, Table } from "antd";
+import { Row, Select, Col, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiDoorOpen, BiPencil, BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -7,31 +7,8 @@ import { api } from "../../../utils/api";
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
-  const [course, setCourse] = useState([]);
+  const [course, setCourse] = useState(false);
   const [loadingCard, setLoadingCard] = useState(true);
-  const [ran, setRan] = useState([
-    {
-      id: 101,
-      count: 10,
-      is_active: 1,
-      teacher: "Kim Cha Xon",
-      text: "Test text number 1",
-    },
-    {
-      id: 2,
-      count: 8,
-      is_active: 0,
-      teacher: "Kim Mo Xon",
-      text: "Test text number 2",
-    },
-    {
-      id: 2,
-      count: 8,
-      is_active: 0,
-      teacher: "Kim Mo Xon",
-      text: "Test text number 2",
-    },
-  ]);
 
   // getCategoryforSelect
   const getCategoryforSelect = async () => {
@@ -50,44 +27,39 @@ const NurseCourse = () => {
       console.log(err, "err");
     }
   };
-  // getCoursesByCategory
-  const getCoursesByCategory =async()=>{
-    
-  }
 
   const handleChange = (value) => {
     getCourse(value);
   };
 
   function getCourse(id) {
-    api
-
-      .get(`api/nurse/course/list/category/${id}`)
-      .then((res) => {
-
-    setCourse(
-      res.data.data.map((item, key) => {
-        let num = key + 1;
-        let user_name = item.user.first_name + " " + item.user.last_name;
-        return {
-          num: num,
-          id: item.id,
-          key: key,
-          name: item.name,
-          teacher: user_name,
-          count_tema: item.subject_count,
-        };
-      }),
-      setLoadingCard(false)
-    );
-  })
+    setLoadingCard(true);
+    api.get(`api/nurse/course/list/category/${id}`).then((res) => {
+      setCourse(
+        res.data.data.map((item, key) => {
+          let num = key + 1;
+          let user_name = item.user.first_name + " " + item.user.last_name;
+          return {
+            num: num,
+            id: item.id,
+            key: key,
+            name: item.name,
+            teacher: user_name,
+            count_tema: item.subject_count,
+          };
+        }),
+        setLoadingCard(false)
+      );
+    });
   }
 
   const columns = [
     {
-      name: "ID",
+      title: "№",
       dataIndex: "num",
       key: "num",
+      align: "center",
+      width: "2%",
     },
     {
       title: "Text",
@@ -95,24 +67,32 @@ const NurseCourse = () => {
       key: "text",
     },
     {
-      title: "Teacher",
+      title: "Учитель",
       dataIndex: "teacher",
       key: "teacher",
+      width: "20%",
+      align: "center",
     },
     {
-      title: "Count tema",
+      title: "Кол.темь",
       dataIndex: "count_tema",
       key: "count_tema",
+      width: "10%",
+      align: "center",
     },
-   
+
     {
-      title: "Action",
+      title: "Подробнее",
       dataIndex: "action",
       key: "action",
+      align: "center",
+      width: "10%",
       render: (text, record) => (
-        <Link to={`/nurse/course/${record.id}`}>
-          <BiWindowOpen />
-        </Link>
+        <Tooltip title="Подробнее">
+          <Link to={`/nurse/course/${record.id}`}>
+            <BiWindowOpen style={{ fontSize: "18px" }} />
+          </Link>
+        </Tooltip>
       ),
     },
   ];
@@ -133,13 +113,22 @@ const NurseCourse = () => {
           />
         </Col>
         <Col span={24}>
-          <Table
-            scroll={{ x: 400 }}
-            style={{ height: "100%" }}
-            loading={loadingCard}
-            columns={columns}
-            dataSource={course}
-          />
+          {course ? (
+            <Table
+              bordered
+              scroll={{ x: 400 }}
+              style={{ height: "100%" }}
+              loading={loadingCard}
+              columns={columns}
+              dataSource={course}
+            />
+          ):
+            (
+              <div style={{height:'400px'}} className="d-flex align-center justify-center">
+                  <h1>Выберите категорию...</h1>
+              </div>
+            )
+          }
         </Col>
       </Row>
     </>

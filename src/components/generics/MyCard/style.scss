@@ -1,0 +1,104 @@
+.card__container {
+  position: relative;
+  width: 250px;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  background: rgb(2, 0, 36);
+  background: linear-gradient(
+    84deg,
+    rgb(32, 25, 167) 1%,
+    rgb(37, 37, 228) 43%,
+    rgb(0, 187, 255) 100%
+  );
+  border-radius: 8px;
+  overflow: hidden;
+  .card__wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 500px;
+    height: 500px;
+    border-radius: 70%;
+    background: whitesmoke;
+    p {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 18px;
+      color: #fff;
+    }
+  }
+  .card__content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px 0;
+    .content__text {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      h1 {
+        font-size: 18px;
+        font-weight: 600;
+      }
+    }
+    .card__icon {
+      font-size: 44px;
+      margin-top: 1rem;
+    }
+    p {
+      color: grey;
+    }
+    .card__btn {
+      position: relative;
+      width: 150px;
+      height: 40px;
+      background: rgb(2, 0, 36);
+      background: linear-gradient(
+        84deg,
+        rgb(32, 25, 167) 1%,
+        rgb(37, 37, 228) 43%,
+        rgb(0, 187, 255) 100%
+      );
+      border: none;
+      outline: none;
+      color: #fff;
+      border-radius: 0 50px 0 50px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: all 0.2s ease;
+      &:hover {
+        width: 80%;
+        box-shadow: 0 0 5px 2px rgba(11, 121, 255, 0.485);
+        opacity: 0.9;
+        border-radius: 50px;
+      }
+    }
+    .disabled__card {
+      opacity: 0.4;
+      position: relative;
+      bottom: -1rem;
+      width: 150px;
+      height: 40px;
+      background: rgb(2, 0, 36);
+      background: linear-gradient(
+        84deg,
+        rgb(32, 25, 167) 1%,
+        rgb(37, 37, 228) 43%,
+        rgb(0, 187, 255) 100%
+      );
+      border: none;
+      outline: none;
+      color: #fff;
+      border-radius: 0 50px 0 50px;
+      cursor: not-allowed;
+      overflow: hidden;
+    }
+  }
+}

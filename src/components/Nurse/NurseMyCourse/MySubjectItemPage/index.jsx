@@ -1,13 +1,13 @@
-import { Breadcrumb, Button, Card, Col, message, Modal, Row } from "antd";
+import { Breadcrumb, Button, Card, Col, Modal, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { BiHome } from "react-icons/bi";
 import { Link, useParams, useLocation } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { Notification } from "../../../Notification/Notification";
-import { BsPlus } from "react-icons/bs";
+import { BsArrowRight, BsCheckCircle } from "react-icons/bs";
 
-const SubjectItemPage = () => {
+const MySubjectItemPage = () => {
   const param = useParams();
   const location = useLocation();
   const [addCours, setAddCours] = useState(false);
@@ -77,15 +77,8 @@ const SubjectItemPage = () => {
         items={[
           {
             title: (
-              <Link to="/">
+              <Link to="/nurse/mycourse">
                 <BiHome />
-              </Link>
-            ),
-          },
-          {
-            title: (
-              <Link to={`/nurse/course/${location.state.message}`}>
-                Предмет
               </Link>
             ),
           },
@@ -99,15 +92,18 @@ const SubjectItemPage = () => {
             className="d-flex align-center gap-2"
           >
             <Button
-              icon={<BsPlus style={{fontSize:'22px'}}/>}
+              icon={<BsCheckCircle />}
+              className="d-flex align-center gap-x-1"
+              style={{ background: "green", color: "#fff" }}
+            >
+              Yakunlash
+            </Button>
+            <Button
+              icon={<BsArrowRight />}
               className="d-flex align-center gap-x-1"
               type="primary"
-              onClick={() => setAddCoursList(false)}
             >
-              Kursni qo`shish
-            </Button>
-            <Button type="primary" onClick={() => setAddCoursList(true)}>
-              Kursni qo`shish va Davom etish
+              Davom etish
             </Button>
           </div>
         </Col>
@@ -123,4 +119,4 @@ const SubjectItemPage = () => {
     </>
   );
 };
-export default SubjectItemPage;
+export default MySubjectItemPage;

@@ -1,34 +1,43 @@
 import { Card, Col, Row } from "antd";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import MyCardItem from "../../generics/MyCard";
+import { api } from "../../../utils/api";
+import "./style.scss";
 
 const NurseMyCourse = () => {
-  const id = 1;
+  const [courses, setCourses] = useState([]);
+
+  // getCourseList
+  const getCourseList = () => {
+    api.get("api/nurse/course/list").then((res) =>
+      setCourses(
+        res.data.data.map((item) => {
+          return {
+            key: item.id,
+            ...item,
+          };
+        })
+      )
+    );
+  };
+
+  useEffect(() => {
+    getCourseList();
+  }, []);
 
   return (
-    <Row>
+    <Row className="mycourse__wrapper">
       <Col span={24}>
         <Card title="Мои курсы">
-          <Row gutter={[20, 20]}>
-            <Col xl={8} lg={8} md={12} sm={24} xs={24}>
-              <Card
-                extra={<Link to={`/nurse/course/subject/${id}`}>Boshlash</Link>}
-                title="Card title"
-                hoverable={true}
-              >
-                Card content
-              </Card>
-            </Col>
-            <Col xl={8} lg={8} md={12} sm={24} xs={24}>
-              <Card
-                extra={<a href="#">Boshlash</a>}
-                title="Card title"
-                hoverable={true}
-              >
-                Card content
-              </Card>
-            </Col>
-          </Row>
+          <div
+            style={{ flexWrap: "wrap" }}
+            className="d-flex align-center gap-2"
+          >
+            {courses?.map((item) => {
+              return <MyCardItem key={item.id} item={item} />;
+            })}
+          </div>
         </Card>
       </Col>
     </Row>
