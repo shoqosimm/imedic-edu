@@ -9,6 +9,7 @@
   justify-content: space-between;
   border-radius: 6px;
   overflow: scroll;
+  background: #fff;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -25,7 +26,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      @media screen and (max-width:565px) {
+      @media screen and (max-width: 565px) {
         width: 100%;
       }
     }
@@ -35,15 +36,18 @@
     margin-left: auto;
     background: green;
     color: #fff;
-    @media screen and (max-width:565px) {
+    @media screen and (max-width: 565px) {
       width: 100%;
     }
   }
   .test__part {
     h1 {
       margin: 1rem 0;
-      font-size: 18px;
+      font-size: 24px;
       font-weight: 600;
+      @media screen and (max-width: 565px) {
+        font-size: 18px;
+      }
     }
   }
   .test__questions {
@@ -54,7 +58,13 @@
     gap: 0 8px;
     padding: 1rem;
     border: 1px solid lightgrey;
+    margin: 0.5rem 0;
     transition: all 0.2s ease;
+    font-size: 18px;
+    @media screen and (max-width: 565px) {
+      font-size: 14px;
+    }
+
     &:hover {
       background: #1677ff;
       color: #fff;

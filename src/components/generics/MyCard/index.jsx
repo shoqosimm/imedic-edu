@@ -28,17 +28,15 @@ const MyCardItem = ({ disabled, item }) => {
           <BsPencilSquare style={{ fill: "green" }} className="card__icon" />
         )}
         <div className="content__text">
-          <h1>{item.course.name ?? "Card"}</h1>
-          <p>{item.course.teaser ?? "teaser"}</p>
-          <p>
-            {item.user.first_name} {item.user.last_name}
-          </p>
+          <h1>{item.name ?? "Card"}</h1>
+          <p>{item.teaser ?? "teaser"}</p>
+         
         </div>
 
         <button
           title={disabled ? "not allowed" : "Посмотреть"}
           disabled={disabled}
-          onClick={() => linkToSubject(item.id)}
+          onClick={() => linkToSubject(item.course_id)}
           className={disabled ? "disabled__card" : "card__btn"}
         >
           Подробнее

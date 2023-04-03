@@ -1,28 +1,137 @@
-import { Breadcrumb, Card, Skeleton } from "antd";
+import { Breadcrumb, Card, Modal, Skeleton, Table } from "antd";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../utils/api";
 import "./styles/viewSubjectStyle.scss";
-import { BiHome } from "react-icons/bi";
+import {
+  BiCheckCircle,
+  BiHome,
+  BiNoEntry,
+  BiPencil,
+  BiSync,
+} from "react-icons/bi";
+import moment from "moment";
+import { ToastContainer, toast } from "react-toastify";
 
 const ViewSubject = () => {
   const param = useParams();
+  const navigate = useNavigate();
+  const [modal, setModal] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const [idModal, setIdModal] = useState(null);
   const [subject, setSubject] = useState([]);
+  const [data, setData] = useState([]);
   const location = useLocation();
   const [loading, setLoading] = useState(false);
+  const columns = [
+    {
+      title: "№",
+      dataIndex: "id",
+      key: "id",
+      align: "center",
+      width: "5%",
+    },
+    {
+      title: "Вопрос",
+      dataIndex: "question",
+      key: "question",
+    },
+    {
+      title: "Создано",
+      dataIndex: "created_at",
+      key: "created_at",
+    },
+    {
+      title: "Обновлено",
+      dataIndex: "updated_at",
+      key: "updated_at",
+    },
+    {
+      title: "Статус",
+      dataIndex: "is_active",
+      key: "is_active",
+      align: "center",
+      render: (text) => {
+        return text == 1 ? (
+          <BiCheckCircle style={{ fontSize: "18px", fill: "green" }} />
+        ) : (
+          <BiNoEntry style={{ fontSize: "18px", fill: "red" }} />
+        );
+      },
+    },
+    {
+      title: "Изменить",
+      dataIndex: "edit",
+      key: "edit",
+      align: "center",
+      width: "2%",
+      render: (t, record) => {
+        return (
+          <div className="d-flex align-center justify-around">
+            <BiSync
+              onClick={() => {
+                setModal(true);
+                setIdModal(record.id);
+              }}
+              style={{ fontSize: "17px", color: "#1677ff", cursor: "pointer" }}
+            />
+            <BiPencil
+              onClick={() =>
+                navigate(`/teacher/subject/edit/test/${record.id}`, {
+                  state: { message: param.id },
+                })
+              }
+              style={{ fontSize: "17px", color: "#1677ff", cursor: "pointer" }}
+            />
+          </div>
+        );
+      },
+    },
+  ];
 
   //   getSubject
-  const getSubject = (id) => {
+  const getSubject = async (id) => {
     setLoading(true);
+    const res1 = await api.get(`api/teacher/course-subject/show/${id}`);
+    const res2 = await api.get(`api/teacher/test/list/${id}`);
+    try {
+      setSubject(res1.data.data);
+      setData(
+        res2.data.data.map((item) => {
+          return {
+            ...item,
+            key: item.id,
+            id: item.id,
+            created_at: moment(item.created_at).format("DD.MM.YYYY HH:mm"),
+            updated_at: moment(item.updated_at).format("DD.MM.YYYY HH:mm"),
+          };
+        })
+      );
+      setLoading(false);
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+    }
+  };
+
+  //   modal
+  const handleOk = () => {
+    setConfirmLoading(true);
     api
-      .get(`api/teacher/course-subject/show/${id}`)
+      .get(`api/teacher/test/active/${idModal}`)
       .then((res) => {
-        setSubject(res.data.data);
-        setLoading(false);
+        if (res.data.success) {
+          setConfirmLoading(false);
+          setModal(false);
+          toast.success("Изменено");
+          setTimeout(() => {
+            getSubject(param.id);
+          }, 1500);
+        }
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
+        setConfirmLoading(false);
       });
   };
 
@@ -44,7 +153,7 @@ const ViewSubject = () => {
           },
           {
             title: (
-              <Link to={`/teacher/course/${location.state.message}/view`}>
+              <Link to={`/teacher/course/${location?.state?.message}/view`}>
                 Назад
               </Link>
             ),
@@ -78,7 +187,7 @@ const ViewSubject = () => {
               <p>{subject?.name}</p>
             </Card>
             <Card centered="true">
-              <div>
+              <div style={{ marginBottom: "2rem" }}>
                 <ol>
                   <li>Количество теста : {subject?.count_test} шт</li>
                   <li>Количество мин.прохождение : {subject?.right_test} шт</li>
@@ -86,8 +195,29 @@ const ViewSubject = () => {
                   <li>Время для перездачи теста : {subject?.resubmit} мин</li>
                 </ol>
               </div>
+              <Table
+                loading={loading}
+                bordered
+                columns={columns}
+                dataSource={data}
+              />
             </Card>
           </Card>
+          <Modal
+            title={"Изменить статус"}
+            open={modal}
+            onCancel={() => setModal(false)}
+            onOk={handleOk}
+            okText="Изменить"
+            cancelText="Отменить"
+            confirmLoading={confirmLoading}
+          >
+            <p>
+              Вы уверены, что хотите изменить статус с активного на неактивный
+              или наоборот?
+            </p>
+          </Modal>
+          <ToastContainer />
         </div>
       )}
     </>

@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Card, Form, Input } from "antd";
+import { Breadcrumb, Button, Card, Checkbox, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import "react-quill/dist/quill.snow.css";
 import { Notification } from "../../Notification/Notification";
 import "./styles/edtSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
+import { ToastContainer, toast } from "react-toastify";
 
 const EditSubject = () => {
   const params = useParams();
@@ -35,6 +36,7 @@ const EditSubject = () => {
               right_test: String(res.data.data.right_test),
               resubmit: res.data.data.resubmit,
               teaser: res.data.data.teaser,
+              is_active: res.data.data.is_active,
             });
       })
       .catch((err) => {
@@ -65,8 +67,25 @@ const EditSubject = () => {
   };
 
   // updateTest
-  const updateTest = (values) => {
-    console.log(values, "test-Values");
+  const updateTest = async (values) => {
+    setLoading(true);
+    const body = {
+      ...values,
+      subject_type: "test",
+    };
+    const res = await api.post(
+      `api/teacher/course-subject/update/${params.id}`,
+      body
+    );
+    try {
+      if (res) {
+        toast.success("Изменено");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.log(err, "err");
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -132,34 +151,34 @@ const EditSubject = () => {
               <Form.Item
                 name="name"
                 rules={[{ required: true, whitespace: true }]}
-                label='Наименования теста'
+                label="Наименования теста"
               >
                 <Input placeholder="Test name" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="count_test"
                 rules={[{ required: true, whitespace: true }]}
-                label='Количество теста'
+                label="Количество теста"
               >
                 <Input placeholder="Test count" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="time"
                 rules={[{ required: true, whitespace: true }]}
-                label='Время теста'
+                label="Время теста"
               >
                 <Input placeholder="Test Vaqti (Munit)" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="right_test"
                 rules={[{ required: true, whitespace: true }]}
-                label='Количество правилных ответов'
+                label="Количество правилных ответов"
               >
                 <Input placeholder="O`tish soni " disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="resubmit"
-                label='Время перездачи теста'
+                label="Время перездачи теста"
                 rules={[{ required: true, whitespace: true }]}
               >
                 <Input
@@ -170,9 +189,18 @@ const EditSubject = () => {
               <Form.Item
                 name="teaser"
                 rules={[{ required: true, whitespace: true }]}
-                label='Тизер'
+                label="Тизер"
               >
                 <Input placeholder="тизер" disabled={loading} />
+              </Form.Item>
+              <Form.Item
+                name="is_active"
+                label="Статус"
+                valuePropName="checked"
+              >
+                <Checkbox  disabled={loading}>
+                  Активный
+                </Checkbox>
               </Form.Item>
             </>
 
@@ -193,6 +221,7 @@ const EditSubject = () => {
           </Form>
         )}
       </Card>
+      <ToastContainer />
     </div>
   );
 };

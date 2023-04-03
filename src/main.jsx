@@ -13,8 +13,6 @@ import PrivateRoutes from "./components/PrivateRoutes";
 import Loading from "./components/Loader";
 import "react-toastify/dist/ReactToastify.css";
 import "sweetalert2/src/sweetalert2.scss";
-import MySubjectItemPage from "./components/Nurse/NurseMyCourse/MySubjectItemPage";
-import MySubjectTest from "./components/Nurse/NurseMyCourse/MySubjectTest";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -22,14 +20,26 @@ const Register = lazy(() => import("./components/Register"));
 // nurse-imports
 const Nurse = lazy(() => import("./root/NurseRoot/root"));
 const NurseCoursePage = lazy(() => import("./Pages/NursePages/Course"));
-const NurseMyCoursePage = lazy(() => import("./Pages/NursePages/MyCourse"));
+const NurseMyCourse = lazy(() =>
+  import("./components/Nurse/NurseMyCourse/MySubjectList")
+);
 const NurseMySettingPage = lazy(() => import("./Pages/NursePages/Setting"));
+const NurseMyCourseList = lazy(() =>
+  import("./components/Nurse/NurseMyCourse")
+);
 const SubjectPage = lazy(() =>
   import("./components/Nurse/NurseCourse/SubjectPage")
 );
 const SubjectItemPage = lazy(() =>
   import("./components/Nurse/NurseCourse/SubjectItemPage")
 );
+const MySubjectItemPage = lazy(() =>
+  import("./components/Nurse/NurseMyCourse/MySubjectItemPage")
+);
+const MySubjectTest = lazy(() =>
+  import("./components/Nurse/NurseMyCourse/MySubjectTest")
+);
+
 // teacher-imports
 const Teacher = lazy(() => import("./root/TeacherRoot/root"));
 const TeacherCoursePage = lazy(() => import("./Pages/TeacherPage/Course"));
@@ -38,6 +48,9 @@ const TeacherReportPage = lazy(() => import("./Pages/TeacherPage/Report"));
 const CreateCourse = lazy(() => import("./Pages/TeacherPage/CreateCourse"));
 const CreateTestPage = lazy(() =>
   import("./Pages/TeacherPage/Subject/Test/CreateTestPage")
+);
+const EditTest = lazy(() =>
+  import("./components/Teacher/TeacherSubject/Test/EditTest")
 );
 const EditCooursePage = lazy(() =>
   import("./Pages/TeacherPage/EditCouresePage")
@@ -52,6 +65,7 @@ const EditSubjectPage = lazy(() =>
 const ViewSubjectPage = lazy(() =>
   import("./Pages/TeacherPage/Subject/ViewSubjectPage")
 );
+
 // admin-imports
 const AdminRoute = lazy(() => import("./root/AdminRoot/root"));
 const AdminCategory = lazy(() => import("./components/Admin/Category"));
@@ -82,9 +96,10 @@ const router = createBrowserRouter(
         <Route path="course" element={<NurseCoursePage />} />
         <Route path="course/:id" element={<SubjectPage />} />
         <Route path="course/subject/:id" element={<SubjectItemPage />} />
-        <Route path="mycourse" element={<NurseMyCoursePage />} />
-        <Route path="mycourse/subject/:id" element={<MySubjectItemPage />} />
-        <Route path="mycourse/subject/test/:id" element={<MySubjectTest />} />
+        <Route path="mycourse" element={<NurseMyCourseList />} />
+        <Route path="mycourse/:id" element={<NurseMyCourse />} />
+        <Route path="mycourse/:id/subject/:id" element={<MySubjectItemPage />} />
+        <Route path="mycourse/:id/subject/test/:id" element={<MySubjectTest />} />
         <Route path="setting" element={<NurseMySettingPage />} />
       </Route>
 
@@ -110,6 +125,7 @@ const router = createBrowserRouter(
         <Route path="subject/edit/:id" element={<EditSubjectPage />} />
         <Route path="subject/view/:id" element={<ViewSubjectPage />} />
         <Route path="subject/create/test/:id" element={<CreateTestPage />} />
+        <Route path="subject/edit/test/:id" element={<EditTest />} />
       </Route>
 
       {/* admin */}

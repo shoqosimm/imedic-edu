@@ -6,6 +6,7 @@ import { Link, useParams, useLocation } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { Notification } from "../../../Notification/Notification";
 import { BsPlus } from "react-icons/bs";
+import { ToastContainer } from "react-toastify";
 
 const SubjectItemPage = () => {
   const param = useParams();
@@ -99,7 +100,7 @@ const SubjectItemPage = () => {
             className="d-flex align-center gap-2"
           >
             <Button
-              icon={<BsPlus style={{fontSize:'22px'}}/>}
+              icon={<BsPlus style={{ fontSize: "22px" }} />}
               className="d-flex align-center gap-x-1"
               type="primary"
               onClick={() => setAddCoursList(false)}
@@ -120,6 +121,8 @@ const SubjectItemPage = () => {
       >
         {addCourseText}
       </Modal>
+
+      <ToastContainer />
     </>
   );
 };
