@@ -36,6 +36,11 @@
       text-align: center;
       display: flex;
       flex-direction: column;
+      height: 80px;
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       h1 {
         font-size: 18px;
         font-weight: 600;

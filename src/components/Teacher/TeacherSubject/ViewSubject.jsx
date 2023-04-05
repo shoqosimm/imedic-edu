@@ -92,9 +92,9 @@ const ViewSubject = () => {
   //   getSubject
   const getSubject = async (id) => {
     setLoading(true);
-    const res1 = await api.get(`api/teacher/course-subject/show/${id}`);
-    const res2 = await api.get(`api/teacher/test/list/${id}`);
     try {
+      const res1 = await api.get(`api/teacher/course-subject/show/${id}`);
+      const res2 = await api.get(`api/teacher/test/list/${id}`);
       setSubject(res1.data.data);
       setData(
         res2.data.data.map((item) => {

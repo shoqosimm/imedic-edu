@@ -48,7 +48,7 @@ const CountdownComponent = () => {
 
   const getDeadTime = () => {
     let deadline = new Date();
-    deadline.setSeconds(deadline.getSeconds() + 600);
+    deadline.setMinutes(deadline.getMinutes() + 60);
     return deadline;
   };
 

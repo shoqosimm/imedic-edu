@@ -13,9 +13,12 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
+import { useContext } from "react";
+import { ContextItem } from "../../components/Context";
 
 const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [,setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -26,6 +29,7 @@ const AdminRoute = () => {
       title: "Вы действительно хотите выйти",
     }).then((result) => {
       if (result.isConfirmed) {
+        setToken(null);
         localStorage.removeItem("access_token");
         localStorage.removeItem("activeLink");
         localStorage.removeItem("role");
@@ -93,7 +97,7 @@ const AdminRoute = () => {
             padding: "0 1rem",
             background: "#fff",
             margin: "0 1rem",
-            borderRadius: "2px",
+            borderRadius: "0 0 10px 10px",
           }}
         >
           <div
@@ -120,8 +124,8 @@ const AdminRoute = () => {
           </div>
         </Header>
         <Content className="layout_content">
-          <Suspense  fallback={<Loading />}>
-          <Outlet />
+          <Suspense fallback={<Loading />}>
+            <Outlet />
           </Suspense>
         </Content>
       </Layout>

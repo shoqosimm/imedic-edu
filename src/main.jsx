@@ -13,6 +13,7 @@ import PrivateRoutes from "./components/PrivateRoutes";
 import Loading from "./components/Loader";
 import "react-toastify/dist/ReactToastify.css";
 import "sweetalert2/src/sweetalert2.scss";
+import ContextWrapper from "./components/Context";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -98,8 +99,14 @@ const router = createBrowserRouter(
         <Route path="course/subject/:id" element={<SubjectItemPage />} />
         <Route path="mycourse" element={<NurseMyCourseList />} />
         <Route path="mycourse/:id" element={<NurseMyCourse />} />
-        <Route path="mycourse/:id/subject/:id" element={<MySubjectItemPage />} />
-        <Route path="mycourse/:id/subject/test/:id" element={<MySubjectTest />} />
+        <Route
+          path="mycourse/:id/subject/:id"
+          element={<MySubjectItemPage />}
+        />
+        <Route
+          path="mycourse/:id/subject/test/:id"
+          element={<MySubjectTest />}
+        />
         <Route path="setting" element={<NurseMySettingPage />} />
       </Route>
 
@@ -152,7 +159,9 @@ const router = createBrowserRouter(
 );
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <Suspense fallback={<Loading />}>
-    <RouterProvider router={router} />
-  </Suspense>
+  <ContextWrapper>
+    <Suspense fallback={<Loading />}>
+      <RouterProvider router={router} />
+    </Suspense>
+  </ContextWrapper>
 );

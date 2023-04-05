@@ -10,7 +10,7 @@ const MyCardItem = ({ disabled, item }) => {
 
   // linkToSubject
   const linkToSubject = (id) => {
-    if (item.subject_type === "topic") {
+    if (item.subject.subject_type === "topic") {
       return navigate(`subject/${id}`, { state: { message: param.id } });
     }
     return navigate(`subject/test/${id}`, { state: { message: param.id } });
@@ -19,24 +19,33 @@ const MyCardItem = ({ disabled, item }) => {
   return (
     <div className="card__container">
       <div className="card__wrapper">
-        <p>{item.percent} %</p>
+        {(item.status === 0 && (
+          <p style={{ background: "orangered" }}>Mumkin emas</p>
+        )) ||
+          (item.status === 1 && (
+            <p style={{ background: "yellowgreen" }}>O'qilayotgan</p>
+          )) ||
+          (item.status === 2 && (
+            <p style={{ background: "green" }}>O'qib bo'lingan</p>
+          )) ||  (item.status === 5 && (
+            <p style={{ background: "green" }}>Topshirilgan test</p>
+          ))}
       </div>
       <div className="card__content">
-        {item.subject_type === "topic" ? (
+        {item.subject.subject_type === "topic" ? (
           <BiBook style={{ fill: "brown" }} className="card__icon" />
         ) : (
           <BsPencilSquare style={{ fill: "green" }} className="card__icon" />
         )}
         <div className="content__text">
-          <h1>{item.name ?? "Card"}</h1>
-          <p>{item.teaser ?? "teaser"}</p>
-         
+          <h1>{item.subject.name ?? "Card"}</h1>
+          <p>{item.subject.teaser ?? "teaser"}</p>
         </div>
 
         <button
           title={disabled ? "not allowed" : "Посмотреть"}
           disabled={disabled}
-          onClick={() => linkToSubject(item.course_id)}
+          onClick={() => linkToSubject(item.id)}
           className={disabled ? "disabled__card" : "card__btn"}
         >
           Подробнее

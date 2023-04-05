@@ -73,11 +73,11 @@ const EditSubject = () => {
       ...values,
       subject_type: "test",
     };
-    const res = await api.post(
-      `api/teacher/course-subject/update/${params.id}`,
-      body
-    );
     try {
+      const res = await api.post(
+        `api/teacher/course-subject/update/${params.id}`,
+        body
+      );
       if (res) {
         toast.success("Изменено");
         setLoading(false);
@@ -192,15 +192,6 @@ const EditSubject = () => {
                 label="Тизер"
               >
                 <Input placeholder="тизер" disabled={loading} />
-              </Form.Item>
-              <Form.Item
-                name="is_active"
-                label="Статус"
-                valuePropName="checked"
-              >
-                <Checkbox  disabled={loading}>
-                  Активный
-                </Checkbox>
               </Form.Item>
             </>
 

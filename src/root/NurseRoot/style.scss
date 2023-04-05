@@ -7,6 +7,7 @@
     padding: 24px;
     min-height: 280px;
     background: #fff;
+    border-radius: 10px;
     &::-webkit-scrollbar {
       display: none;
     }
@@ -15,20 +16,20 @@
 .icon {
   font-size: 22px !important;
 }
-.menuBurger{
+.menuBurger {
   display: none;
 }
-.ant-drawer-body{
+.ant-drawer-body {
   padding: 0px !important;
 }
 @media screen and (max-width: 565px) {
   .siderNurse {
     display: none;
   }
-  .sizeChanger{
+  .sizeChanger {
     display: none;
   }
-  .menuBurger{
+  .menuBurger {
     display: block;
   }
 }

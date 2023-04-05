@@ -8,7 +8,13 @@ import { api } from "../../../utils/api";
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState(false);
+  const [categoryId, setCategoryId] = useState(null);
   const [loadingCard, setLoadingCard] = useState(true);
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    per_page: 15,
+    total: 15,
+  });
 
   // getCategoryforSelect
   const getCategoryforSelect = async () => {
@@ -29,12 +35,17 @@ const NurseCourse = () => {
   };
 
   const handleChange = (value) => {
-    getCourse(value);
+    setCategoryId(categoryId);
+    getCourse(value, 1, 15);
   };
 
-  function getCourse(id) {
+  function getCourse(id, current_page, per_page) {
     setLoadingCard(true);
-    api.get(`api/nurse/course/list/category/${id}`).then((res) => {
+    const params = {
+      current_page,
+      per_page,
+    };
+    api.get(`api/nurse/course/list/category/${id}`, { params }).then((res) => {
       setCourse(
         res.data.data.map((item, key) => {
           let num = key + 1;
@@ -47,9 +58,14 @@ const NurseCourse = () => {
             teacher: user_name,
             count_tema: item.subject_count,
           };
-        }),
-        setLoadingCard(false)
+        })
       );
+      setPagination({
+        current_page: res.data.current_page,
+        per_page: res.data.per_page,
+        total: res.data.total,
+      });
+      setLoadingCard(false);
     });
   }
 
@@ -121,14 +137,23 @@ const NurseCourse = () => {
               loading={loadingCard}
               columns={columns}
               dataSource={course}
+              pagination={{
+                current: pagination.current_page,
+                pageSize: pagination.per_page,
+                total: pagination.total,
+                onChange: (current, pageSize) => {
+                  getCourse(categoryId, current, pageSize);
+                },
+              }}
             />
-          ):
-            (
-              <div style={{height:'400px'}} className="d-flex align-center justify-center">
-                  <h1>Выберите категорию...</h1>
-              </div>
-            )
-          }
+          ) : (
+            <div
+              style={{ height: "400px" }}
+              className="d-flex align-center justify-center"
+            >
+              <h1>Yo'nalishni tanglang</h1>
+            </div>
+          )}
         </Col>
       </Row>
     </>

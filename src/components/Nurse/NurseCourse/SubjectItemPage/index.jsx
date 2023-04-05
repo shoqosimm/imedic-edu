@@ -1,8 +1,8 @@
-import { Breadcrumb, Button, Card, Col, message, Modal, Row } from "antd";
+import { Breadcrumb, Button, Card, Col, Modal, Row, Skeleton } from "antd";
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { BiHome } from "react-icons/bi";
-import { Link, useParams, useLocation } from "react-router-dom";
+import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { Notification } from "../../../Notification/Notification";
 import { BsPlus } from "react-icons/bs";
@@ -10,39 +10,51 @@ import { ToastContainer } from "react-toastify";
 
 const SubjectItemPage = () => {
   const param = useParams();
+  const navigate = useNavigate();
   const location = useLocation();
   const [addCours, setAddCours] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [addCourseText, setAddCourseText] = useState();
-  const [subject, setSubject] = useState({
-    id: "1",
-    name: "Web dasturlash haqida",
-    teaser:
-      "AngularJS, ReactJS va VueJS JavaScript dasturlash tiliga asoslangan bo‘lib, ular yordamida veb saytlarni yanada takomillashtirish, qo‘shimcha imkoniyatlar qo‘shish va bu o‘zgartirishlarni dasturchi o‘ylagandan ham oson usulda amalga oshirish mumkin. ",
-    course: "Web Dasturlash",
-    content:
-      "HTML va CSS veb sahifalar asosini tashkil qiladi. HTML saytda aynan nimalar joylashishi kerakligiga mas’ul bo‘lsa (matn, rasm, video), CSSda ularning qaysi tartibda joylashuvi va qanday ko‘rinishda bo‘lishi yozib chiqiladi. Sayt foydalanuvchilarga ko‘rinadigan elementlar HTML va CSSda tuzilgani uchun bu ikkisisiz sayt tuzib bo‘lmaydi. Shuning uchun ham frontend sohasini o‘rganish aynan shu texnologiyalardan boshlanadi. Bularda bor imkoniyatlarga qo‘shimchalar va yangiliklar qo‘shilib, HTML5 va CSS3 standardlari ishlab chiqilgan.",
-    subject_type: "topic",
-  });
+  const [subject, setSubject] = useState();
+  const [skeleton, setSkeleton] = useState(false);
 
   // getSubject
-  const getSubject = () => {
-    api
-      .get(`api/nurse/course/list/${param.id}`)
-      .then((res) => console.log(res, "res"));
+  const getSubject = async () => {
+    setSkeleton(true);
+    const res = await api.get(`api/nurse/course/subject/${param.id}`);
+    try {
+      setSubject({
+        id: res.data.id,
+        name: res.data.name,
+        teaser: res.data.teaser,
+        content: res.data.content,
+      });
+      setSkeleton(false);
+    } catch (err) {
+      console.log(err, "err");
+      setSkeleton(false);
+    } finally {
+      setSkeleton(false);
+    }
+  };
+
+  // modal
+  // handleCancelModal
+  const handleCancelModal = () => {
+    navigate("/");
   };
 
   // addCourseList
-  const addCourseList = (id) => {
+  const addCourseList = () => {
     setTimeout(() => {
       setAddCours(true);
-    }, 1000);
+    }, 10000);
   };
 
   // addCourseListText
-  const addCourseListText = (subject) => {
+  const addCourseListText = () => {
     setAddCourseText(
-      `Siz xaqiqatdan ham ${subject.name} kursiga qo'shmoqchimisiz?`
+      `Kursni o'qishda davom etish uchun ushbu kursni "Ha" tugmasi orqali mening kurslarim ro'yxatiga qo'shing.`
     );
   };
 
@@ -57,7 +69,16 @@ const SubjectItemPage = () => {
       .then((res) => {
         if (res.data.success) {
           Notification("Kurs qo'shildi");
+          setTimeout(() => {
+            navigate("/nurse/mycourse");
+          }, 1500);
         }
+      })
+      .catch((err) => {
+        console.log(err, "err");
+        setTimeout(() => {
+          navigate("/");
+        }, 1500);
       })
       .finally(() => {
         setConfirmLoading(false);
@@ -67,7 +88,7 @@ const SubjectItemPage = () => {
 
   useEffect(() => {
     getSubject();
-    // addCourseList(param.id);
+    addCourseList(param.id);
     addCourseListText(subject);
   }, []);
 
@@ -94,7 +115,35 @@ const SubjectItemPage = () => {
       />
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
-          <Card title={subject.name}>{subject.content}</Card>
+          <Card
+            title={
+              skeleton ? <Skeleton title paragraph={false} /> : subject?.name
+            }
+          >
+            <div
+              style={{
+                textAlign: "center",
+                letterSpacing: "1.5px",
+                fontSize: "18px",
+                fontWeight: "600",
+                marginBottom: "1.5rem",
+              }}
+            >
+              {skeleton ? (
+                <Skeleton title={false} paragraph />
+              ) : (
+                <p>{subject?.teaser}</p>
+              )}
+            </div>
+            {skeleton ? (
+              <Skeleton title={false} paragraph />
+            ) : (
+              <div
+                style={{ width: "90%", margin: "0 auto" }}
+                dangerouslySetInnerHTML={{ __html: subject?.content }}
+              />
+            )}
+          </Card>
           <div
             style={{ flexWrap: "wrap" }}
             className="d-flex align-center gap-2"
@@ -107,17 +156,19 @@ const SubjectItemPage = () => {
             >
               Kursni qo`shish
             </Button>
-            <Button type="primary" onClick={() => setAddCoursList(true)}>
-              Kursni qo`shish va Davom etish
-            </Button>
           </div>
         </Col>
       </Row>
       <Modal
-        title="Добавить курс"
+        title="Kursni qo'shish"
         open={addCours}
         onOk={() => setAddCoursList(false)}
         confirmLoading={confirmLoading}
+        onCancel={handleCancelModal}
+        okText="Ha"
+        cancelText="Yo'q"
+        closable={false}
+        maskClosable={false}
       >
         {addCourseText}
       </Modal>

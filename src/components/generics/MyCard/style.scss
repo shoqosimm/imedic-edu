@@ -1,6 +1,6 @@
 .card__container {
   position: relative;
-  width: 250px;
+  width: 260px;
   min-height: 250px;
   display: flex;
   align-items: center;
@@ -24,10 +24,11 @@
     background: whitesmoke;
     p {
       position: absolute;
-      top: 1rem;
-      right: 1.5rem;
-      font-size: 18px;
+      top: 1%;
+      right: 0;
       color: #fff;
+      padding: 5px 8px;
+      border-radius: 6px 0 0 6px;
     }
   }
   .card__content {
@@ -42,7 +43,12 @@
     .content__text {
       text-align: center;
       display: flex;
+      height: 80px;
+      overflow: scroll;
       flex-direction: column;
+      &::-webkit-scrollbar {
+        display: none;
+      }
       h1 {
         font-size: 18px;
         font-weight: 600;

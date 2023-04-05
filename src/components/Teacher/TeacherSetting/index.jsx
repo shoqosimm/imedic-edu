@@ -17,8 +17,8 @@ const TeacherSetting = () => {
 
   // getUserInfo
   const getUserInfo = async () => {
-    const res = await api.get("api/user/me");
     try {
+      const res = await api.get("api/user/me");
       setUserInfo(res.data);
     } catch (err) {
       console.log(err, "err");
@@ -31,8 +31,8 @@ const TeacherSetting = () => {
     const body = {
       pinfl: form.getFieldValue("pinfl"),
     };
-    const res = await api.post("api/get-client-by-pinfl", body);
     try {
+      const res = await api.post("api/get-client-by-pinfl", body);
       if (res) {
         Swal.fire({
           icon: "success",
@@ -74,8 +74,8 @@ const TeacherSetting = () => {
       ...values,
       birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
     };
-    const res = await api.post(`api/user/update/${userInfo.id}`, body);
     try {
+      const res = await api.post(`api/user/update/${userInfo.id}`, body);
       if (res) {
         Swal.fire({ icon: "success", title: "Изменено!" });
         getUserInfo();
@@ -91,8 +91,8 @@ const TeacherSetting = () => {
   // handlePassword
   const handlePassword = async (values) => {
     const body = values;
-    const res = await api.post(`api/user/password-update/${userInfo.id}`, body);
     try {
+      const res = await api.post(`api/user/password-update/${userInfo.id}`, body);
       if (res) {
         toast.success("Изменено!");
         setIsModalOpen(false);

@@ -5,10 +5,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useContext } from "react";
+import { ContextItem } from "../Context";
 
 const Login = () => {
   const [form] = Form.useForm();
   const [loading, setloading] = useState(false);
+  const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
 
   // handleLogin
@@ -21,6 +24,7 @@ const Login = () => {
         toast.success("Успешно", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
+        setToken(res.data.access_token);
         localStorage.setItem("access_token", res.data.access_token);
         localStorage.setItem("role", res.data.role);
         setTimeout(() => {

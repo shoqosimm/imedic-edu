@@ -66,9 +66,9 @@ const NurseMyCourseList = () => {
       key: "view",
       align: "center",
       width: "5%",
-      render: (t,record) => {
+      render: (t, record) => {
         return (
-          <Link to={`/nurse/mycourse/${record.course_id}`}>
+          <Link to={`/nurse/mycourse/${record.id}`}>
             <BiWindowOpen style={{ fontSize: "18px" }} />
           </Link>
         );
@@ -120,8 +120,11 @@ const NurseMyCourseList = () => {
           <Table
             pagination={{
               current: pagination.current_page,
-              per_page: pagination.per_page,
+              pageSize: pagination.per_page,
               total: pagination.total,
+              onChange: (current, pageSize) => {
+                getCourseList(categoryId, current, pageSize);
+              },
             }}
             loading={loading}
             bordered

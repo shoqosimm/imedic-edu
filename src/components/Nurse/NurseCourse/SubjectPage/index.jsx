@@ -2,14 +2,12 @@ import { Breadcrumb, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
-
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import CardItem from "../../../generics/Card";
 
 const SubjectPage = () => {
   const param = useParams();
-  const navigate = useNavigate();
   const [subjects, setSubjects] = useState([]);
 
   // getSubjects
@@ -43,11 +41,6 @@ const SubjectPage = () => {
     },
   ];
 
-  // linkToSubject
-  const linkToSubject = (id) => {
-    navigate(`/nurse/course/subject/${id}`, { state: { message: param.id } });
-  };
-
   useEffect(() => {
     getSubjects(param.id);
   }, [param]);
@@ -60,19 +53,34 @@ const SubjectPage = () => {
         gutter={[20, 20]}
         style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
       >
-        {subjects.map((item, index) => {
-          return (
-            <Col key={index}>
-              <CardItem
-                title={item.name}
-                teaser={item.teaser}
-                subject={item.subject_type}
-                click={item.id}
-                // disabled={index === 0 ? false : true}
-              />
-            </Col>
-          );
-        })}
+        {subjects.length !== 0 ? (
+          subjects.map((item, index) => {
+            return (
+              <Col key={index}>
+                <CardItem
+                  title={item.name}
+                  teaser={item.teaser}
+                  subject={item.subject_type}
+                  click={item.id}
+                  disabled={index === 0 ? false : true}
+                />
+              </Col>
+            );
+          })
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "20rem",
+              fontSize: "24px",
+              letterSpacing: "1px",
+              fontWeight: "600",
+            }}
+            className="d-flex align-center justify-center"
+          >
+            Ushbu kurs bo'yicha mavzular yo'q!...
+          </div>
+        )}
       </Row>
     </>
   );
