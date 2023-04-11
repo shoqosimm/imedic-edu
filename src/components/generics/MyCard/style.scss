@@ -108,3 +108,38 @@
     }
   }
 }
+
+.test_btn {
+  @media screen and (max-width: 767px) {
+    flex-direction: column;
+    gap: 10px 0;
+  }
+  .card_resubmit {
+    display: flex;
+    align-items: center;
+    background: transparent;
+    height: 40px;
+    min-width: 50%;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px 5px;
+    border: none;
+    background-color: rgb(18, 152, 18);
+    color: #fff;
+  }
+  .card_result {
+    min-width: 50%;
+    display: flex;
+    align-items: center;
+    background: transparent;
+    height: 40px;
+    outline: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 2px 5px;
+    border: none;
+    background-color: rgb(214, 205, 29);
+    color: #fff;
+  }
+}

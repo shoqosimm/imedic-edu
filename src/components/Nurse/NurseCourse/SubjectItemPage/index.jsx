@@ -21,8 +21,8 @@ const SubjectItemPage = () => {
   // getSubject
   const getSubject = async () => {
     setSkeleton(true);
-    const res = await api.get(`api/nurse/course/subject/${param.id}`);
     try {
+      const res = await api.get(`api/nurse/course/subject/${param.id}`);
       setSubject({
         id: res.data.id,
         name: res.data.name,

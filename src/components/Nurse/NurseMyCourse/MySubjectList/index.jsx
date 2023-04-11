@@ -45,7 +45,7 @@ const NurseMyCourse = () => {
       <div>
         <Card title="Мои курсы">
           <div
-            style={{ flexWrap: "wrap" }}
+            style={{ flexWrap: "wrap",justifyContent:'center',padding:'1.5rem 0' }}
             className="d-flex align-center gap-3"
           >
             {courses?.map((item) => {

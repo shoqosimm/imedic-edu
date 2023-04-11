@@ -8,6 +8,49 @@ import { Notification } from "../../Notification/Notification";
 import "./styles/createSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
 
+// quill-modules
+const modules = {
+  toolbar: {
+    container: [
+      [{ header: [1, 2, 3, 4, 5, 6, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ header: 1 }, { header: 2 }],
+      [{ direction: "rtl" }],
+      [{ color: [] }, { background: [] }],
+      [{ font: [] }],
+      [{ size: [] }],
+      [{ align: [] }],
+      [
+        { list: "ordered" },
+        { list: "bullet" },
+        { indent: "-1" },
+        { indent: "+1" },
+      ],
+      ["link", "image", "video"],
+    ],
+  },
+};
+const formats = [
+	"header",
+	"font",
+	"size",
+	"bold",
+	"italic",
+	"underline",
+	"align",
+	"strike",
+	"script",
+	"blockquote",
+	"background",
+	"list",
+	"bullet",
+	"indent",
+	"link",
+	"image",
+	"color",
+	"code-block",
+];
+
 const CreateSubject = () => {
   const [openModal, setOpenModal] = useState(true);
   const [type, setType] = useState(false);
@@ -158,7 +201,12 @@ const CreateSubject = () => {
                   name="content"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <ReactQuill value={contentValue} onChange={setContentValue} />
+                  <ReactQuill
+                    modules={modules}
+                    formats={formats}
+                    value={contentValue}
+                    onChange={setContentValue}
+                  />
                 </Form.Item>
                 <Form.Item
                   name="teaser"
