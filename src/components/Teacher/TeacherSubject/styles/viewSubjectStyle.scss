@@ -1,0 +1,29 @@
+input[type="file"] {
+  display: none;
+}
+.uploadLabel {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2px;
+  padding: 5px 10px;
+  background: #269e08;
+  color: #fff;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  &:hover {
+    opacity: 0.9;
+    box-shadow: 0 0 2px 4px #93d78263;
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+.cardTable {
+  overflow: scroll;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,4 +1,12 @@
-import { Breadcrumb, Card, Modal, Skeleton, Table } from "antd";
+import {
+  Breadcrumb,
+  Card,
+  Input,
+  Modal,
+  Progress,
+  Skeleton,
+  Table,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../utils/api";
@@ -12,6 +20,7 @@ import {
 } from "react-icons/bi";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
+import { SiMicrosoftexcel } from "react-icons/si";
 
 const ViewSubject = () => {
   const param = useParams();
@@ -21,6 +30,7 @@ const ViewSubject = () => {
   const [idModal, setIdModal] = useState(null);
   const [subject, setSubject] = useState([]);
   const [data, setData] = useState([]);
+  const [progress, setProgress] = useState();
   const location = useLocation();
   const [loading, setLoading] = useState(false);
   const columns = [
@@ -135,6 +145,18 @@ const ViewSubject = () => {
       });
   };
 
+  // handleExcel
+  const handleExcel = (e) => {
+    const formData = new FormData();
+    formData.append("file", e.target.files[0]);
+
+    api.post(``, formData, {
+      onUploadProgress: (data) => {
+        setProgress(Math.round((100 * data.loaded) / data.total));
+      },
+    });
+  };
+
   useEffect(() => {
     getSubject(param.id);
   }, []);
@@ -171,7 +193,7 @@ const ViewSubject = () => {
         <Skeleton style={{ margin: "4rem 0" }} />
       ) : location.state.subject_type !== "test" ? (
         <div>
-          <Card title="Просмотреть тему">
+          <Card >
             <Card title="Тема" centered="true">
               <p>{subject?.name}</p>
             </Card>
@@ -182,11 +204,9 @@ const ViewSubject = () => {
         </div>
       ) : (
         <div>
-          <Card title="Просмотреть Тесты">
-            <Card title={subject?.teaser} centered="true">
-              <p>{subject?.name}</p>
-            </Card>
-            <Card centered="true">
+          <Card >
+            <Card style={{marginTop:'0'}} title={subject?.teaser} centered="true">
+              <h3>{subject?.name}</h3>
               <div style={{ marginBottom: "2rem" }}>
                 <ol>
                   <li>Количество теста : {subject?.count_test} шт</li>
@@ -194,6 +214,28 @@ const ViewSubject = () => {
                   <li>Время теста : {subject?.time} мин</li>
                   <li>Время для перездачи теста : {subject?.resubmit} мин</li>
                 </ol>
+              </div>
+            </Card>
+            <Card centered="true" className="cardTable">
+              <div
+                className="d-flex align-center gap-1"
+                style={{ margin: "0.5rem 0" }}
+              >
+                <label htmlFor="uploadFile" className="uploadLabel">
+                  <p className="d-flex align-center gap-1">
+                    Excel
+                    <SiMicrosoftexcel style={{ fontSize: "18px" }} />
+                  </p>
+                  <input
+                    id="uploadFile"
+                    type="file"
+                    accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                    onChange={handleExcel}
+                  />
+                </label>
+                {progress && (
+                  <Progress size={40} type="circle" percent={progress} />
+                )}
               </div>
               <Table
                 loading={loading}
