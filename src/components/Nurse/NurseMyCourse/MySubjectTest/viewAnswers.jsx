@@ -75,7 +75,7 @@ const ViewAnswers = () => {
             header="Notog'ri javoblarga tegishli mavzular"
             key="1"
           >
-            <h2 style={{textAlign:'center',marginBottom:'1rem'}}>Bu yerda mavzulr nomi ko'rsatiladi</h2>
+            <h2 style={{textAlign:'center',marginBottom:'1rem'}}>Bu yerda mavzular nomi ko'rsatiladi</h2>
             <ol style={{ padding: "0.5rem 2rem" }}>
               {info?.incorrect.map((item) => {
                 return (

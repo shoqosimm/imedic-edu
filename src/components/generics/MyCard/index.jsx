@@ -91,7 +91,7 @@ const MyCardItem = ({ disabled, item }) => {
                     onClick={() => showResult(item.id)}
                     className={disabled ? "disabled__card" : "card_result"}
                   >
-                    <BiShow style={{ fontSize: "24px" }} />
+                    <BiShow style={{ fontSize: "24px",margin:'0 5px' }} />
                     Natijani ko'rish
                   </button>
                 </>

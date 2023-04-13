@@ -62,7 +62,7 @@ const AdminRoute = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",
@@ -139,7 +139,7 @@ const AdminRoute = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",

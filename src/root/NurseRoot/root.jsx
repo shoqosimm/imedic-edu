@@ -2,6 +2,7 @@ import { Button, Drawer, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList, CiCircleList } from "react-icons/ci";
+import {SlUser } from "react-icons/sl";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -43,8 +44,8 @@ const Nurse = () => {
   return (
     <Layout className="layout">
       <Sider
+       theme="light"
         className="siderNurse"
-        theme="light"
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -57,12 +58,12 @@ const Nurse = () => {
             borderBottom: "1px solid lightgrey",
           }}
         >
-          <h2>Ученик</h2>
+          <SlUser style={{fontSize:'28px'}}/>
         </div>
         <Menu
-          theme="light"
+        theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",
@@ -127,7 +128,7 @@ const Nurse = () => {
               onClick={() => setCollapsed(!collapsed)}
             ></Button>
             <Button
-              className="d-flex align-center gap-x-1"
+              className="logOut d-flex align-center gap-x-1"
               icon={<AiOutlineLogout />}
               onClick={handleLogOut}
             >
@@ -151,7 +152,7 @@ const Nurse = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",

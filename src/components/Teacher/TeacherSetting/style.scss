@@ -2,6 +2,11 @@
   width: 100%;
   border: 1px solid lightgrey;
   padding: 1rem 2rem !important;
+  ul {
+    li {
+      list-style: none !important;
+    }
+  }
   .ant-input {
     height: 40px;
   }

@@ -1,6 +1,12 @@
 .layout {
   width: 100%;
   height: 100vh;
+  .ant-layout-sider {
+    box-shadow: 0 0 2px lightgrey;
+  }
+  .ant-layout-header {
+    box-shadow: 0 0 2px lightgrey ;
+  }
   .layout_content {
     overflow: scroll;
     margin: 24px 16px;
@@ -8,6 +14,7 @@
     min-height: 280px;
     background: #fff;
     border-radius: 10px;
+    box-shadow: 0 0 2px lightgrey ;
     &::-webkit-scrollbar {
       display: none;
     }
