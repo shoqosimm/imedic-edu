@@ -2,6 +2,7 @@ import { Button, Drawer, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList, CiCircleList } from "react-icons/ci";
+import {SlUser } from "react-icons/sl";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -13,9 +14,12 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
+import { ContextItem } from "../../components/Context";
+import { useContext } from "react";
 
 const Nurse = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [,setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -26,6 +30,7 @@ const Nurse = () => {
       title: "Вы действительно хотите выйти",
     }).then((result) => {
       if (result.isConfirmed) {
+        setToken(null);
         localStorage.removeItem("access_token");
         localStorage.removeItem("activeLink");
         localStorage.removeItem("role");
@@ -39,8 +44,8 @@ const Nurse = () => {
   return (
     <Layout className="layout">
       <Sider
+       theme="light"
         className="siderNurse"
-        theme="light"
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -53,12 +58,12 @@ const Nurse = () => {
             borderBottom: "1px solid lightgrey",
           }}
         >
-          <h2>Ученик</h2>
+          <SlUser style={{fontSize:'28px'}}/>
         </div>
         <Menu
-          theme="light"
+        theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",
@@ -105,7 +110,7 @@ const Nurse = () => {
             padding: "0 1rem",
             background: "#fff",
             margin: "0 1rem",
-            borderRadius: "2px",
+            borderRadius: "0 0 10px 10px",
           }}
         >
           <div
@@ -123,7 +128,7 @@ const Nurse = () => {
               onClick={() => setCollapsed(!collapsed)}
             ></Button>
             <Button
-              className="d-flex align-center gap-x-1"
+              className="logOut d-flex align-center gap-x-1"
               icon={<AiOutlineLogout />}
               onClick={handleLogOut}
             >
@@ -133,7 +138,7 @@ const Nurse = () => {
         </Header>
         <Content className="layout_content">
           <Suspense fallback={<Loading />}>
-          <Outlet />
+            <Outlet />
           </Suspense>
         </Content>
       </Layout>
@@ -147,7 +152,7 @@ const Nurse = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",

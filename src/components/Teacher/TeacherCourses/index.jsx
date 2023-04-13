@@ -18,6 +18,11 @@ const TeacherCourses = () => {
     "Вы уверены, что хотите изменить статус с активного на неактивный или наоборот?"
   );
   const [idModal, setIdModal] = useState(null);
+  const [pagination, setPagination] = useState({
+    current_page: 1,
+    per_page: 15,
+    total: 15,
+  });
   const columns = [
     {
       title: "№",
@@ -114,10 +119,14 @@ const TeacherCourses = () => {
   };
 
   // getCourse
-  const getCourse = () => {
+  const getCourse = (current_page, per_page) => {
     setLoadingTable(true);
+    const params = {
+      current_page,
+      per_page,
+    };
     api
-      .get("api/teacher/course/list")
+      .get("api/teacher/course/list", { params })
       .then((res) => {
         setLoadingTable(false);
         if (res.status === 200) {
@@ -131,6 +140,11 @@ const TeacherCourses = () => {
               };
             })
           );
+          setPagination({
+            current_page: res.data.current_page,
+            per_page: res.data.per_page,
+            total: res.data.total,
+          });
         }
       })
       .catch((err) => {
@@ -140,7 +154,7 @@ const TeacherCourses = () => {
   };
 
   useEffect(() => {
-    getCourse();
+    getCourse(pagination.current_page, pagination.per_page);
   }, []);
 
   return (
@@ -155,7 +169,19 @@ const TeacherCourses = () => {
         </Link>
       </div>
       <Card>
-        <Table loading={loadingTable} columns={columns} dataSource={course} />
+        <Table
+          loading={loadingTable}
+          columns={columns}
+          dataSource={course}
+          pagination={{
+            current: pagination.current_page,
+            pageSize: pagination.per_page,
+            total: pagination.total,
+            onChange: (current, pageSize) => {
+              getCourse(current, pageSize);
+            },
+          }}
+        />
       </Card>
       <Modal
         title={"Изменить статус"}

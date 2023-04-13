@@ -14,9 +14,12 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
+import { ContextItem } from "../../components/Context";
+import { useContext } from "react";
 
 const Teacher = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [,setToken] = useContext(ContextItem);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -27,6 +30,7 @@ const Teacher = () => {
       title: "Вы действительно хотите выйти",
     }).then((result) => {
       if (result.isConfirmed) {
+        setToken(null);
         localStorage.removeItem("access_token");
         localStorage.removeItem("activeLink");
         localStorage.removeItem("role");
@@ -59,7 +63,7 @@ const Teacher = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",
@@ -106,7 +110,7 @@ const Teacher = () => {
             padding: "0 1rem",
             background: "#fff",
             margin: "0 1rem",
-            borderRadius: "2px",
+            borderRadius: "0 0 10px 10px",
           }}
         >
           <div
@@ -148,7 +152,7 @@ const Teacher = () => {
         <Menu
           theme="light"
           mode="inline"
-          defaultSelectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",

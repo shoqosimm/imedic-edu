@@ -1,12 +1,4 @@
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Form,
-  Input,
-  Select,
-  notification,
-} from "antd";
+import { Breadcrumb, Button, Card, Form, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
@@ -14,7 +6,7 @@ import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "./style.scss";
 
-const CreateTest = () => {
+const EditTest = () => {
   const [number, setNumber] = useState(3);
   const location = useLocation();
   const param = useParams();
@@ -43,11 +35,11 @@ const CreateTest = () => {
     const arrayAns = Array.from(answers).map((item) => item.value);
     const body = {
       ...values,
-      course_subject_id: parseInt(param.id),
+      course_subject_id: parseInt(location.state.message),
       answer: arrayAns,
     };
     api
-      .post(`api/teacher/test/add`, body)
+      .post(`api/teacher/test/update/${param.id}`, body)
       .then((res) => {
         if (res) {
           toast.success("Создано");
@@ -63,6 +55,38 @@ const CreateTest = () => {
       });
   };
 
+  // getTest
+  const getTest = async () => {
+    setLoading(true);
+    try {
+      const res = await api.get(`api/teacher/test/show/${param.id}`);
+      const answers = document.querySelectorAll(".answers");
+      const arrayAns = Array.from(answers);
+      res.data.data.answer.map((item, index) => {
+        return (arrayAns[index] = item[index]);
+      });
+
+      form.setFieldsValue({
+        question: String(res.data.data.question),
+        from_subject_id: res.data.data.from_subject_id,
+        answer:res.data.data.answer
+      });
+      setAnswer(
+        res.data.data.answer.map((item, index) => {
+          return {
+            id: index,
+            text: item,
+          };
+        })
+      );
+
+      setLoading(false);
+    } catch (err) {
+      console.log(err, "err");
+      setLoading(false);
+    }
+  };
+
   // addForm
   const AddForm = (id) => {
     setNumber(number + 1);
@@ -75,12 +99,18 @@ const CreateTest = () => {
     ]);
   };
 
+  //   deleteOption
+  const DeleteField = (id) => {
+    setNumber(number - 1);
+    setAnswer(answer.filter((item) => item.id !== id));
+  };
+
   // getSubjectForSelect
   const getSubjectForSelect = () => {
     const body = {
       course_subject_id: parseInt(param.id),
     };
-    api.post("api/select/subject", body).then((res) =>
+    api.post("api/select/subject", body).then((res) => {
       setSubjectItems(
         res.data.map((item) => {
           return {
@@ -89,18 +119,13 @@ const CreateTest = () => {
             label: item.name,
           };
         })
-      )
-    );
-  };
-
-  //   deleteOption
-  const DeleteField = (id) => {
-    setNumber(number - 1);
-    setAnswer(answer.filter((item) => item.id !== id));
+      );
+    });
   };
 
   useEffect(() => {
     getSubjectForSelect();
+    getTest();
   }, []);
 
   return (
@@ -115,13 +140,7 @@ const CreateTest = () => {
               </Link>
             ),
           },
-          {
-            title: (
-              <Link to={`/teacher/course/${location.state.message}/view`}>
-                Назад
-              </Link>
-            ),
-          },
+
           {
             title: (
               <p style={{ color: "grey" }}>
@@ -157,13 +176,18 @@ const CreateTest = () => {
                 options={subjectItems}
               />
             </Form.Item>
+            <p style={{marginBottom:'1rem',fontSize:'18px'}}>1-й вариант всегда надо указать правильный ответ</p>
+
             {answer.map((item, index) => {
               return (
                 <div key={index}>
-                  <Form.Item label={item.text} style={{ marginBottom: "10px" }}>
+                  <Form.Item
+                    name={["answer", index]}
+                    label={`${index + 1}-вариант`}
+                    style={{ marginBottom: "10px" }}
+                  >
                     <Input
                       required
-                      placeholder={item.text}
                       className="answers"
                       disabled={loading}
                     />
@@ -180,6 +204,7 @@ const CreateTest = () => {
                 </div>
               );
             })}
+
             <div>
               <Form.Item>
                 <Button
@@ -203,4 +228,4 @@ const CreateTest = () => {
     </>
   );
 };
-export default CreateTest;
+export default EditTest;
