@@ -138,9 +138,8 @@ const CreateSubject = () => {
           },
         ]}
       />
-      <Modal title="Coздать" centered closable={false} open={openModal} footer>
+      <Modal className="create_subject" title="Coздать" centered closable={false} open={openModal} footer>
         <Row
-          style={{ height: "100px" }}
           gutter={[20, 20]}
           title="Create Subject"
         >

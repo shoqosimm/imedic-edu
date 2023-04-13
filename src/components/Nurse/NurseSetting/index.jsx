@@ -31,8 +31,8 @@ const NurseSetting = () => {
     const body = {
       pinfl: form.getFieldValue("pinfl"),
     };
-    const res = await api.post("api/get-client-by-pinfl", body);
     try {
+      const res = await api.post("api/get-client-by-pinfl", body);
       if (res) {
         Swal.fire({
           icon: "success",
@@ -50,7 +50,7 @@ const NurseSetting = () => {
           pinfl: res.data.pinfl,
           series: res.data.series,
         });
-        setDisabled(true);
+        setDisabled(false);
       }
     } catch (err) {
       Swal.fire({
@@ -62,6 +62,7 @@ const NurseSetting = () => {
       });
       console.log(err, "err");
       setloading(false);
+      setDisabled(false);
     } finally {
       setloading(false);
     }
@@ -91,10 +92,7 @@ const NurseSetting = () => {
   // handlePassword
   const handlePassword = async (values) => {
     const body = values;
-    const res = await api.post(
-      `api/user/password-update/${userInfo.id}`,
-      body
-    );
+    const res = await api.post(`api/user/password-update/${userInfo.id}`, body);
     try {
       if (res) {
         toast.success("Изменено!");

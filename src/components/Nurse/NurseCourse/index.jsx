@@ -1,6 +1,6 @@
 import { Row, Select, Col, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiDoorOpen, BiPencil, BiWindowOpen } from "react-icons/bi";
+import { BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
@@ -120,7 +120,7 @@ const NurseCourse = () => {
   return (
     <>
       <Row gutter={24}>
-        <Col span={24}>
+        <Col span={24} style={{ position: "sticky", top: "0" }}>
           <Select
             className="subject_select"
             placeholder="Yo`nalishni tanlang"
