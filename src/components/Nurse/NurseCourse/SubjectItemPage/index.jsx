@@ -76,9 +76,6 @@ const SubjectItemPage = () => {
       })
       .catch((err) => {
         console.log(err, "err");
-        setTimeout(() => {
-          navigate("/");
-        }, 1500);
       })
       .finally(() => {
         setConfirmLoading(false);

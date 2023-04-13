@@ -1,27 +1,41 @@
-import { Breadcrumb, Card, Col, Row } from "antd";
+import { Breadcrumb, Card, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./style.scss";
 import MyCardItem from "../../../generics/MyCard";
 import { api } from "../../../../utils/api";
 import { BiHome } from "react-icons/bi";
+import { ToastContainer } from "react-toastify";
 
 const NurseMyCourse = () => {
   const params = useParams();
   const [courses, setCourses] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [emptyText, setEmptyText] = useState();
 
   // getCourseList
   const getCourseList = () => {
-    api.get(`api/nurse/subject/mycourse/${params.id}`).then((res) => {
-      setCourses(
-        res.data.map((item) => {
-          return {
-            key: item.id,
-            ...item,
-          };
-        })
-      );
-    });
+    setLoading(true);
+    api
+      .get(`api/nurse/subject/mycourse/${params.id}`)
+      .then((res) => {
+        if (res.data.length <= 0) {
+          setEmptyText("Bu kurs bo'yicha mavzular mavjud emas!");
+        }
+        setCourses(
+          res.data.map((item) => {
+            return {
+              key: item.id,
+              ...item,
+            };
+          })
+        );
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err, "err");
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -45,21 +59,31 @@ const NurseMyCourse = () => {
       <div>
         <Card title="Мои курсы">
           <div
-            style={{ flexWrap: "wrap",justifyContent:'center',padding:'1.5rem 0' }}
+            style={{
+              flexWrap: "wrap",
+              justifyContent: "center",
+              padding: "1.5rem 0",
+            }}
             className="d-flex align-center gap-3"
           >
-            {courses?.map((item) => {
-              return (
-                <MyCardItem
-                  disabled={item.status === 0 ? true : false}
-                  key={item.id}
-                  item={item}
-                />
-              );
-            })}
+            {loading && <Spin />}
+            {emptyText ? (
+              <h2>{emptyText}</h2>
+            ) : (
+              courses?.map((item) => {
+                return (
+                  <MyCardItem
+                    disabled={item.status === 0 ? true : false}
+                    key={item.id}
+                    item={item}
+                  />
+                );
+              })
+            )}
           </div>
         </Card>
       </div>
+      <ToastContainer />
     </div>
   );
 };

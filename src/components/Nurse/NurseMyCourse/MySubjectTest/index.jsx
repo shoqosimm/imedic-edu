@@ -98,11 +98,10 @@ const MySubjectTest = () => {
     try {
       const res = await api.get(`api/nurse/test/data/${id}`);
       setTestInfo(res.data);
-      if(res.data.test_start && res.data.status==1){
-        handleStartTest()
-      }
-      else{
-        setOpenModal(true)
+      if (res.data.test_start && res.data.status == 1) {
+        handleStartTest();
+      } else {
+        setOpenModal(true);
       }
     } catch (err) {
       console.log(err, "err");
@@ -162,7 +161,9 @@ const MySubjectTest = () => {
       })
       .catch((err) => {
         console.log(err, "err");
-        navigate(-1);
+        setTimeout(() => {
+          navigate(-1);
+        }, 2000);
       });
     const element = document.querySelector(".test");
     if (screenfull.isEnabled) {
