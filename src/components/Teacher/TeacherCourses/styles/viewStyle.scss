@@ -18,3 +18,22 @@
     opacity: 0.7;
   }
 }
+
+.ant-table{
+  overflow: scroll;
+  &::-webkit-scrollbar{
+    display: none;
+  }
+  .ant-table-thead{
+    th{
+      background:#1389f8 !important;
+      color: #fff !important;
+    }
+  }
+  .ant-table-tbody{
+    background: rgb(247, 250, 252);
+    td{
+      border-color: #dadada !important;
+    }
+  }
+}

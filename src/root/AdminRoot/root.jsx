@@ -30,9 +30,8 @@ const AdminRoute = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("activeLink");
-        localStorage.removeItem("role");
+        localStorage.clear();
+        sessionStorage.clear();
         setTimeout(() => {
           navigate("/login");
         }, 1000);
@@ -62,14 +61,14 @@ const AdminRoute = () => {
         <Menu
           theme="light"
           mode="inline"
-          selectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={sessionStorage.getItem("activeLink")??'1'}
           items={[
             {
               key: "1",
               icon: <FiUsers className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 1)}
+                  onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="admin-teacher"
                 >
                   Учетелья
@@ -81,7 +80,7 @@ const AdminRoute = () => {
               icon: <CiCircleList className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 2)}
+                  onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="category"
                 >
                   Категория

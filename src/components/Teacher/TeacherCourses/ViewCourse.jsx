@@ -248,7 +248,7 @@ const ViewCourse = () => {
             </Button>
           }
         >
-          <Table loading={loading} columns={columns} dataSource={subjects} />
+          <Table loading={loading} bordered columns={columns} dataSource={subjects} />
         </Card>
       </Card>
       <Modal

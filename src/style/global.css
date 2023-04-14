@@ -58,6 +58,7 @@ body {
 .ant-modal-mask {
   backdrop-filter: blur(5px);
 }
+
 /* gap-classes */
 .gap-1 {
   gap: 8px;

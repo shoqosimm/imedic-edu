@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState,  useEffect } from "react";
 import screenfull from "screenfull";
 import "./style.scss";
 import { Button, Modal, Pagination, Radio } from "antd";
@@ -6,72 +6,9 @@ import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
-import moment from "moment";
 import Countdown from "react-countdown";
 
-// Countdown
-const CountdownComponent = ({ handleFinish, testTime }) => {
-  const Ref = useRef(null);
-  const [timer, setTimer] = useState("00:00:00");
 
-  const getTimeRemaining = (e) => {
-    const total = Date.parse(e) - Date.parse(new Date());
-    const seconds = Math.floor((total / 1000) % 60);
-    const minutes = Math.floor((total / 1000 / 60) % 60);
-    const hours = Math.floor(((total / 1000) * 60 * 60) % 24);
-    return {
-      total,
-      hours,
-      minutes,
-      seconds,
-    };
-  };
-
-  const startTimer = (e) => {
-    let { total, hours, minutes, seconds } = getTimeRemaining(e);
-    if (total >= 0) {
-      setTimer(
-        (hours > 9 ? hours : "0" + hours) +
-          ":" +
-          (minutes > 9 ? minutes : "0" + minutes) +
-          ":" +
-          (seconds > 9 ? seconds : "0" + seconds)
-      );
-    }
-  };
-
-  const clearTimer = (e) => {
-    if (Ref.current) {
-      clearInterval(Ref.current);
-    }
-    const id = setInterval(() => {
-      startTimer(e);
-    }, 1000);
-
-    Ref.current = id;
-  };
-
-  const getDeadTime = () => {
-    let deadline = new Date();
-    deadline.setHours(deadline.getHours() + Number(testTime.hour));
-    deadline.setSeconds(deadline.getSeconds() + Number(testTime.seconds));
-    deadline.setMinutes(deadline.getMinutes() + Number(testTime.minutes));
-    return deadline;
-  };
-
-  useEffect(() => {
-    clearTimer(getDeadTime());
-  }, []);
-
-  return (
-    <div className="Codedamn App">
-      <p style={{ fontSize: "32px" }}>
-        {timer === "00:00:00" ? console.log("bingo") : timer}
-      </p>
-    </div>
-  );
-};
-export { CountdownComponent };
 
 const MySubjectTest = () => {
   const navigate = useNavigate();
@@ -298,23 +235,23 @@ const MySubjectTest = () => {
         <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
           <div>
             <p>
-              Время для теста: <strong>{testInfo?.time}</strong> мин
+              Время для теста: <strong>{testInfo?.course_subject.time}</strong> мин
             </p>
             <p>
-              Кол-во теста: <strong>{testInfo?.count_test}</strong> шт
+              Кол-во теста: <strong>{testInfo?.course_subject.count_test}</strong> шт
             </p>
             <p>
               Мин.кол-во правилный ответов:
-              <strong> {testInfo?.right_test}</strong> шт
+              <strong> {testInfo?.course_subject.right_test}</strong> шт
             </p>
             <p>
               Пересдача:
-              <strong> {testInfo?.resubmit}</strong> мин
+              <strong> {testInfo?.course_subject.resubmit}</strong> мин
             </p>
           </div>
           <div className="test__modal__desctiption">
             <p>
-              Test will continue {testInfo?.time} minutes, you should not to
+              Test will continue {testInfo?.course_subject.time} minutes, you should not to
               leave this page untill done all of tests, if you leave this page
               without solving all test then the timer is not stoping and you
               would not pass the test, test will start when you click ok button

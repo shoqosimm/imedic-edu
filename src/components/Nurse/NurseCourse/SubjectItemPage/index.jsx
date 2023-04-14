@@ -136,6 +136,7 @@ const SubjectItemPage = () => {
               <Skeleton title={false} paragraph />
             ) : (
               <div
+                className="content"
                 style={{ width: "90%", margin: "0 auto" }}
                 dangerouslySetInnerHTML={{ __html: subject?.content }}
               />

@@ -31,9 +31,8 @@ const Teacher = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("activeLink");
-        localStorage.removeItem("role");
+        localStorage.clear();
+        sessionStorage.clear();
         setTimeout(() => {
           navigate("/login");
         }, 1000);
@@ -63,14 +62,14 @@ const Teacher = () => {
         <Menu
           theme="light"
           mode="inline"
-          selectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={sessionStorage.getItem("activeLink")??'1'}
           items={[
             {
               key: "1",
               icon: <CiViewList className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 1)}
+                  onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
                   Курсы
@@ -82,7 +81,7 @@ const Teacher = () => {
               icon: <AiOutlineSetting className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 2)}
+                  onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="setting"
                 >
                   Настройка
@@ -94,7 +93,7 @@ const Teacher = () => {
               icon: <TbReport className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 3)}
+                  onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="report"
                 >
                   Отчет

@@ -4,15 +4,19 @@ import { BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
+import { BsBookmarks } from "react-icons/bs";
+import { FaUserMd } from "react-icons/fa";
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
   const [course, setCourse] = useState(false);
-  const [categoryId, setCategoryId] = useState(null);
+  const [categoryId, setCategoryId] = useState(
+    sessionStorage.getItem("catId") ?? ""
+  );
   const [loadingCard, setLoadingCard] = useState(true);
   const [pagination, setPagination] = useState({
-    current_page: 1,
-    per_page: 15,
+    current_page: sessionStorage.getItem("current_page") ?? 1,
+    per_page: sessionStorage.getItem("per_page") ?? 15,
     total: 15,
   });
 
@@ -25,7 +29,7 @@ const NurseCourse = () => {
           return {
             key: item.id,
             label: item.name,
-            value: item.id,
+            value: String(item.id),
           };
         })
       );
@@ -35,7 +39,8 @@ const NurseCourse = () => {
   };
 
   const handleChange = (value) => {
-    setCategoryId(categoryId);
+    setCategoryId(value);
+    sessionStorage.setItem("catId", value);
     getCourse(value, 1, 15);
   };
 
@@ -65,6 +70,8 @@ const NurseCourse = () => {
         per_page: res.data.per_page,
         total: res.data.total,
       });
+      sessionStorage.setItem("current_page", res.data.current_page);
+      sessionStorage.setItem("per_page", res.data.per_page);
       setLoadingCard(false);
     });
   }
@@ -78,9 +85,16 @@ const NurseCourse = () => {
       width: "2%",
     },
     {
-      title: "Text",
+      title: "Курс",
       dataIndex: "name",
       key: "text",
+      render: (t) => {
+        return (
+          <p className="d-flex align-center gap-1">
+            <BsBookmarks style={{ fontSize: "16px", fill: "#1389f8" }} /> {t}
+          </p>
+        );
+      },
     },
     {
       title: "Учитель",
@@ -88,6 +102,13 @@ const NurseCourse = () => {
       key: "teacher",
       width: "20%",
       align: "center",
+      render: (t) => {
+        return (
+          <p className="d-flex align-center gap-1">
+            <FaUserMd style={{ fontSize: "16px", fill: "grey" }} /> {t}
+          </p>
+        );
+      },
     },
     {
       title: "Кол.темь",
@@ -114,6 +135,12 @@ const NurseCourse = () => {
   ];
 
   useEffect(() => {
+    getCourse(
+      categoryId,
+      pagination.current_page,
+      pagination.per_page,
+      pagination.total
+    );
     getCategoryforSelect();
   }, []);
 
@@ -126,13 +153,13 @@ const NurseCourse = () => {
             placeholder="Yo`nalishni tanlang"
             onChange={handleChange}
             options={category}
+            value={String(categoryId)}
           />
         </Col>
         <Col span={24}>
           {course ? (
             <Table
               bordered
-              scroll={{ x: 400 }}
               style={{ height: "100%" }}
               loading={loadingCard}
               columns={columns}

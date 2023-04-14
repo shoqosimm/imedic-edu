@@ -2,7 +2,7 @@ import { Button, Drawer, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList, CiCircleList } from "react-icons/ci";
-import {SlUser } from "react-icons/sl";
+import { SlUser } from "react-icons/sl";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -19,7 +19,7 @@ import { useContext } from "react";
 
 const Nurse = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [,setToken] = useContext(ContextItem);
+  const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -31,9 +31,8 @@ const Nurse = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
-        localStorage.removeItem("access_token");
-        localStorage.removeItem("activeLink");
-        localStorage.removeItem("role");
+        localStorage.clear();
+        sessionStorage.clear();
         setTimeout(() => {
           navigate("/login");
         }, 1000);
@@ -44,7 +43,7 @@ const Nurse = () => {
   return (
     <Layout className="layout">
       <Sider
-       theme="light"
+        theme="light"
         className="siderNurse"
         trigger={null}
         collapsible
@@ -58,19 +57,19 @@ const Nurse = () => {
             borderBottom: "1px solid lightgrey",
           }}
         >
-          <SlUser style={{fontSize:'28px'}}/>
+          <SlUser style={{ fontSize: "28px" }} />
         </div>
         <Menu
-        theme="light"
+          theme="light"
           mode="inline"
-          selectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={sessionStorage.getItem("activeLink")??'1'}
           items={[
             {
               key: "1",
-              icon: <CiViewList className="icon" />,
+              icon: <CiViewList className="icon coursesIcon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 1)}
+                  onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
                   Курсы
@@ -79,10 +78,10 @@ const Nurse = () => {
             },
             {
               key: "2",
-              icon: <CiCircleList className="icon" />,
+              icon: <CiCircleList className="icon mycourseIcon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 2)}
+                  onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="mycourse"
                 >
                   Мои курсы
@@ -91,10 +90,10 @@ const Nurse = () => {
             },
             {
               key: "3",
-              icon: <AiOutlineSetting className="icon" />,
+              icon: <AiOutlineSetting className="icon settingIcon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 3)}
+                  onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
                   Настройка
@@ -156,7 +155,7 @@ const Nurse = () => {
           items={[
             {
               key: "1",
-              icon: <CiViewList className="icon" />,
+              icon: <CiViewList className="icon coursesIcon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 1)}
@@ -168,7 +167,7 @@ const Nurse = () => {
             },
             {
               key: "2",
-              icon: <CiCircleList className="icon" />,
+              icon: <CiCircleList className="icon mycourseIcon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 2)}
@@ -180,7 +179,7 @@ const Nurse = () => {
             },
             {
               key: "3",
-              icon: <AiOutlineSetting className="icon" />,
+              icon: <AiOutlineSetting className="icon settingIcon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 3)}
