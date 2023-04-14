@@ -169,7 +169,8 @@ const TeacherCourses = () => {
         </Link>
       </div>
       <Card>
-        <Table
+        <Table 
+        bordered
           loading={loadingTable}
           columns={columns}
           dataSource={course}

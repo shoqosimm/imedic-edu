@@ -40,14 +40,19 @@ const MySubjectItemPage = () => {
       .get(`api/nurse/subject/next/${param.id}`)
       .then((res) => {
         if (res.status == 200) {
-          if (res.data?.subject?.subject_type === "test") {
-            return navigate(
+          if (res.data?.subject_type === "test") {
+            if (res.data?.status == "2") {
+              navigate(`/nurse/answers/${res.data.id}`, {
+                state: { message: subject_id },
+              });
+            }
+            navigate(
               `/nurse/mycourse/${subject_id}/subject/test/${res.data.id}`,
-              { state: {message:subject_id} }
+              { state: { message: subject_id } }
             );
           } else {
             navigate(`/nurse/mycourse/${subject_id}/subject/${res.data.id}`, {
-              state: {message:subject_id},
+              state: { message: subject_id },
             });
             Notification();
           }
@@ -55,8 +60,6 @@ const MySubjectItemPage = () => {
           setSkeleton(false);
           setSubject(res.data.content);
         }
-
-      
       })
       .catch((err) => {
         console.log(err, "err");
@@ -113,6 +116,7 @@ const MySubjectItemPage = () => {
               <Skeleton title={false} paragraph />
             ) : (
               <div
+                className="content"
                 style={{ width: "90%", margin: "0 auto" }}
                 dangerouslySetInnerHTML={{ __html: subject?.content }}
               />

@@ -1,9 +1,12 @@
-import { Card, Col, Row, Table } from "antd";
+import { Card, Col, Row, Slider, Table } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../../utils/api";
 import "./style.scss";
 import { BiWindowOpen } from "react-icons/bi";
+import { MdOutlineCategory } from "react-icons/md";
+import { FaUserMd } from "react-icons/fa";
+import { BsBookmarks } from "react-icons/bs";
 
 const NurseMyCourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -26,7 +29,12 @@ const NurseMyCourseList = () => {
       dataIndex: "name",
       key: "name",
       render: (t) => {
-        return <p>{t.name}</p>;
+        return (
+          <p className="d-flex align-center gap-1">
+            <BsBookmarks style={{ fontSize: "16px", fill: "#1389f8" }} />{" "}
+            {t.name}
+          </p>
+        );
       },
     },
     {
@@ -34,7 +42,14 @@ const NurseMyCourseList = () => {
       dataIndex: "category",
       key: "category",
       render: (t) => {
-        return <p>{t.name}</p>;
+        return (
+          <p className="d-flex align-center gap-1">
+            <MdOutlineCategory
+              style={{ fontSize: "16px", fill: "orangered" }}
+            />{" "}
+            {t.name}
+          </p>
+        );
       },
     },
     {
@@ -43,7 +58,8 @@ const NurseMyCourseList = () => {
       key: "user",
       render: (t) => {
         return (
-          <p>
+          <p className="d-flex align-center gap-1">
+            <FaUserMd style={{ fontSize: "16px", fill: "grey" }} />{" "}
             {t.first_name}, {t.last_name}
           </p>
         );
@@ -57,7 +73,31 @@ const NurseMyCourseList = () => {
       align: "center",
       width: "2%",
       render: (t) => {
-        return <p>{t} %</p>;
+        return (
+          <>
+            {t === 100 ? (
+              <>
+                <p>{t} %</p>
+                <Slider
+                  style={{ margin: "0" }}
+                  trackStyle={{ background: "green", height: "6px" }}
+                  value={t}
+                  handleStyle={{ display: "none" }}
+                />
+              </>
+            ) : (
+              <>
+                <p>{t} %</p>
+                <Slider
+                  style={{ margin: "0" }}
+                  trackStyle={{ background: "#ffc107", height: "6px" }}
+                  value={t}
+                  handleStyle={{ display: "none" }}
+                />
+              </>
+            )}
+          </>
+        );
       },
     },
     {
