@@ -10,7 +10,26 @@
     background: linear-gradient(rgb(251, 251, 251), rgb(179, 181, 181));
   }
   .ant-card-body {
-    background: oldlace;
-    color: #252525;
+    background: linear-gradient(90deg, #faecd0 0%, #f7f0e2 100%);
+    color: #383838;
+  }
+}
+.wrapperComment {
+  margin: 2rem 0;
+  padding: 2rem;
+  border: 1px solid rgb(235, 233, 233);
+  border-radius: 6px;
+}
+.izohCard {
+  .ant-card-head {
+    background: #fff !important;
+  }
+  .ant-card-body {
+    border-top: 1px solid rgba(211, 211, 211, 0.356);
+    overflow: scroll;
+    background: #fff;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }

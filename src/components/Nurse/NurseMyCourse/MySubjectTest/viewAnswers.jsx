@@ -42,9 +42,9 @@ const ViewAnswers = () => {
             title: (
               <p
                 style={{ color: "grey", cursor: "pointer" }}
-                onClick={() => navigate(-2)}
+                onClick={() => navigate(-1)}
               >
-                Назад
+                Ortga
               </p>
             ),
           },

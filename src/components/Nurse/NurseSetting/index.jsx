@@ -36,7 +36,7 @@ const NurseSetting = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Найдено",
+          title: "Topildi",
           showConfirmButton: false,
           timer: 2000,
           timerProgressBar: true,
@@ -55,7 +55,7 @@ const NurseSetting = () => {
     } catch (err) {
       Swal.fire({
         icon: "error",
-        title: "Не найдено",
+        title: "Bunday pnfl mavjud emas",
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -78,7 +78,7 @@ const NurseSetting = () => {
     const res = await api.post(`api/user/update/${userInfo.id}`, body);
     try {
       if (res) {
-        Swal.fire({ icon: "success", title: "Изменено!" });
+        Swal.fire({ icon: "success", title: "O'zgartirildi!" });
         getUserInfo();
       }
     } catch (err) {
@@ -95,7 +95,7 @@ const NurseSetting = () => {
     const res = await api.post(`api/user/password-update/${userInfo.id}`, body);
     try {
       if (res) {
-        toast.success("Изменено!");
+        toast.success("O'zgartirildi!");
         setIsModalOpen(false);
       }
     } catch (err) {
@@ -126,28 +126,28 @@ const NurseSetting = () => {
           >
             <ul>
               <li>
-                <strong>Имя:</strong> {userInfo?.first_name}
+                <strong>Ism:</strong> {userInfo?.first_name}
               </li>
               <li>
-                <strong>Фамилия:</strong> {userInfo?.last_name}
+                <strong>Familiya:</strong> {userInfo?.last_name}
               </li>
               <li>
-                <strong>Отчество:</strong> {userInfo?.patronymic}
+                <strong>Otasining ismi:</strong> {userInfo?.patronymic}
               </li>
               <li>
-                <strong>Серия пасспорта:</strong> {userInfo?.series}
+                <strong>Pasport seriyasi:</strong> {userInfo?.series}
               </li>
               <li>
-                <strong>Номер пасспорта:</strong> {userInfo?.number}
+                <strong>Pasport raqami:</strong> {userInfo?.number}
               </li>
               <li>
-                <strong>ПНФЛ:</strong> {userInfo?.pinfl}
+                <strong>PINFL:</strong> {userInfo?.pinfl}
               </li>
               <li>
-                <strong>Номер телефона:</strong> {userInfo?.phone}
+                <strong>Telefon raqami:</strong> {userInfo?.phone}
               </li>
               <li>
-                <strong>Дата рождения:</strong> {userInfo?.birth_date}
+                <strong>Tug'ilgan:</strong> {userInfo?.birth_date}
               </li>
               <li>
                 <Button
@@ -155,7 +155,7 @@ const NurseSetting = () => {
                   type="primary"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  Изменить пароль
+                  Parolni o'zgartirish
                 </Button>
               </li>
             </ul>
@@ -165,11 +165,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="first_name"
-                  label="Имя"
+                  label="Ism"
                   rules={[
                     {
                       required: true,
-                      message: "Не указань или указан неправильно",
+                      message: "Ism notog'ri ko'rsatildi",
                       whitespace: true,
                     },
                   ]}
@@ -180,11 +180,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="last_name"
-                  label="Фамилия"
+                  label="Familiya"
                   rules={[
                     {
                       required: true,
-                      message: "Не указань или указан неправильно",
+                      message: "Familiya notog'ri ko'rsatildi",
                       whitespace: true,
                     },
                   ]}
@@ -194,29 +194,29 @@ const NurseSetting = () => {
               </Col>
             </Row>
             <Row>
-              <Form.Item name="patronymic" label="Отчество">
+              <Form.Item name="patronymic" label="Otasining ismi">
                 <Input disabled={disabled} />
               </Form.Item>
             </Row>
             <Row gutter={[20]}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="series" label="Серия пасспорта">
+                <Form.Item name="series" label="Pasport seriyasi">
                   <Input disabled={disabled} placeholder="AA" />
                 </Form.Item>
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="number" label="Номер пасспорта">
+                <Form.Item name="number" label="Pasport raqami">
                   <Input disabled={disabled} placeholder="1234567" />
                 </Form.Item>
               </Col>
             </Row>
             <Form.Item
               name="pinfl"
-              label="ПНФЛ"
+              label="PINFL"
               rules={[
                 {
                   required: true,
-                  message: "Введите ПНФЛ",
+                  message: "PINFL kiriting",
                   whitespace: true,
                   min: 14,
                   max: 14,
@@ -226,25 +226,25 @@ const NurseSetting = () => {
               <Input
                 className="d-flex align-center"
                 disabled={loading}
-                placeholder="14 цифр"
-                suffix={<Button onClick={getPnflInfo}>Проверить</Button>}
+                placeholder="14 ta son"
+                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
               />
             </Form.Item>
-            <Form.Item name="phone" label="Номер телефона">
+            <Form.Item name="phone" label="Telefon raqami">
               <Input
                 disabled={loading}
                 placeholder="998901234567"
                 rules={[
                   {
                     required: true,
-                    message: "Введите номер телефона",
+                    message: "Telefon raqamini kiriting",
                     whitespace: true,
                     min: 12,
                   },
                 ]}
               />
             </Form.Item>
-            <Form.Item name="birth_date" label="Дата рождения">
+            <Form.Item name="birth_date" label="Tug'ilgan yili">
               <DatePicker disabled />
             </Form.Item>
             <Button
@@ -253,19 +253,19 @@ const NurseSetting = () => {
               type="primary"
               style={{ width: "100%", margin: "1rem 0", height: "40px" }}
             >
-              Изменить
+              Saqlash
             </Button>
           </Col>
         </Row>
         <Modal
-          title="Изменить пароль"
+          title="Parolni o'zgartirish"
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}
           footer={
             <>
-              <Button onClick={() => setIsModalOpen(false)}>Отменить</Button>
+              <Button onClick={() => setIsModalOpen(false)}>Bekor qilish</Button>
               <Button type="primary" htmlType="submit" form="passwordUpdate">
-                Изменить
+                Saqlash
               </Button>
             </>
           }
@@ -284,11 +284,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="old_password"
-                  label="Старый пароль"
+                  label="Eski parol"
                   rules={[
                     {
                       required: true,
-                      message: "Введите пароль",
+                      message: "Parolni kiriting",
                       whitespace: true,
                       min: 6,
                     },
@@ -300,11 +300,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="password"
-                  label="Пароль"
+                  label="Yangi parol"
                   rules={[
                     {
                       required: true,
-                      message: "Введите пароль",
+                      message: "Parolni kiriting",
                       whitespace: true,
                       min: 6,
                     },
@@ -316,11 +316,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="password_confirmation"
-                  label="Подтвердите пароль"
+                  label="Yangi parolni takrorlang"
                   rules={[
                     {
                       required: true,
-                      message: "Введите пароль",
+                      message: "Parolni kiriting",
                       whitespace: true,
                       min: 6,
                     },

@@ -1,10 +1,10 @@
-import { Card, Col, Row, Slider, Table } from "antd";
+import { Card, Col, Row, Slider, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../../utils/api";
 import "./style.scss";
-import { BiWindowOpen } from "react-icons/bi";
-import { MdOutlineCategory } from "react-icons/md";
+import { BiCategory, BiUser, BiWindowOpen } from "react-icons/bi";
+import { MdStarRate } from "react-icons/md";
 import { FaUserMd } from "react-icons/fa";
 import { BsBookmarks } from "react-icons/bs";
 
@@ -25,7 +25,7 @@ const NurseMyCourseList = () => {
       align: "center",
     },
     {
-      title: "Курс",
+      title: "Kurs nomi",
       dataIndex: "name",
       key: "name",
       render: (t) => {
@@ -38,22 +38,20 @@ const NurseMyCourseList = () => {
       },
     },
     {
-      title: "Категория",
+      title: "Turkum",
       dataIndex: "category",
       key: "category",
       render: (t) => {
         return (
           <p className="d-flex align-center gap-1">
-            <MdOutlineCategory
-              style={{ fontSize: "16px", fill: "orangered" }}
-            />{" "}
+            <BiCategory style={{ fontSize: "16px", fill: "orangered" }} />{" "}
             {t.name}
           </p>
         );
       },
     },
     {
-      title: "Учитель",
+      title: "O'qituvchi",
       dataIndex: "user",
       key: "user",
       render: (t) => {
@@ -65,9 +63,33 @@ const NurseMyCourseList = () => {
         );
       },
     },
-
     {
-      title: "Процент",
+      title: "Reyting",
+      dataIndex: "rate",
+      key: "rate",
+      align: "center",
+      render: (t) => {
+        return (
+          <div className="d-flex align-center justify-center gap-x-1">
+            <Tooltip title="o'rtacha baho">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
+                <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
+              </div>
+            </Tooltip>
+            {"-"}
+            <Tooltip title="baho qo'yganlar soni">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
+                <BiUser />
+              </div>
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Bajarilgan",
       dataIndex: "percent",
       key: "percent",
       align: "center",
@@ -101,7 +123,7 @@ const NurseMyCourseList = () => {
       },
     },
     {
-      title: "Процент",
+      title: "Ba'tafsil",
       dataIndex: "view",
       key: "view",
       align: "center",
@@ -116,10 +138,10 @@ const NurseMyCourseList = () => {
     },
   ];
   // getCourseList
-  const getCourseList = (current_page, per_page) => {
+  const getCourseList = (page, per_page) => {
     setLoading(true);
     const params = {
-      current_page,
+      page,
       per_page,
     };
     api
@@ -132,7 +154,8 @@ const NurseMyCourseList = () => {
               key: item.id,
               name: item.course,
               category: item.category,
-              user: item.user,
+              user: item.course.user,
+              rate: item.course,
             };
           })
         );
@@ -156,7 +179,7 @@ const NurseMyCourseList = () => {
   return (
     <Row className="mycourse__wrapper">
       <Col span={24}>
-        <Card title="Мои курсы">
+        <Card title="Mening kurslarim">
           <Table
             pagination={{
               current: pagination.current_page,

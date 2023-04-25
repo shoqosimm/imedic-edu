@@ -52,7 +52,7 @@ api.interceptors.response.use(
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else {
-      toast.error(error?.response.data.messages.message, {
+      toast.error(error?.response.data?.messages.message, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     }

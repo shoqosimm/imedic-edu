@@ -1,11 +1,13 @@
 import {
   Breadcrumb,
   Card,
-  Input,
+  Tooltip,
   Modal,
   Progress,
   Skeleton,
   Table,
+  Button,
+  Spin,
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
@@ -21,6 +23,7 @@ import {
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import { SiMicrosoftexcel } from "react-icons/si";
+import CommentCard from "../../generics/CommentCard";
 
 const ViewSubject = () => {
   const param = useParams();
@@ -32,6 +35,10 @@ const ViewSubject = () => {
   const [data, setData] = useState([]);
   const [progress, setProgress] = useState();
   const location = useLocation();
+  const [commentEmptyText, setCommentEmptyText] = useState(false);
+  const [comment, setComment] = useState();
+  const [paginateComment, setPaginateComment] = useState(12);
+  const [loadingBtn, setLoadingBtn] = useState(false);
   const [loading, setLoading] = useState(false);
   const columns = [
     {
@@ -42,22 +49,22 @@ const ViewSubject = () => {
       width: "5%",
     },
     {
-      title: "Вопрос",
+      title: "Savol",
       dataIndex: "question",
       key: "question",
     },
     {
-      title: "Создано",
+      title: "Yaratilgan",
       dataIndex: "created_at",
       key: "created_at",
     },
     {
-      title: "Обновлено",
+      title: "Yangilangan",
       dataIndex: "updated_at",
       key: "updated_at",
     },
     {
-      title: "Статус",
+      title: "Status",
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -70,7 +77,7 @@ const ViewSubject = () => {
       },
     },
     {
-      title: "Изменить",
+      title: "O'zgartirish",
       dataIndex: "edit",
       key: "edit",
       align: "center",
@@ -78,21 +85,33 @@ const ViewSubject = () => {
       render: (t, record) => {
         return (
           <div className="d-flex align-center justify-around">
-            <BiSync
-              onClick={() => {
-                setModal(true);
-                setIdModal(record.id);
-              }}
-              style={{ fontSize: "17px", color: "#1677ff", cursor: "pointer" }}
-            />
-            <BiPencil
-              onClick={() =>
-                navigate(`/teacher/subject/edit/test/${record.id}`, {
-                  state: { message: param.id },
-                })
-              }
-              style={{ fontSize: "17px", color: "#1677ff", cursor: "pointer" }}
-            />
+            <Tooltip title="Statusni o'zgartirish">
+              <BiSync
+                onClick={() => {
+                  setModal(true);
+                  setIdModal(record.id);
+                }}
+                style={{
+                  fontSize: "17px",
+                  color: "#1677ff",
+                  cursor: "pointer",
+                }}
+              />
+            </Tooltip>
+            <Tooltip title="O'zgartirish">
+              <BiPencil
+                onClick={() =>
+                  navigate(`/teacher/subject/edit/test/${record.id}`, {
+                    state: { message: param.id },
+                  })
+                }
+                style={{
+                  fontSize: "17px",
+                  color: "#1677ff",
+                  cursor: "pointer",
+                }}
+              />
+            </Tooltip>
           </div>
         );
       },
@@ -117,11 +136,42 @@ const ViewSubject = () => {
           };
         })
       );
+      getComments(param.id, paginateComment);
+
       setLoading(false);
     } catch (err) {
       console.log(err);
       setLoading(false);
     }
+  };
+
+  // getComments
+  const getComments = (id, newPerPage) => {
+    const body = {
+      per_page: newPerPage,
+      course_subjects_id: param.id ?? id,
+    };
+    api
+      .post("api/receive-comment", body)
+      .then((res) => {
+        if (res.data.data.length > 0) {
+          setComment(res.data.data);
+        } else {
+          setCommentEmptyText("Ushbu kurs bo'yicha izohlar mavjud emas...");
+        }
+      })
+      .catch((err) => {
+        console.log(err, "err");
+      });
+  };
+
+  // handleMoreComment
+  const handleMoreComment = () => {
+    setLoadingBtn(true);
+    const newPerPage = paginateComment + 12;
+    setPaginateComment(newPerPage);
+    getComments(param.id, newPerPage);
+    setLoadingBtn(false);
   };
 
   //   modal
@@ -176,7 +226,7 @@ const ViewSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location?.state?.message}/view`}>
-                Назад
+                Ortga
               </Link>
             ),
           },
@@ -193,26 +243,37 @@ const ViewSubject = () => {
         <Skeleton style={{ margin: "4rem 0" }} />
       ) : location.state.subject_type !== "test" ? (
         <div>
-          <Card >
-            <Card title="Тема" centered="true">
+          <Card>
+            <Card title="Mavzu" centered="true">
               <p>{subject?.name}</p>
             </Card>
             <Card centered="true">
-              <div dangerouslySetInnerHTML={{ __html: subject?.content }} />
+              <div
+                className="teacher__subject__content"
+                dangerouslySetInnerHTML={{ __html: subject?.content }}
+              />
             </Card>
           </Card>
         </div>
       ) : (
         <div>
-          <Card >
-            <Card style={{marginTop:'0'}} title={subject?.teaser} centered="true">
+          <Card>
+            <Card
+              style={{ marginTop: "0" }}
+              title={subject?.teaser}
+              centered="true"
+            >
               <h3>{subject?.name}</h3>
               <div style={{ marginBottom: "2rem" }}>
                 <ol>
-                  <li>Количество теста : {subject?.count_test} шт</li>
-                  <li>Количество мин.прохождение : {subject?.right_test} шт</li>
-                  <li>Время теста : {subject?.time} мин</li>
-                  <li>Время для перездачи теста : {subject?.resubmit} мин</li>
+                  <li>Test soni : {subject?.count_test} ta</li>
+                  <li>
+                    Minimal o'tish to'gri javob soni : {subject?.right_test} ta
+                  </li>
+                  <li>Test vaqti : {subject?.time} min</li>
+                  <li>
+                    Qayta topshirish oraliq vaqti : {subject?.resubmit} min
+                  </li>
                 </ol>
               </div>
             </Card>
@@ -245,23 +306,46 @@ const ViewSubject = () => {
               />
             </Card>
           </Card>
+
           <Modal
-            title={"Изменить статус"}
+            title={"Status o'zgartirish"}
             open={modal}
             onCancel={() => setModal(false)}
             onOk={handleOk}
-            okText="Изменить"
-            cancelText="Отменить"
+            okText="Saqlash"
+            cancelText="Bekor qilish"
             confirmLoading={confirmLoading}
           >
-            <p>
-              Вы уверены, что хотите изменить статус с активного на неактивный
-              или наоборот?
-            </p>
+            <p>Siz haqiqatdan ham statusni o'zgartirmoqchimisz?</p>
           </Modal>
           <ToastContainer />
         </div>
       )}
+      <Card title="Izohlar" className="izohCard">
+        {loading && <Spin />}
+        {commentEmptyText && (
+          <em
+            style={{
+              display: "block",
+              margin: "2rem 0",
+              textAlign: "center",
+              color: "grey",
+            }}
+          >
+            {commentEmptyText}
+          </em>
+        )}
+        {comment?.map((item) => {
+          return <CommentCard key={item.id} data={item} />;
+        })}
+        <Button
+          disabled={commentEmptyText ? true : false}
+          onClick={handleMoreComment}
+          loading={loadingBtn}
+        >
+          Ko'proq ko'rsatish
+        </Button>
+      </Card>
     </>
   );
 };

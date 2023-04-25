@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Card, Checkbox, Form, Input } from "antd";
+import { Breadcrumb, Button, Card,  Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
@@ -8,7 +8,8 @@ import { Notification } from "../../Notification/Notification";
 import "./styles/edtSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
-
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import { VscFilePdf } from "react-icons/vsc";
 
 // quill-modules
 const modules = {
@@ -33,26 +34,25 @@ const modules = {
   },
 };
 const formats = [
-	"header",
-	"font",
-	"size",
-	"bold",
-	"italic",
-	"underline",
-	"align",
-	"strike",
-	"script",
-	"blockquote",
-	"background",
-	"list",
-	"bullet",
-	"indent",
-	"link",
-	"image",
-	"color",
-	"code-block",
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "align",
+  "strike",
+  "script",
+  "blockquote",
+  "background",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "color",
+  "code-block",
 ];
-
 
 const EditSubject = () => {
   const params = useParams();
@@ -60,6 +60,8 @@ const EditSubject = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState();
+  const [videoUrl, setVideoUrl] = useState();
 
   //   getSubject
   const getSubject = (id) => {
@@ -68,21 +70,22 @@ const EditSubject = () => {
       .get(`api/teacher/course-subject/show/${id}`)
       .then((res) => {
         setLoading(false);
-        location.state.subject_type !== "test"
-          ? form.setFieldsValue({
-              name: res.data.data.name,
-              content: res.data.data.content,
-              teaser: res.data.data.teaser,
-            })
-          : form.setFieldsValue({
-              name: res.data.data.name,
-              count_test: String(res.data.data.count_test),
-              time: res.data.data.time,
-              right_test: String(res.data.data.right_test),
-              resubmit: res.data.data.resubmit,
-              teaser: res.data.data.teaser,
-              is_active: res.data.data.is_active,
-            });
+        if (location.state.subject_type !== "test") {
+          form.setFieldsValue({
+            name: res.data.data.name,
+            content: res.data.data.content,
+            teaser: res.data.data.teaser,
+          });
+        }
+        form.setFieldsValue({
+          name: res.data.data.name,
+          count_test: String(res.data.data.count_test),
+          time: res.data.data.time,
+          right_test: String(res.data.data.right_test),
+          resubmit: res.data.data.resubmit,
+          teaser: res.data.data.teaser,
+          is_active: res.data.data.is_active,
+        });
       })
       .catch((err) => {
         console.log(err);
@@ -124,13 +127,36 @@ const EditSubject = () => {
         body
       );
       if (res) {
-        toast.success("Изменено");
+        toast.success("O'zgartirildi");
         setLoading(false);
       }
     } catch (err) {
       console.log(err, "err");
       setLoading(false);
     }
+  };
+
+  // handlePdf
+  const handlePdf = (e) => {
+    setVideoUrl(false);
+    setPdfUrl({
+      url: URL.createObjectURL(e.target.files[0]),
+      file: e.target.files[0],
+    });
+  };
+  // handleVideo
+  const handleVideo = (e) => {
+    setPdfUrl(false);
+    setVideoUrl({
+      url: URL.createObjectURL(e.target.files[0]),
+      file: e.target.files[0],
+    });
+  };
+
+  // handleCloseFiles
+  const handleCloseFiles = () => {
+    setVideoUrl(false);
+    setPdfUrl(false);
   };
 
   useEffect(() => {
@@ -152,7 +178,7 @@ const EditSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state.message}/view`}>
-                Назад
+                Ortga
               </Link>
             ),
           },
@@ -165,23 +191,83 @@ const EditSubject = () => {
           },
         ]}
       />
-      <Card title="Редактирование">
+      <Card title="O'zgartirish">
         {location.state.subject_type !== "test" ? (
           <Form id="sujectForm" name="basic" form={form} onFinish={onFinish}>
             <Form.Item name="name">
               <Input disabled={loading} />
             </Form.Item>
-
-            <Form.Item name="content">
-              <ReactQuill   modules={modules}
-                    formats={formats} theme="snow" disabled={loading} />
-            </Form.Item>
             <Form.Item name="teaser">
               <Input disabled={loading} />
             </Form.Item>
+            <div
+              style={{ margin: "1rem 0", flexWrap: "wrap" }}
+              className="d-flex align-center gap-1"
+            >
+              <label
+                htmlFor="pdf"
+                className={"uploadLabelPDF d-flex align-center gap-x-1"}
+              >
+                <VscFilePdf style={{ fontSize: "18px" }} />
+                PDF yuklash
+                <input
+                  type="file"
+                  id="pdf"
+                  accept="application/pdf"
+                  onChange={handlePdf}
+                />
+              </label>
+
+              <label
+                htmlFor="video"
+                className={
+                  videoUrl
+                    ? "disabled d-flex align-center gap-x-1"
+                    : "uploadLabelVideo d-flex align-center gap-x-1"
+                }
+              >
+                <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
+                Video yuklash
+                <input
+                  disabled={videoUrl}
+                  type="file"
+                  id="video"
+                  accept="video/mp4,video/x-m4v,video/*"
+                  onChange={handleVideo}
+                />
+              </label>
+              {pdfUrl || videoUrl ? (
+                <Button
+                  onClick={handleCloseFiles}
+                  style={{ background: "red", color: "#fff" }}
+                >
+                  X
+                </Button>
+              ) : null}
+            </div>
+            {(pdfUrl && (
+              <object
+                data={pdfUrl?.url}
+                width="100%"
+                style={{ height: "100vh" }}
+              />
+            )) ||
+              (videoUrl && (
+                <video controls width="100%">
+                  <source src={videoUrl?.url} type="video/mp4" />
+                </video>
+              )) || (
+                <Form.Item
+                  name="content"
+                  rules={[{ required: true, whitespace: true }]}
+                >
+                  <ReactQuill modules={modules} formats={formats} />
+                </Form.Item>
+              )}
+
             <Form.Item>
               <Button loading={loading} type="primary" htmlType="submit">
-                Редактировать
+                Saqlash
               </Button>
             </Form.Item>
           </Form>
@@ -197,34 +283,34 @@ const EditSubject = () => {
               <Form.Item
                 name="name"
                 rules={[{ required: true, whitespace: true }]}
-                label="Наименования теста"
+                label="Test nomi"
               >
                 <Input placeholder="Test name" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="count_test"
                 rules={[{ required: true, whitespace: true }]}
-                label="Количество теста"
+                label="Test soni"
               >
                 <Input placeholder="Test count" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="time"
                 rules={[{ required: true, whitespace: true }]}
-                label="Время теста"
+                label="Test vaqti"
               >
-                <Input placeholder="Test Vaqti (Munit)" disabled={loading} />
+                <Input placeholder="Test Vaqti (Minut)" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="right_test"
                 rules={[{ required: true, whitespace: true }]}
-                label="Количество правилных ответов"
+                label="To'g'ri javoblar soni"
               >
                 <Input placeholder="O`tish soni " disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="resubmit"
-                label="Время перездачи теста"
+                label="Qayta topshirish oraliq vaqti"
                 rules={[{ required: true, whitespace: true }]}
               >
                 <Input
@@ -235,9 +321,9 @@ const EditSubject = () => {
               <Form.Item
                 name="teaser"
                 rules={[{ required: true, whitespace: true }]}
-                label="Тизер"
+                label="Tizer"
               >
-                <Input placeholder="тизер" disabled={loading} />
+                <Input placeholder="tizer" disabled={loading} />
               </Form.Item>
             </>
 
@@ -252,7 +338,7 @@ const EditSubject = () => {
                 type="primary"
                 htmlType="submit"
               >
-                Создавать
+                Saqlash
               </Button>
             </Form.Item>
           </Form>

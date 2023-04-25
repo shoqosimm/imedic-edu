@@ -3,6 +3,7 @@ import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList } from "react-icons/ci";
 import { TbReport } from "react-icons/tb";
+import { GrUserPolice } from "react-icons/gr";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -19,7 +20,7 @@ import { useContext } from "react";
 
 const Teacher = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [,setToken] = useContext(ContextItem);
+  const [, setToken] = useContext(ContextItem);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ const Teacher = () => {
   const handleLogOut = () => {
     Swal.fire({
       icon: "warning",
-      title: "Вы действительно хотите выйти",
+      title: "Siz haqiqatdan ham tark etmoqchimisiz",
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
@@ -57,46 +58,50 @@ const Teacher = () => {
             borderBottom: "1px solid lightgrey",
           }}
         >
-          <h2>Учитель</h2>
+          <GrUserPolice style={{ fontSize: "34px" }} />
         </div>
         <Menu
           theme="light"
           mode="inline"
-          selectedKeys={sessionStorage.getItem("activeLink")??'1'}
+          selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
           items={[
             {
               key: "1",
-              icon: <CiViewList className="icon" />,
+              icon: <CiViewList style={{ color: "brown" }} className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Курсы
+                  Kurslar
                 </Link>
               ),
             },
             {
               key: "2",
-              icon: <AiOutlineSetting className="icon" />,
-              label: (
-                <Link
-                  onClick={() => sessionStorage.setItem("activeLink", 2)}
-                  to="setting"
-                >
-                  Настройка
-                </Link>
+              icon: (
+                <TbReport style={{ color: "lightskyblue" }} className="icon" />
               ),
-            },
-            {
-              key: "3",
-              icon: <TbReport className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="report"
                 >
-                  Отчет
+                  Hisobot
+                </Link>
+              ),
+            },
+            {
+              key: "3",
+              icon: (
+                <AiOutlineSetting style={{ fill: "grey" }} className="icon" />
+              ),
+              label: (
+                <Link
+                  onClick={() => sessionStorage.setItem("activeLink", 2)}
+                  to="setting"
+                >
+                  Sozlamalar
                 </Link>
               ),
             },
@@ -128,10 +133,10 @@ const Teacher = () => {
             ></Button>
             <Button
               onClick={handleLogOut}
-              className="d-flex align-center gap-x-1"
+              className="logOut d-flex align-center gap-x-1"
               icon={<AiOutlineLogout />}
             >
-              Выйти
+              Chiqish
             </Button>
           </div>
         </Header>
@@ -143,7 +148,7 @@ const Teacher = () => {
       </Layout>
       <Drawer
         placement="left"
-        title="Меню"
+        title="Menu"
         onClose={() => setOpen(false)}
         open={open}
         width={200}
@@ -155,37 +160,41 @@ const Teacher = () => {
           items={[
             {
               key: "1",
-              icon: <CiViewList className="icon" />,
+              icon: <CiViewList style={{ color: "brown" }} className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Курсы
+                  Kurslar
                 </Link>
               ),
             },
             {
               key: "2",
-              icon: <AiOutlineSetting className="icon" />,
-              label: (
-                <Link
-                  onClick={() => localStorage.setItem("activeLink", 2)}
-                  to="setting"
-                >
-                  Настройка
-                </Link>
+              icon: (
+                <TbReport style={{ color: "lightskyblue" }} className="icon" />
               ),
-            },
-            {
-              key: "3",
-              icon: <TbReport className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 3)}
                   to="report"
                 >
-                  Отчет
+                  Hisobot
+                </Link>
+              ),
+            },
+            {
+              key: "3",
+              icon: (
+                <AiOutlineSetting style={{ fill: "grey" }} className="icon" />
+              ),
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 2)}
+                  to="setting"
+                >
+                  Sozlamalar
                 </Link>
               ),
             },

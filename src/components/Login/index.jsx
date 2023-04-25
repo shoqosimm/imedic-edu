@@ -21,7 +21,7 @@ const Login = () => {
     const res = await api.post("api/login", body);
     try {
       if (res) {
-        toast.success("Успешно", {
+        toast.success("Muvaffaqiyatli", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToken(res.data.access_token);
@@ -45,22 +45,22 @@ const Login = () => {
       <div className="container form_wrapper">
         <Form
           onFinish={handleLogin}
-          autoComplete="false"
+          autoComplete="off"
           layout="vertical"
           form={form}
           id="loginForm"
         >
           <div className="main_text">
-            <h1>Войти</h1>
+            <h1>Kirish</h1>
           </div>
           <div>
             <Form.Item
               name="phone"
-              label="Номер телефона"
+              label="Telefon raqam"
               rules={[
                 {
                   required: true,
-                  message: "Укажите номер телефона",
+                  message: "Telefon raqami kiriting",
                   whitespace: true,
                 },
               ]}
@@ -73,9 +73,9 @@ const Login = () => {
             </Form.Item>
             <Form.Item
               name="password"
-              label="Пароль"
+              label="Parol"
               rules={[
-                { required: true, message: "Введите пароль", whitespace: true },
+                { required: true, message: "Parol kiriting", whitespace: true },
               ]}
             >
               <Input autoComplete="false" disabled={loading} type="password" />
@@ -87,11 +87,11 @@ const Login = () => {
             htmlType="submit"
             style={{ width: "100%" }}
           >
-            Войти
+            Kirish
           </Button>
           <div className="other__sign">
             <p>
-              или <Link to="/register">Регистрация</Link>
+              yoki <Link to="/register">Ro'yxatdan o'ting</Link>
             </p>
           </div>
         </Form>

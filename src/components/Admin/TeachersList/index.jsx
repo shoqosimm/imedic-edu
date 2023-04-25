@@ -5,7 +5,6 @@ import { api } from "../../../utils/api";
 import { BiCheckCircle } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
-import ru_RU from "antd/lib/locale/ru_RU";
 import moment from "moment";
 
 const AdminTeacherList = () => {
@@ -26,32 +25,32 @@ const AdminTeacherList = () => {
       key: "id",
     },
     {
-      title: "Имя",
+      title: "Ism",
       dataIndex: "first_name",
       key: "first_name",
     },
     {
-      title: "Фамилия",
+      title: "Familiya",
       dataIndex: "last_name",
       key: "last_name",
     },
     {
-      title: "Отчество",
+      title: "Otasining ismi",
       dataIndex: "patronymic",
       key: "patronymic",
     },
     {
-      title: "Дата рождения",
+      title: "Tug'ilgan yili",
       dataIndex: "birth_date",
       key: "birth_date",
     },
     {
-      title: "Номер телефона",
+      title: "Telefon raqami",
       dataIndex: "phone",
       key: "phone",
     },
     {
-      title: "Пасспорт",
+      title: "Pasport",
       dataIndex: "passport",
       key: "passport",
       render: (text) => {
@@ -63,7 +62,7 @@ const AdminTeacherList = () => {
       },
     },
     {
-      title: "Cтатус",
+      title: "Status",
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -79,7 +78,7 @@ const AdminTeacherList = () => {
       },
     },
     {
-      title: "Блок",
+      title: "Blok",
       dataIndex: "is_block",
       key: "is_block",
       align: "center",
@@ -167,9 +166,9 @@ const AdminTeacherList = () => {
     try {
       if (res) {
         setLoading(false);
-        toast.success("Создано!");
+        toast.success("Yaratildi!");
       }
-      toast.error("Данные не правильно указаны");
+      toast.error("Ma'lumotlar noto'g'ri ko'rsatildi");
     } catch (err) {
       console.log(err, "err");
       setLoading(false);
@@ -185,7 +184,7 @@ const AdminTeacherList = () => {
   return (
     <div className="admin_teacher">
       <Button onClick={handleAdd} className="teacher_btn" type="primary">
-        Добавить
+        Qo'shish
       </Button>
       <Table
         loading={tableLoading}
@@ -193,11 +192,11 @@ const AdminTeacherList = () => {
         columns={columns}
         dataSource={data}
         pagination={{
-          current: pagination.current,
-          pageSize: pagination.pageSize,
+          current_page: pagination.current,
+          per_page: pagination.pageSize,
           total: pagination.total,
-          onChange: (page, pageSize) => {
-            getTeacherList(page, pageSize);
+          onChange: (current_page, per_page) => {
+            getTeacherList(current_page, per_page);
           },
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
@@ -205,7 +204,7 @@ const AdminTeacherList = () => {
       />
       <Modal
         width={720}
-        title="Добавить сотрудника"
+        title="O'qituvchi qo'shish"
         open={isModalOpen}
         onCancel={() => {
           form.resetFields();
@@ -221,7 +220,7 @@ const AdminTeacherList = () => {
               }}
               style={{ borderRadius: "2px", height: "40px" }}
             >
-              Отменить
+              Bekor qilish
             </Button>
             <Button
               htmlType="submit"
@@ -230,7 +229,7 @@ const AdminTeacherList = () => {
               type="primary"
               loading={loading}
             >
-              Добавить
+              Qo'shish
             </Button>
           </div>
         }
@@ -243,55 +242,55 @@ const AdminTeacherList = () => {
         >
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="first_name" label="Имя">
+              <Form.Item name="first_name" label="Ismi">
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="last_name" label="Фамилия">
+              <Form.Item name="last_name" label="Familiyasi">
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="patronymic" label="Отчество">
+              <Form.Item name="patronymic" label="Otasining ismi">
                 <Input disabled />
               </Form.Item>
             </Col>
           </Row>
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="series" label="Серия пасспорта">
+              <Form.Item name="series" label="Pasport seriyasi">
                 <Input disabled />
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="number" label="Номер пасспорта">
+              <Form.Item name="number" label="Pasport raqami">
                 <Input disabled />
               </Form.Item>
             </Col>
           </Row>
           <Form.Item
             name="pinfl"
-            label="ПНФЛ"
+            label="PINFL"
             rules={[{ required: true, min: 14, max: 14 }]}
           >
-            <Input suffix={<Button onClick={handlePnfl}>Проверить</Button>} />
+            <Input suffix={<Button onClick={handlePnfl}>Tekshirish</Button>} />
           </Form.Item>
           <Form.Item
             name="phone"
-            label="Номер телефона"
+            label="Telefon raqami"
             rules={[{ required: true, min: 12 }]}
           >
             <Input placeholder="998901234567" disabled={loading} />
           </Form.Item>
-          <Form.Item name={"birth_date"} label="Дата рождения">
+          <Form.Item name={"birth_date"} label="Tug'ilgan yili">
             <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="password"
-                label="Пароль"
+                label="Parol"
                 required={[{ required: true, min: 6 }]}
               >
                 <Input disabled={loading} />
@@ -300,7 +299,7 @@ const AdminTeacherList = () => {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="password_confirmation"
-                label="Подтвердите пароль"
+                label="Parolni takrorlang"
                 required={[{ required: true, min: 6 }]}
               >
                 <Input disabled={loading} />

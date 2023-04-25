@@ -3,6 +3,7 @@ import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiCircleList } from "react-icons/ci";
 import { FiUsers } from "react-icons/fi";
+import { GrUserAdmin } from "react-icons/gr";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -18,7 +19,7 @@ import { ContextItem } from "../../components/Context";
 
 const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [,setToken] = useContext(ContextItem);
+  const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
@@ -26,7 +27,7 @@ const AdminRoute = () => {
   const handleLogOut = () => {
     Swal.fire({
       icon: "warning",
-      title: "Вы действительно хотите выйти",
+      title: "Siz haqiqatdan ham tark etmoqchimisiz",
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
@@ -56,34 +57,36 @@ const AdminRoute = () => {
             borderBottom: "1px solid lightgrey",
           }}
         >
-          <h2>Админ</h2>
+          <GrUserAdmin style={{ fontSize: "34px" }} />
         </div>
         <Menu
           theme="light"
           mode="inline"
-          selectedKeys={sessionStorage.getItem("activeLink")??'1'}
+          selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
           items={[
             {
               key: "1",
-              icon: <FiUsers className="icon" />,
+              icon: <FiUsers style={{ color: "blue" }} className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="admin-teacher"
                 >
-                  Учетелья
+                  O'qituvchilar
                 </Link>
               ),
             },
             {
               key: "2",
-              icon: <CiCircleList className="icon" />,
+              icon: (
+                <CiCircleList style={{ color: "brown" }} className="icon" />
+              ),
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="category"
                 >
-                  Категория
+                  Turkum
                 </Link>
               ),
             },
@@ -114,11 +117,11 @@ const AdminRoute = () => {
               onClick={() => setCollapsed(!collapsed)}
             ></Button>
             <Button
-              className="d-flex align-center gap-x-1"
+              className="logOut d-flex align-center gap-x-1"
               icon={<AiOutlineLogout />}
               onClick={handleLogOut}
             >
-              Выйти
+              Chiqish
             </Button>
           </div>
         </Header>
@@ -130,7 +133,7 @@ const AdminRoute = () => {
       </Layout>
       <Drawer
         placement="left"
-        title="Меню"
+        title="Menu"
         onClose={() => setOpen(false)}
         open={open}
         width={200}
@@ -142,25 +145,27 @@ const AdminRoute = () => {
           items={[
             {
               key: "1",
-              icon: <FiUsers className="icon" />,
+              icon: <FiUsers style={{ color: "blue" }} className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 1)}
                   to="admin-teacher"
                 >
-                  Учетелья
+                  O'qituvchilar
                 </Link>
               ),
             },
             {
               key: "2",
-              icon: <CiCircleList className="icon" />,
+              icon: (
+                <CiCircleList style={{ color: "brown" }} className="icon" />
+              ),
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 2)}
                   to="category"
                 >
-                  Категория
+                  Turkum
                 </Link>
               ),
             },

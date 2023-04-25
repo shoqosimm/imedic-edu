@@ -1,0 +1,25 @@
+.wrapperCommentdw {
+  border-bottom: 0.5px solid rgba(211, 211, 211, 0.505);
+  padding: 1rem;
+  margin: 1rem 0;
+  background: ghostwhite;
+  flex-wrap: wrap;
+
+  .badge {
+    flex-wrap: wrap;
+
+    h2 {
+      font-size: 13px;
+      font-weight: 500;
+    }
+  }
+  .content {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+  .comment__userInfo {
+    em {
+      color: #252525;
+    }
+  }
+}

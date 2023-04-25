@@ -100,7 +100,7 @@ const MyCardItem = ({ disabled, item }) => {
           </div>
         ) : (
           <button
-            title={disabled ? "not allowed" : "Посмотреть"}
+            title={disabled ? "not allowed" : "Ko'rish"}
             disabled={disabled}
             onClick={() => linkToSubject(item.id)}
             className={disabled ? "disabled__card" : "card__btn"}

@@ -7,6 +7,8 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { Notification } from "../../Notification/Notification";
 import "./styles/createSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
+import { VscFilePdf } from "react-icons/vsc";
+import { AiOutlineVideoCameraAdd } from "react-icons/ai";
 
 // quill-modules
 const modules = {
@@ -31,24 +33,24 @@ const modules = {
   },
 };
 const formats = [
-	"header",
-	"font",
-	"size",
-	"bold",
-	"italic",
-	"underline",
-	"align",
-	"strike",
-	"script",
-	"blockquote",
-	"background",
-	"list",
-	"bullet",
-	"indent",
-	"link",
-	"image",
-	"color",
-	"code-block",
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "align",
+  "strike",
+  "script",
+  "blockquote",
+  "background",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "color",
+  "code-block",
 ];
 
 const CreateSubject = () => {
@@ -56,6 +58,8 @@ const CreateSubject = () => {
   const [type, setType] = useState(false);
   const [contentValue, setContentValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState();
+  const [videoUrl, setVideoUrl] = useState();
   const navigate = useNavigate();
   const [form] = Form.useForm();
   const location = useLocation();
@@ -66,11 +70,31 @@ const CreateSubject = () => {
     setLoading(true);
     let body = {};
     if (type === 0) {
-      body.content = contentValue;
-      body.course_id = parseInt(params.id);
-      body.subject_type = "topic";
-      body.name = values.name;
-      body.teaser = values.teaser;
+      if (videoUrl) {
+        const fmData = new FormData();
+        fmData.append("video", videoUrl.file);
+        body.content = fmData.get("video");
+        body.content_type = "video";
+        body.course_id = parseInt(params.id);
+        body.subject_type = "topic";
+        body.name = values.name;
+        body.teaser = values.teaser;
+      } else if (pdfUrl) {
+        const fmData = new FormData();
+        fmData.append("pdf", pdfUrl.file);
+        body.content = fmData.get("pdf");
+        body.content_type = "pdf";
+        body.course_id = parseInt(params.id);
+        body.subject_type = "topic";
+        body.name = values.name;
+        body.teaser = values.teaser;
+      } else {
+        body.content = contentValue;
+        body.course_id = parseInt(params.id);
+        body.subject_type = "topic";
+        body.name = values.name;
+        body.teaser = values.teaser;
+      }
     } else {
       body.course_id = parseInt(params.id);
       body.subject_type = "test";
@@ -81,8 +105,13 @@ const CreateSubject = () => {
       body.resubmit = values.resubmit;
       body.teaser = values.teaser;
     }
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
     api
-      .post("/api/teacher/course-subject/add", body)
+      .post("/api/teacher/course-subject/add", body, config)
       .then((res) => {
         if (res.data.success) {
           setTimeout(() => {
@@ -97,6 +126,29 @@ const CreateSubject = () => {
         console.log(err);
         setLoading(false);
       });
+  };
+
+  // handlePdf
+  const handlePdf = (e) => {
+    setVideoUrl(false);
+    setPdfUrl({
+      url: URL.createObjectURL(e.target.files[0]),
+      file: e.target.files[0],
+    });
+  };
+  // handleVideo
+  const handleVideo = (e) => {
+    setPdfUrl(false);
+    setVideoUrl({
+      url: URL.createObjectURL(e.target.files[0]),
+      file: e.target.files[0],
+    });
+  };
+
+  // handleCloseFiles
+  const handleCloseFiles = () => {
+    setVideoUrl(false);
+    setPdfUrl(false);
   };
 
   useEffect(() => {
@@ -125,7 +177,7 @@ const CreateSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state.message}/view`}>
-                Назад
+                Ortga
               </Link>
             ),
           },
@@ -138,11 +190,15 @@ const CreateSubject = () => {
           },
         ]}
       />
-      <Modal className="create_subject" title="Coздать" centered closable={false} open={openModal} footer>
-        <Row
-          gutter={[20, 20]}
-          title="Create Subject"
-        >
+      <Modal
+        className="create_subject"
+        title="Yaratish"
+        centered
+        closable={false}
+        open={openModal}
+        footer
+      >
+        <Row gutter={[20, 20]} title="Create Subject">
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
             <Card
               className="d-flex align-center justify-center"
@@ -158,7 +214,7 @@ const CreateSubject = () => {
               hoverable
               onClick={() => setType(0)}
             >
-              Subject
+              Mavzu
             </Card>
           </Col>
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
@@ -172,13 +228,13 @@ const CreateSubject = () => {
               hoverable
               onClick={() => setType(1)}
             >
-              Тест
+              Test
             </Card>
           </Col>
         </Row>
       </Modal>
       <Card loading={openModal}>
-        <Card title="Create Subject">
+        <Card title="Mavzu yoki Test qo'shish">
           <Form
             form={form}
             name="create-topic"
@@ -194,25 +250,84 @@ const CreateSubject = () => {
                   name="name"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="Subject name" disabled={loading} />
-                </Form.Item>
-                <Form.Item
-                  name="content"
-                  rules={[{ required: true, whitespace: true }]}
-                >
-                  <ReactQuill
-                    modules={modules}
-                    formats={formats}
-                    value={contentValue}
-                    onChange={setContentValue}
-                  />
+                  <Input placeholder="mavzu nomi" disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="teaser"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="тизер" disabled={loading} />
+                  <Input placeholder="tizer" disabled={loading} />
                 </Form.Item>
+                <div
+                  style={{ margin: "1rem 0", flexWrap: "wrap" }}
+                  className="d-flex align-center gap-1"
+                >
+                  <label
+                    htmlFor="pdf"
+                    className={"uploadLabelPDF d-flex align-center gap-x-1"}
+                  >
+                    <VscFilePdf style={{ fontSize: "18px" }} />
+                    PDF yuklash
+                    <input
+                      type="file"
+                      id="pdf"
+                      accept="application/pdf"
+                      onChange={handlePdf}
+                    />
+                  </label>
+
+                  <label
+                    htmlFor="video"
+                    className={
+                      videoUrl
+                        ? "disabled d-flex align-center gap-x-1"
+                        : "uploadLabelVideo d-flex align-center gap-x-1"
+                    }
+                  >
+                    <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
+                    Video yuklash
+                    <input
+                      disabled={videoUrl}
+                      type="file"
+                      id="video"
+                      accept="video/mp4,video/x-m4v,video/*"
+                      onChange={handleVideo}
+                    />
+                  </label>
+
+                  {pdfUrl || videoUrl ? (
+                    <Button
+                      onClick={handleCloseFiles}
+                      style={{ background: "red", color: "#fff" }}
+                    >
+                      X
+                    </Button>
+                  ) : null}
+                </div>
+                {(pdfUrl && (
+                  <object
+                    data={pdfUrl?.url}
+                    width="100%"
+                    style={{ height: "100vh" }}
+                  />
+                )) ||
+                  (videoUrl && (
+                    <video controls width="100%">
+                      <source src={videoUrl?.url} type="video/mp4" />
+                    </video>
+                  )) || (
+                    <Form.Item
+                      name="content"
+                      rules={[{ required: true, whitespace: true }]}
+                    >
+                      <ReactQuill
+                        modules={modules}
+                        formats={formats}
+                        value={contentValue}
+                        onChange={setContentValue}
+                      />
+                    </Form.Item>
+                  )}
               </>
             ) : (
               <>
@@ -220,25 +335,25 @@ const CreateSubject = () => {
                   name="name"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="Test name" disabled={loading} />
+                  <Input placeholder="test nomi" disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="count_test"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="Test count" disabled={loading} />
+                  <Input placeholder="test soni" disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="time"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="Test Vaqti (Munit)" disabled={loading} />
+                  <Input placeholder="test vaqti (minut)" disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="right_test"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="O`tish soni " disabled={loading} />
+                  <Input placeholder="o`tish soni " disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="resubmit"
@@ -253,13 +368,13 @@ const CreateSubject = () => {
                   name="teaser"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="тизер" disabled={loading} />
+                  <Input placeholder="tizer" disabled={loading} />
                 </Form.Item>
               </>
             )}
             <Form.Item>
               <Button loading={loading} type="primary" htmlType="submit">
-                Создавать
+                Yaratish +
               </Button>
             </Form.Item>
           </Form>

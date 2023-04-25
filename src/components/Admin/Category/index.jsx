@@ -40,12 +40,12 @@ const AdminCategory = () => {
       width: "5%",
     },
     {
-      title: "Наименования",
+      title: "Turkum nomi",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Тип",
+      title: "Yo'nalish",
       dataIndex: "is_malaka",
       key: "is_malaka",
       render: (text) => {
@@ -55,7 +55,7 @@ const AdminCategory = () => {
       },
     },
     {
-      title: "Статус",
+      title: "Status",
       dataIndex: "is_active",
       key: "is_active",
       render: (text) => {
@@ -70,7 +70,7 @@ const AdminCategory = () => {
       },
     },
     {
-      title: "Изменить",
+      title: "O'zgartirish",
       dataIndex: "edit",
       key: "edit",
       align: "center",
@@ -91,12 +91,12 @@ const AdminCategory = () => {
             />
 
             <Popconfirm
-              title="Удалить"
-              description="вы действительно хотите удалить?"
+              title="O'chirish"
+              description="siz haqiqatdan ham ushbu hodimni o'chirmoqchimisiz?"
               onConfirm={() => deleteCategory(record)}
-              onCancel={() => message.error("Отменено")}
-              okText="Да"
-              cancelText="Нет"
+              onCancel={() => message.error("Bekor qilindi")}
+              okText="Ha"
+              cancelText="Yo'q"
             >
               <BiTrash style={{ cursor: "pointer" }} />
             </Popconfirm>
@@ -147,7 +147,7 @@ const AdminCategory = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Добавлено",
+          title: "Qo'shildi",
           showConfirmButton: false,
           timer: 1500,
           timerProgressBar: true,
@@ -179,7 +179,7 @@ const AdminCategory = () => {
     const res = await api.post(`api/admin/category/update/${record.id}`, body);
     try {
       if (res) {
-        toast.success("Успешно", {
+        toast.success("Muvaffaqiyatli", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setIsModalOpen(false);
@@ -196,7 +196,7 @@ const AdminCategory = () => {
     const res = await api.get(`api/admin/category/delete/${record.id}`);
     try {
       if (res) {
-        message.success("Удалено!");
+        message.success("O'chirildi!");
         getListCategory(pagination.current,pagination.pageSize);
       }
     } catch (err) {
@@ -217,7 +217,7 @@ const AdminCategory = () => {
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="name"
-              label="Наименования"
+              label="Turkum nomi"
               rules={[{ required: true, whitespace: true }]}
             >
               <Input disabled={loading} />
@@ -226,7 +226,7 @@ const AdminCategory = () => {
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="is_malaka"
-              label="Тип"
+              label="Yo'nalish"
               rules={[{ required: true, whitespace: true }]}
             >
               <Select
@@ -246,12 +246,12 @@ const AdminCategory = () => {
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
             <Button loading={loading} htmlType="submit" type="primary">
-              Добавить
+              Qo'shish
             </Button>
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
             <Button disabled={loading} onClick={handleReset}>
-              Сброс
+              Bekor qilish
             </Button>
           </Col>
         </Row>
@@ -273,7 +273,7 @@ const AdminCategory = () => {
         }}
       />
       <Modal
-        title="Изменить"
+        title="O'zgartirish"
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={
@@ -282,7 +282,7 @@ const AdminCategory = () => {
               onClick={() => setIsModalOpen(false)}
               style={{ borderRadius: "2px", height: "40px" }}
             >
-              Отменить
+              Bekor qilish
             </Button>
             <Button
               htmlType="submit"
@@ -290,7 +290,7 @@ const AdminCategory = () => {
               style={{ borderRadius: "2px", height: "40px" }}
               type="primary"
             >
-              Сохранить
+              Saqlash
             </Button>
           </div>
         }
@@ -303,7 +303,7 @@ const AdminCategory = () => {
         >
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="name" label="Наименования">
+              <Form.Item name="name" label="Turkum nomi">
                 <Input />
               </Form.Item>
             </Col>
@@ -311,7 +311,7 @@ const AdminCategory = () => {
               <Form.Item
                 rules={[{ required: true }]}
                 name="is_malaka"
-                label="Тип"
+                label="Yo'nalish"
               >
                 <Select
                   style={{ width: "100%" }}

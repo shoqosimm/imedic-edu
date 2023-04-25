@@ -1,11 +1,12 @@
 import { Row, Select, Col, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiWindowOpen } from "react-icons/bi";
+import { BiUser, BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
 import { BsBookmarks } from "react-icons/bs";
 import { FaUserMd } from "react-icons/fa";
+import { MdStarRate } from "react-icons/md";
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
@@ -44,10 +45,10 @@ const NurseCourse = () => {
     getCourse(value, 1, 15);
   };
 
-  function getCourse(id, current_page, per_page) {
+  function getCourse(id, page, per_page) {
     setLoadingCard(true);
     const params = {
-      current_page,
+      page,
       per_page,
     };
     api.get(`api/nurse/course/list/category/${id}`, { params }).then((res) => {
@@ -62,6 +63,10 @@ const NurseCourse = () => {
             name: item.name,
             teacher: user_name,
             count_tema: item.subject_count,
+            rate: {
+              average_rate: item.average_rate,
+              rate_count: item.rate_count,
+            },
           };
         })
       );
@@ -85,7 +90,7 @@ const NurseCourse = () => {
       width: "2%",
     },
     {
-      title: "Курс",
+      title: "Kurs nomi",
       dataIndex: "name",
       key: "text",
       render: (t) => {
@@ -97,7 +102,7 @@ const NurseCourse = () => {
       },
     },
     {
-      title: "Учитель",
+      title: "O'qituvchi",
       dataIndex: "teacher",
       key: "teacher",
       width: "20%",
@@ -111,7 +116,32 @@ const NurseCourse = () => {
       },
     },
     {
-      title: "Кол.темь",
+      title: "Reyting",
+      dataIndex: "rate",
+      key: "rate",
+      align: "center",
+      render: (t) => {
+        return (
+          <div className="d-flex align-center justify-center gap-x-1">
+            <Tooltip title="o'rtacha baho">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
+                <MdStarRate style={{fill:'orangered',fontSize:'18px'}}/>
+              </div>
+            </Tooltip>
+            {"-"}
+            <Tooltip title="baho qo'yganlar soni">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
+                <BiUser  />
+              </div>
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Mavzular soni",
       dataIndex: "count_tema",
       key: "count_tema",
       width: "10%",
@@ -119,13 +149,13 @@ const NurseCourse = () => {
     },
 
     {
-      title: "Подробнее",
+      title: "Ba'tafsil",
       dataIndex: "action",
       key: "action",
       align: "center",
       width: "10%",
       render: (text, record) => (
-        <Tooltip title="Подробнее">
+        <Tooltip title="Batafsil">
           <Link to={`/nurse/course/${record.id}`}>
             <BiWindowOpen style={{ fontSize: "18px" }} />
           </Link>
@@ -135,12 +165,13 @@ const NurseCourse = () => {
   ];
 
   useEffect(() => {
-    getCourse(
-      categoryId,
-      pagination.current_page,
-      pagination.per_page,
-      pagination.total
-    );
+    categoryId &&
+      getCourse(
+        categoryId,
+        pagination.current_page,
+        pagination.per_page,
+        pagination.total
+      );
     getCategoryforSelect();
   }, []);
 

@@ -29,6 +29,27 @@
 .ant-drawer-body {
   padding: 0px !important;
 }
+.logOut {
+  background: cornflowerblue;
+  border: none;
+  color: #fff;
+  &:hover {
+    color: #fff !important;
+  }
+}
+.sizeChanger {
+  background: cornflowerblue;
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &:hover {
+    color: #fff !important;
+  }
+}
 @media screen and (max-width: 565px) {
   .siderAdmin {
     display: none;
@@ -38,5 +59,16 @@
   }
   .menuBurger {
     display: block;
+    background: cornflowerblue;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &:hover {
+      color: #fff !important;
+    }
   }
 }

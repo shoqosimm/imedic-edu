@@ -1,11 +1,41 @@
 .mycourse__wrapper {
-  .ant-card {
-    background: linear-gradient(rgb(255, 255, 255), rgb(233, 233, 233)) !important;
+  .izohCard {
+    .ant-card-head {
+      background: #fff !important;
+    }
+    .ant-card-body {
+      padding: 24px !important;
+      border-top: 1px solid rgba(211, 211, 211, 0.356);
+      overflow: scroll;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
   }
-  .ant-card-head{
-    background: linear-gradient(rgba(255, 255, 255, 0.7),rgba(232, 230, 230, 0.7));
+
+  .wrapperComment {
+    margin: 2rem 0;
+    padding: 2rem;
+    border: 1px solid rgb(235, 233, 233);
+    border-radius: 6px;
+  }
+  .ant-card {
+    background: linear-gradient(
+      rgb(255, 255, 255),
+      rgb(233, 233, 233)
+    ) !important;
+  }
+  .ant-card-head {
+    background: linear-gradient(
+      rgba(255, 255, 255, 0.7),
+      rgba(232, 230, 230, 0.7)
+    );
   }
   .ant-card-body {
     background: #fff;
   }
+}
+
+.Toastify__toast {
+  box-shadow: 0 0 5px rgba(211, 211, 211, 0.046);
 }
