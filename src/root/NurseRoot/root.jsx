@@ -9,8 +9,8 @@ import {
   AiOutlineMenuUnfold,
   AiOutlineSetting,
 } from "react-icons/ai";
-import React, { Suspense, useState } from "react";
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import React, { Suspense, useEffect, useState } from "react";
+import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
@@ -27,7 +27,7 @@ const Nurse = () => {
   const handleLogOut = () => {
     Swal.fire({
       icon: "warning",
-      title: "Вы действительно хотите выйти",
+      title: "Siz haqiqatdan ham tark etmoqchimisiz",
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
@@ -62,7 +62,7 @@ const Nurse = () => {
         <Menu
           theme="light"
           mode="inline"
-          selectedKeys={sessionStorage.getItem("activeLink")??'1'}
+          selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
           items={[
             {
               key: "1",
@@ -72,7 +72,7 @@ const Nurse = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Курсы
+                  Kurslar
                 </Link>
               ),
             },
@@ -84,7 +84,7 @@ const Nurse = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="mycourse"
                 >
-                  Мои курсы
+                  Mening kurslarim
                 </Link>
               ),
             },
@@ -96,7 +96,7 @@ const Nurse = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
-                  Настройка
+                  Sozlamalar
                 </Link>
               ),
             },
@@ -131,7 +131,7 @@ const Nurse = () => {
               icon={<AiOutlineLogout />}
               onClick={handleLogOut}
             >
-              Выйти
+              Chiqish
             </Button>
           </div>
         </Header>
@@ -161,7 +161,7 @@ const Nurse = () => {
                   onClick={() => localStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Курсы
+                  Kurslar
                 </Link>
               ),
             },
@@ -173,7 +173,7 @@ const Nurse = () => {
                   onClick={() => localStorage.setItem("activeLink", 2)}
                   to="mycourse"
                 >
-                  Мои курсы
+                   Mening kurslarim
                 </Link>
               ),
             },
@@ -185,7 +185,7 @@ const Nurse = () => {
                   onClick={() => localStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
-                  Настройка
+                  Sozlamalar
                 </Link>
               ),
             },

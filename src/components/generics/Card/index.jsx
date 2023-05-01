@@ -29,12 +29,12 @@ const CardItem = ({ title, teaser, subject, click, disabled }) => {
         </div>
 
         <button
-          title={disabled ? "not allowed" : "Посмотреть"}
+          title={disabled ? "not allowed" : "Ko'rish"}
           disabled={disabled}
           onClick={() => linkToSubject(click)}
           className={disabled ? "disabled__card" : "card__btn"}
         >
-          Подробнее
+          Batafsil
         </button>
       </div>
     </div>

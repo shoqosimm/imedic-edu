@@ -27,7 +27,7 @@ const EditCourse = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.success) {
-            toast.success("Изменено");
+            toast.success("O'zgartirildi");
             setTimeout(() => {
               navigate("/teacher/course");
             }, 1500);
@@ -104,18 +104,18 @@ const EditCourse = () => {
         ]}
       />
 
-      <h1>Редактирование курса</h1>
+      <h1>Kursni o'zgartirish</h1>
       <Card>
         <Form form={form} name="edit-course" onFinish={onFinish}>
           <Form.Item name="title">
             <Input
               className="editInput"
               disabled={loading}
-              placeholder="Название курса"
+              placeholder="Kurs nomi"
               rules={[
                 {
                   required: true,
-                  message: "Пожалуйста, введите название вашего курса!",
+                  message: "Iltimos, kursning nomini kiriting!",
                 },
               ]}
             />
@@ -125,12 +125,12 @@ const EditCourse = () => {
               className="editInput"
               disabled={loading}
               options={category}
-              placeholder="Выберите категорию"
+              placeholder="Turkum tanlang"
               style={{ width: "100%" }}
               rules={[
                 {
                   required: true,
-                  message: "Пожалуйста, выберите категорию вашего курса!",
+                  message: "Iltimos, kursga oid turkumni tanlang!",
                 },
               ]}
             />
@@ -142,7 +142,7 @@ const EditCourse = () => {
               htmlType="submit"
               loading={saveLoading}
             >
-              Редактировать
+              O'zgartirish
             </Button>
           </Form.Item>
         </Form>

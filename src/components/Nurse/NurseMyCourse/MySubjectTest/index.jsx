@@ -3,7 +3,7 @@ import screenfull from "screenfull";
 import "./style.scss";
 import { Button, Modal, Pagination, Radio } from "antd";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
 import Countdown from "react-countdown";
@@ -13,7 +13,6 @@ import Countdown from "react-countdown";
 const MySubjectTest = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const location = useLocation();
   const [openModal, setOpenModal] = useState(false);
   const [testInfo, setTestInfo] = useState();
   const [answer, setAnswer] = useState();
@@ -228,33 +227,30 @@ const MySubjectTest = () => {
       <Modal
         onOk={handleStartTest}
         onCancel={handleBackFromTest}
-        okText={"Начать тест"}
-        cancelText={"Отменить"}
+        okText={"Testni boshlash"}
+        cancelText={"Bekor qilish va ortga qaytish"}
         open={openModal}
       >
         <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
           <div>
             <p>
-              Время для теста: <strong>{testInfo?.course_subject.time}</strong> мин
+              Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
             </p>
             <p>
-              Кол-во теста: <strong>{testInfo?.course_subject.count_test}</strong> шт
+              Test soni: <strong>{testInfo?.course_subject.count_test}</strong> ta
             </p>
             <p>
-              Мин.кол-во правилный ответов:
-              <strong> {testInfo?.course_subject.right_test}</strong> шт
+              To'g'ri javoblarning minimal soni:
+              <strong> {testInfo?.course_subject.right_test}</strong> ta
             </p>
             <p>
-              Пересдача:
-              <strong> {testInfo?.course_subject.resubmit}</strong> мин
+              Qayta topshirish oraliq vaqti:
+              <strong> {testInfo?.course_subject.resubmit}</strong> min
             </p>
           </div>
           <div className="test__modal__desctiption">
             <p>
-              Test will continue {testInfo?.course_subject.time} minutes, you should not to
-              leave this page untill done all of tests, if you leave this page
-              without solving all test then the timer is not stoping and you
-              would not pass the test, test will start when you click ok button
+              Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu testni yakunlamasdan sahifani tark etish mumkin emas, Agarda testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test ham yakunlanadi va testni javoblari qa'bul qilinadi, test "Testni boshlash" tugmasini bosilgandan so'ng boshlanadi.
             </p>
           </div>
         </div>

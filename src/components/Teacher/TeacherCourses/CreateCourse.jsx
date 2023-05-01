@@ -24,7 +24,7 @@ const CreateCourse = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.success) {
-            toast.success("Создано");
+            toast.success("Yaratildi");
             setTimeout(() => {
               setLoading(false);
               form.resetFields();
@@ -84,18 +84,18 @@ const CreateCourse = () => {
           },
         ]}
       />
-      <h1>Создание курса</h1>
+      <h1>Kurs yaratilishi</h1>
       <Card>
         <Form form={form} name="create-course" onFinish={onFinish}>
           <Form.Item name="title">
             <Input
               disabled={loading}
               className="create_input"
-              placeholder="Название курса"
+              placeholder="Kursning nomi"
               rules={[
                 {
                   required: true,
-                  message: "Пожалуйста, введите название вашего курса!",
+                  message: "Iltimos, kursning nomini kiriting!",
                 },
               ]}
             />
@@ -105,12 +105,12 @@ const CreateCourse = () => {
               disabled={loading}
               className="create_input"
               options={category}
-              placeholder="Выберите категорию"
+              placeholder="Turkumni tanlang"
               style={{ width: "100%" }}
               rules={[
                 {
                   required: true,
-                  message: "Пожалуйста, выберите категорию вашего курса!",
+                  message: "Iltimos,kursga oid turkum tanlang!",
                 },
               ]}
             />
@@ -122,7 +122,7 @@ const CreateCourse = () => {
               type="primary"
               htmlType="submit"
             >
-              Создать
+              Yaratish
             </Button>
           </Form.Item>
         </Form>

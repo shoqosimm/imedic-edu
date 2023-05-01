@@ -1,6 +1,6 @@
 import { Button, Card, Modal, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiCheckCircle, BiNoEntry, BiPencil } from "react-icons/bi";
+import { BiCheckCircle, BiNoEntry, BiPencil, BiUser } from "react-icons/bi";
 import { TbEyeTable } from "react-icons/tb";
 import { Link } from "react-router-dom";
 import { api } from "../../../utils/api";
@@ -8,6 +8,7 @@ import "./Indexstyle.scss";
 import moment from "moment";
 import { AiOutlineSync } from "react-icons/ai";
 import "./Indexstyle.scss";
+import { MdStarRate } from "react-icons/md";
 
 const TeacherCourses = () => {
   const [course, setCourse] = useState([]);
@@ -15,7 +16,7 @@ const TeacherCourses = () => {
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loadingTable, setLoadingTable] = useState(false);
   const [ModalText, setModalText] = useState(
-    "Вы уверены, что хотите изменить статус с активного на неактивный или наоборот?"
+    "Siz haqiqatdan ham ushbu kursni statusini o'zgartirmoqchimisz?"
   );
   const [idModal, setIdModal] = useState(null);
   const [pagination, setPagination] = useState({
@@ -31,17 +32,17 @@ const TeacherCourses = () => {
       width: "2%",
     },
     {
-      title: "Название курса",
+      title: "Kursning nomi",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Категория",
+      title: "Turkum",
       dataIndex: "category",
       key: "category",
     },
     {
-      title: "Статус",
+      title: "Status",
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -54,7 +55,32 @@ const TeacherCourses = () => {
       },
     },
     {
-      title: "Создано",
+      title: "Reyting",
+      dataIndex: "rate",
+      key: "rate",
+      align: "center",
+      render: (t) => {
+        return (
+          <div className="d-flex align-center justify-center gap-x-1">
+            <Tooltip title="o'rtacha baho">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
+                <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
+              </div>
+            </Tooltip>
+            {"-"}
+            <Tooltip title="baho qo'yganlar soni">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
+                <BiUser />
+              </div>
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Yaratilgan",
       dataIndex: "created_at",
       key: "created_at",
       render: (text) => {
@@ -62,7 +88,7 @@ const TeacherCourses = () => {
       },
     },
     {
-      title: "Действия",
+      title: "Ba'tafsil",
       dataIndex: "action",
       key: "action",
       align: "center",
@@ -101,7 +127,7 @@ const TeacherCourses = () => {
   };
   const handleOk = () => {
     setConfirmLoading(true);
-    setModalText("Загрузка...");
+    setModalText("Yuklanmoqda...");
     api
       .get(`api/teacher/course/active/${idModal}`)
       .then((res) => {
@@ -119,10 +145,10 @@ const TeacherCourses = () => {
   };
 
   // getCourse
-  const getCourse = (current_page, per_page) => {
+  const getCourse = (page, per_page) => {
     setLoadingTable(true);
     const params = {
-      current_page,
+      page,
       per_page,
     };
     api
@@ -137,6 +163,10 @@ const TeacherCourses = () => {
                 key: item.id,
                 name: item.name,
                 category: item.category.name,
+                rate: {
+                  average_rate: item.average_rate,
+                  rate_count: item.rate_count,
+                },
               };
             })
           );
@@ -163,34 +193,34 @@ const TeacherCourses = () => {
         style={{ marginBottom: "1.5rem", flexWrap: "wrap" }}
         className="d-flex align-center justify-between gap-y-2"
       >
-        <h1>Список курсов</h1>
+        <p style={{ fontSize: "20px", fontWeight: "600" }}>Kurslar</p>
         <Link to="/teacher/course/create">
-          <Button type="primary">Создать курс</Button>
+          <Button type="primary">Kurs yaratish</Button>
         </Link>
       </div>
       <Card>
-        <Table 
-        bordered
+        <Table
+          bordered
           loading={loadingTable}
           columns={columns}
           dataSource={course}
           pagination={{
-            current: pagination.current_page,
-            pageSize: pagination.per_page,
+            current_page: pagination.current_page,
+            per_page: pagination.per_page,
             total: pagination.total,
-            onChange: (current, pageSize) => {
-              getCourse(current, pageSize);
+            onChange: (current_page, per_page) => {
+              getCourse(current_page, per_page);
             },
           }}
         />
       </Card>
       <Modal
-        title={"Изменить статус"}
+        title={"Statusni o'zgartirish"}
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         onOk={handleOk}
-        okText="Изменить"
-        cancelText="Отменить"
+        okText="Saqlash"
+        cancelText="Bekor qilish"
         confirmLoading={confirmLoading}
       >
         <p>{ModalText}</p>

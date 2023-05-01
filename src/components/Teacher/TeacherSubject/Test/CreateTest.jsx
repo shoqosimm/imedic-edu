@@ -5,7 +5,7 @@ import {
   Form,
   Input,
   Select,
-  notification,
+  
 } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
@@ -23,15 +23,15 @@ const CreateTest = () => {
   const [answer, setAnswer] = useState([
     {
       id: 0,
-      text: "правильный ответ",
+      text: "to'g'ri javob",
     },
     {
       id: 1,
-      text: `неправильный ответ`,
+      text: `noto'g'ri javob`,
     },
     {
       id: 2,
-      text: `неправильный ответ`,
+      text: `noto'g'ri javob`,
     },
   ]);
   const [form] = Form.useForm();
@@ -70,7 +70,7 @@ const CreateTest = () => {
       ...answer,
       {
         id: parseInt(number),
-        text: `неправильный ответ`,
+        text: `noto'g'ri javob`,
       },
     ]);
   };
@@ -118,7 +118,7 @@ const CreateTest = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state.message}/view`}>
-                Назад
+                Ortga
               </Link>
             ),
           },
@@ -131,7 +131,7 @@ const CreateTest = () => {
           },
         ]}
       />
-      <Card title="Добавить тест">
+      <Card title="Test qo'shish">
         <Card>
           <Form
             form={form}
@@ -141,19 +141,19 @@ const CreateTest = () => {
           >
             <Form.Item
               name="question"
-              label="Вопрос"
+              label="Savol"
               rules={[{ required: true }]}
             >
-              <Input placeholder="Вопрос теста" />
+              <Input placeholder="testning savoli" />
             </Form.Item>
             <Form.Item
               name="from_subject_id"
-              label="Тип предмета"
+              label="Mavzu"
               rules={[{ required: true }]}
             >
               <Select
                 className="select"
-                placeholder="Тип предмета"
+                placeholder="mavzuga oid test"
                 options={subjectItems}
               />
             </Form.Item>
@@ -170,11 +170,12 @@ const CreateTest = () => {
                   </Form.Item>
                   {index > 1 ? (
                     <Button
-                      style={{ marginBottom: "2rem" }}
+                      style={{ marginBottom: "2rem",background:'orangered',color:'#fff' }}
                       disabled={loading}
+                      
                       onClick={() => DeleteField(item.id)}
                     >
-                      Удалить
+                      O'chirish
                     </Button>
                   ) : null}
                 </div>
@@ -187,12 +188,12 @@ const CreateTest = () => {
                   type="primary"
                   onClick={() => AddForm(answer)}
                 >
-                  Добавить ответ
+                 Variant qo'shish
                 </Button>
               </Form.Item>
               <Form.Item>
                 <Button loading={loading} type="primary" htmlType="submit">
-                  Добавить тест
+                  Saqlash
                 </Button>
               </Form.Item>
             </div>

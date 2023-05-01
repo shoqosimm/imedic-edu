@@ -1,6 +1,6 @@
 import { Breadcrumb, Button, Card, Form, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
@@ -9,21 +9,22 @@ import "./style.scss";
 const EditTest = () => {
   const [number, setNumber] = useState(3);
   const location = useLocation();
+  const navigate = useNavigate();
   const param = useParams();
   const [loading, setLoading] = useState(false);
   const [subjectItems, setSubjectItems] = useState();
   const [answer, setAnswer] = useState([
     {
       id: 0,
-      text: "правильный ответ",
+      text: "to'g'ri javob",
     },
     {
       id: 1,
-      text: `неправильный ответ`,
+      text: `noto'g'ri javob`,
     },
     {
       id: 2,
-      text: `неправильный ответ`,
+      text: `noto'g'ri javob`,
     },
   ]);
   const [form] = Form.useForm();
@@ -42,7 +43,7 @@ const EditTest = () => {
       .post(`api/teacher/test/update/${param.id}`, body)
       .then((res) => {
         if (res) {
-          toast.success("Создано");
+          toast.success("Yaratildi");
           setLoading(false);
           form.resetFields();
         }
@@ -69,7 +70,7 @@ const EditTest = () => {
       form.setFieldsValue({
         question: String(res.data.data.question),
         from_subject_id: res.data.data.from_subject_id,
-        answer:res.data.data.answer
+        answer: res.data.data.answer,
       });
       setAnswer(
         res.data.data.answer.map((item, index) => {
@@ -94,7 +95,7 @@ const EditTest = () => {
       ...answer,
       {
         id: parseInt(number),
-        text: `неправильный ответ`,
+        text: `noto'g'ri javob`,
       },
     ]);
   };
@@ -140,7 +141,9 @@ const EditTest = () => {
               </Link>
             ),
           },
-
+          {
+            title: <div style={{cursor:'pointer',}} onClick={() => navigate(-1)}>Ortga</div>,
+          },
           {
             title: (
               <p style={{ color: "grey" }}>
@@ -150,7 +153,7 @@ const EditTest = () => {
           },
         ]}
       />
-      <Card title="Добавить тест">
+      <Card title="Testni o'zgartirish">
         <Card>
           <Form
             form={form}
@@ -160,45 +163,47 @@ const EditTest = () => {
           >
             <Form.Item
               name="question"
-              label="Вопрос"
+              label="Savol"
               rules={[{ required: true }]}
             >
-              <Input placeholder="Вопрос теста" />
+              <Input placeholder="test savoli" />
             </Form.Item>
             <Form.Item
               name="from_subject_id"
-              label="Тип предмета"
+              label="Mavzu"
               rules={[{ required: true }]}
             >
               <Select
                 className="select"
-                placeholder="Тип предмета"
+                placeholder="mavzuga oid test"
                 options={subjectItems}
               />
             </Form.Item>
-            <p style={{marginBottom:'1rem',fontSize:'18px'}}>1-й вариант всегда надо указать правильный ответ</p>
+            <p style={{ marginBottom: "1rem", fontSize: "18px" }}>
+              1-variant har doim to'g'ri javob kiritilishi kerak!
+            </p>
 
             {answer.map((item, index) => {
               return (
                 <div key={index}>
                   <Form.Item
                     name={["answer", index]}
-                    label={`${index + 1}-вариант`}
+                    label={`${index + 1}-variant`}
                     style={{ marginBottom: "10px" }}
                   >
-                    <Input
-                      required
-                      className="answers"
-                      disabled={loading}
-                    />
+                    <Input required className="answers" disabled={loading} />
                   </Form.Item>
                   {index > 1 ? (
                     <Button
-                      style={{ marginBottom: "2rem" }}
+                      style={{
+                        marginBottom: "2rem",
+                        background: "orangered",
+                        color: "#fff",
+                      }}
                       disabled={loading}
                       onClick={() => DeleteField(item.id)}
                     >
-                      Удалить
+                      O'chirish
                     </Button>
                   ) : null}
                 </div>
@@ -212,12 +217,12 @@ const EditTest = () => {
                   type="primary"
                   onClick={() => AddForm(answer)}
                 >
-                  Добавить ответ
+                  Variant qo'shish
                 </Button>
               </Form.Item>
               <Form.Item>
                 <Button loading={loading} type="primary" htmlType="submit">
-                  Добавить тест
+                  Saqlash
                 </Button>
               </Form.Item>
             </div>

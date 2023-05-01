@@ -1,4 +1,13 @@
-import { Card, Space, Table, Modal, Button, Breadcrumb, Tooltip } from "antd";
+import {
+  Card,
+  Space,
+  Table,
+  Modal,
+  Button,
+  Breadcrumb,
+  Tooltip,
+  Spin,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import {
   BiCheckCircle,
@@ -7,7 +16,7 @@ import {
   BiPencil,
   BiPlus,
   BiPlusCircle,
-  BiTrash,
+  BiUser,
   BiWindowOpen,
 } from "react-icons/bi";
 import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
@@ -16,6 +25,8 @@ import { Notification } from "../../Notification/Notification";
 import "./styles/viewStyle.scss";
 import { AiOutlineSync } from "react-icons/ai";
 import moment from "moment";
+import CommentCard from "../../generics/CommentCard";
+import { MdStarRate } from "react-icons/md";
 
 const ViewCourse = () => {
   const params = useParams();
@@ -23,13 +34,22 @@ const ViewCourse = () => {
   const [subjects, setSubjects] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [ModalText, setModalText] = useState(
-    "Вы уверены, что хотите изменить статус с активного на неактивный или наоборот?"
+    "Siz haqiqatdan ham ushbu kursni statusini o'zgartirmoqchimisiz?"
   );
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [idModal, setIdModal] = useState(null);
   const location = useLocation();
   const navigate = useNavigate();
+  const [comment, setComment] = useState();
+  const [commentEmptyText, setCommentEmptyText] = useState(false);
+  const [paginateComment, setPaginateComment] = useState(12);
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const [pagination, setPagination] = useState({
+    current_page: sessionStorage.getItem("current_page") ?? "1",
+    per_page: 10,
+    total: 15,
+  });
   const columns = [
     {
       title: "№",
@@ -38,17 +58,17 @@ const ViewCourse = () => {
       width: "5%",
     },
     {
-      title: "Название",
+      title: "Mavzular nomi",
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Описание",
+      title: "Tavsif",
       dataIndex: "teaser",
       key: "teaser",
     },
     {
-      title: "Статус",
+      title: "Status",
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -61,7 +81,32 @@ const ViewCourse = () => {
       },
     },
     {
-      title: "Создано",
+      title: "Reyting",
+      dataIndex: "rate",
+      key: "rate",
+      align: "center",
+      render: (t) => {
+        return (
+          <div className="d-flex align-center justify-center gap-x-1">
+            <Tooltip title="o'rtacha baho">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
+                <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
+              </div>
+            </Tooltip>
+            {"-"}
+            <Tooltip title="baho qo'yganlar soni">
+              <div className="d-flex align-center gap-1">
+                {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
+                <BiUser />
+              </div>
+            </Tooltip>
+          </div>
+        );
+      },
+    },
+    {
+      title: "Yaratilgan",
       dataIndex: "created_at",
       key: "created_at",
       render: (text) => {
@@ -69,13 +114,13 @@ const ViewCourse = () => {
       },
     },
     {
-      title: "Тип",
+      title: "Tur",
       dataIndex: "subject_type",
       key: "subject_type",
       align: "center",
     },
     {
-      title: "Действие",
+      title: "Ba'tafsil",
       dataIndex: "action",
       key: "action",
       align: "end",
@@ -83,22 +128,22 @@ const ViewCourse = () => {
       render: (text, record) =>
         record.subject_type == "topic" ? (
           <Space size="middle">
-            <Tooltip title="Изменить">
+            <Tooltip title="O'zgartirish">
               <BiPencil className="iconView" onClick={() => edit(record)} />
             </Tooltip>
-            <Tooltip title="Изменить статус">
+            <Tooltip title="Statusni o'zgartirish">
               <AiOutlineSync
                 className="iconView"
                 onClick={() => showModal(record)}
               />
             </Tooltip>
-            <Tooltip title="Посмотреть">
+            <Tooltip title="Ko'rish">
               <BiWindowOpen className="iconView" onClick={() => view(record)} />
             </Tooltip>
           </Space>
         ) : (
           <Space size="middle">
-            <Tooltip title="Добавить">
+            <Tooltip title="Test qo'shish">
               <BiPlusCircle
                 className="iconView"
                 onClick={() =>
@@ -111,16 +156,16 @@ const ViewCourse = () => {
                 }
               />
             </Tooltip>
-            <Tooltip title="Изменить">
+            <Tooltip title="O'zgartirish">
               <BiPencil className="iconView" onClick={() => edit(record)} />
             </Tooltip>
-            <Tooltip title="Удалить">
+            <Tooltip title="Statusni o'zgartirish">
               <AiOutlineSync
                 className="iconView"
                 onClick={() => showModal(record)}
               />
             </Tooltip>
-            <Tooltip title="Посмотреть">
+            <Tooltip title="Ko'rish">
               <BiWindowOpen className="iconView" onClick={() => view(record)} />
             </Tooltip>
           </Space>
@@ -128,12 +173,42 @@ const ViewCourse = () => {
     },
   ];
 
+  // getComments
+  const getComments = (id, newPerPage) => {
+    const body = {
+      per_page: newPerPage,
+      course_id: params.id ?? id,
+    };
+    api
+      .post("api/receive-comment", body)
+      .then((res) => {
+        if (res.data.data.length > 0) {
+          setComment(res.data.data);
+        } else {
+          setCommentEmptyText("Ushbu kurs bo'yicha izohlar mavjud emas...");
+        }
+      })
+      .catch((err) => {
+        console.log(err, "err");
+      });
+  };
+
+  // handleMoreComment
+  const handleMoreComment = () => {
+    setLoadingBtn(true);
+    const newPerPage = paginateComment + 12;
+    setPaginateComment(newPerPage);
+    getComments(params.id, newPerPage);
+    setLoadingBtn(false);
+  };
+
   //   getCourse
   const getCourse = (id) => {
     api
       .get(`api/teacher/course/show/${id}`)
       .then((res) => {
         setCourse(res.data);
+        getComments(params.id, paginateComment);
       })
       .catch((err) => {
         console.log(err);
@@ -141,10 +216,12 @@ const ViewCourse = () => {
   };
 
   //   getSubjects
-  const getSubjects = (id) => {
+  const getSubjects = (id, page, per_page) => {
     setLoading(true);
     api
-      .get(`api/teacher/course-subject/list/${id}`)
+      .get(`api/teacher/course-subject/list/${id}`, {
+        params: { page, per_page },
+      })
       .then((res) => {
         setSubjects(
           res.data.data.map((item) => {
@@ -154,9 +231,18 @@ const ViewCourse = () => {
               name: item.name,
               teaser: item.teaser,
               subject_type: item.subject_type,
+              rate: {
+                average_rate: item.average_rate,
+                rate_count: item.rate_count,
+              },
             };
           })
         );
+        setPagination({
+          current_page: res.data.current_page,
+          per_page: res.data.per_page,
+          total: res.data.total,
+        });
         setLoading(false);
       })
       .catch((err) => {
@@ -185,7 +271,7 @@ const ViewCourse = () => {
   //   modal
   const handleOk = () => {
     setConfirmLoading(true);
-    setModalText("Загрузка...");
+    setModalText("Yuklanmoqda...");
     api
       .get(`/api/teacher/course-subject/active/${idModal}`)
       .then((res) => {
@@ -194,7 +280,11 @@ const ViewCourse = () => {
             setModalOpen(false);
             setConfirmLoading(false);
             Notification();
-            getSubjects(params.id);
+            getSubjects(
+              params.id,
+              pagination.current_page,
+              pagination.per_page
+            );
           }, 1500);
         }
       })
@@ -205,7 +295,11 @@ const ViewCourse = () => {
 
   useEffect(() => {
     getCourse(params.id);
-    getSubjects(params.id);
+    getSubjects(params.id, pagination.current_page, pagination.per_page);
+
+    return () => {
+      sessionStorage.removeItem("current_page");
+    };
   }, []);
 
   return (
@@ -232,24 +326,68 @@ const ViewCourse = () => {
       <Card title={course.name}>
         <Card
           className="inside_card"
-          title="Список"
-          extra={
-            <Button
-              type="primary"
-              className="d-flex align-center gap-1"
-              icon={<BiPlus />}
-              onClick={() =>
-                navigate(`/teacher/subject/create/${course.id}`, {
-                  state: { message: params.id },
-                })
-              }
+          title={
+            <div
+              style={{ flexWrap: "wrap", padding: "0.5rem 0" }}
+              className="d-flex align-center justify-between gap-1"
             >
-              Boshlash
-            </Button>
+              Ro'yxat
+              <Button
+                type="primary"
+                className="d-flex align-center gap-1"
+                icon={<BiPlus />}
+                onClick={() =>
+                  navigate(`/teacher/subject/create/${course.id}`, {
+                    state: { message: params.id },
+                  })
+                }
+              >
+                Yaratish
+              </Button>
+            </div>
           }
         >
-          <Table loading={loading} bordered columns={columns} dataSource={subjects} />
+          <Table
+            loading={loading}
+            bordered
+            columns={columns}
+            dataSource={subjects}
+            pagination={{
+              current_page: pagination.current_page,
+              per_page: pagination.per_page,
+              total: pagination.total,
+              onChange: (current_page, per_page) => {
+                getSubjects(params.id, current_page, per_page);
+                sessionStorage.setItem("current_page", current_page);
+              },
+            }}
+          />
         </Card>
+      </Card>
+      <Card title="Kursga oid izohlar" className="izohCard">
+        {loading && <Spin />}
+        {commentEmptyText && (
+          <em
+            style={{
+              display: "block",
+              margin: "2rem 0",
+              textAlign: "center",
+              color: "grey",
+            }}
+          >
+            {commentEmptyText}
+          </em>
+        )}
+        {comment?.map((item) => {
+          return <CommentCard key={item.id} data={item} />;
+        })}
+        <Button
+          disabled={commentEmptyText ? true : false}
+          onClick={handleMoreComment}
+          loading={loadingBtn}
+        >
+          Ko'proq ko'rsatish
+        </Button>
       </Card>
       <Modal
         title={"Изменить статус"}

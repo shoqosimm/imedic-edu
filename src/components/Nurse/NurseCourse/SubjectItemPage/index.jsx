@@ -1,4 +1,14 @@
-import { Breadcrumb, Button, Card, Col, Modal, Row, Skeleton } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Modal,
+  Rate,
+  Row,
+  Skeleton,
+  Spin,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { BiHome } from "react-icons/bi";
@@ -7,6 +17,8 @@ import { api } from "../../../../utils/api";
 import { Notification } from "../../../Notification/Notification";
 import { BsPlus } from "react-icons/bs";
 import { ToastContainer } from "react-toastify";
+import CommentCard from "../../../generics/CommentCard";
+import { AiFillEye } from "react-icons/ai";
 
 const SubjectItemPage = () => {
   const param = useParams();
@@ -17,6 +29,10 @@ const SubjectItemPage = () => {
   const [addCourseText, setAddCourseText] = useState();
   const [subject, setSubject] = useState();
   const [skeleton, setSkeleton] = useState(false);
+  const [comment, setComment] = useState();
+  const [paginateComment, setPaginateComment] = useState(12);
+  const [loadingBtn, setLoadingBtn] = useState(false);
+  const [commentEmptyText, setCommentEmptyText] = useState(false);
 
   // getSubject
   const getSubject = async () => {
@@ -28,7 +44,10 @@ const SubjectItemPage = () => {
         name: res.data.name,
         teaser: res.data.teaser,
         content: res.data.content,
+        average_rate: res.data.average_rate,
+        type: res.data.type,
       });
+      getComments(param.id, paginateComment);
       setSkeleton(false);
     } catch (err) {
       console.log(err, "err");
@@ -36,6 +55,35 @@ const SubjectItemPage = () => {
     } finally {
       setSkeleton(false);
     }
+  };
+
+  // getComments
+  const getComments = (id, newPerPage) => {
+    const body = {
+      per_page: newPerPage,
+      course_subjects_id: param.id ?? id,
+    };
+    api
+      .post("api/receive-comment", body)
+      .then((res) => {
+        if (res.data.data.length > 0) {
+          setComment(res.data.data);
+        } else {
+          setCommentEmptyText("Ushbu mavzu bo'yicha izohlar mavjud emas...");
+        }
+      })
+      .catch((err) => {
+        console.log(err, "err");
+      });
+  };
+
+  // handleMoreComment
+  const handleMoreComment = () => {
+    setLoadingBtn(true);
+    const newPerPage = paginateComment + 12;
+    setPaginateComment(newPerPage);
+    getComments(param.id, newPerPage);
+    setLoadingBtn(false);
   };
 
   // modal
@@ -85,7 +133,7 @@ const SubjectItemPage = () => {
 
   useEffect(() => {
     getSubject();
-    addCourseList(param.id);
+    addCourseList();
     addCourseListText(subject);
   }, []);
 
@@ -103,18 +151,24 @@ const SubjectItemPage = () => {
           },
           {
             title: (
-              <Link to={`/nurse/course/${location.state.message}`}>
-                Предмет
-              </Link>
+              <Link to={`/nurse/course/${location.state.message}`}>Mavzu</Link>
             ),
           },
         ]}
       />
+
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
           <Card
             title={
-              skeleton ? <Skeleton title paragraph={false} /> : subject?.name
+              skeleton ? (
+                <Skeleton title paragraph={false} />
+              ) : (
+                <div className="d-flex align-center justify-between">
+                  {subject?.name}
+                  <Rate disabled value={subject?.average_rate} />
+                </div>
+              )
             }
           >
             <div
@@ -135,11 +189,49 @@ const SubjectItemPage = () => {
             {skeleton ? (
               <Skeleton title={false} paragraph />
             ) : (
-              <div
-                className="content"
-                style={{ width: "90%", margin: "0 auto" }}
-                dangerouslySetInnerHTML={{ __html: subject?.content }}
-              />
+              (subject?.type === "pdf" && (
+                <>
+                  <div
+                    style={{
+                      margin: "1rem 0",
+                    }}
+                    className="d-flex align-center"
+                  >
+                    <Button
+                      className="d-flex align-center gap-1"
+                      style={{ margin: "0 auto" }}
+                    >
+                      <AiFillEye style={{ fontSize: "18px" }} />
+                      <a
+                        href={`https://api.edu.imedic.uz${subject?.content}`}
+                        target="_blank"
+                      >
+                        PDF -ni ko'rish
+                      </a>
+                    </Button>
+                  </div>
+                  <object
+                    data={`https://api.edu.imedic.uz${subject?.content}`}
+                    width="100%"
+                    type="application/pdf"
+                    style={{ height: "100vh" }}
+                  />
+                </>
+              )) ||
+              (subject?.type === "video" && (
+                <video controls width={"100%"}>
+                  <source
+                    src={`https://api.edu.imedic.uz${subject?.content}`}
+                    type="video/mp4"
+                  />
+                </video>
+              )) || (
+                <div
+                  className="content"
+                  style={{ width: "90%", margin: "0 auto" }}
+                  dangerouslySetInnerHTML={{ __html: subject?.content }}
+                />
+              )
             )}
           </Card>
           <div
@@ -172,6 +264,31 @@ const SubjectItemPage = () => {
       </Modal>
 
       <ToastContainer />
+      <Card title="Izohlar" className="izohCard">
+        {skeleton && <Spin />}
+        {commentEmptyText && (
+          <em
+            style={{
+              display: "block",
+              margin: "2rem 0",
+              textAlign: "center",
+              color: "grey",
+            }}
+          >
+            {commentEmptyText}
+          </em>
+        )}
+        {comment?.map((item) => {
+          return <CommentCard key={item.id} data={item} />;
+        })}
+        <Button
+          disabled={commentEmptyText ? true : false}
+          onClick={handleMoreComment}
+          loading={loadingBtn}
+        >
+          Ko'proq ko'rsatish
+        </Button>
+      </Card>
     </>
   );
 };

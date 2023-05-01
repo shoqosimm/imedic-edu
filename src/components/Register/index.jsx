@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
-import { Button, DatePicker, Form, Input, InputNumber } from "antd";
+import { Button, DatePicker, Form, Input } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../utils/api";
 import Swal from "sweetalert2";
@@ -24,7 +24,7 @@ const Register = () => {
     const res = await api.post("api/user/register", body);
     try {
       if (res) {
-        toast.success("Успешно", {
+        toast.success("Muvaffaqiyatli", {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setTimeout(() => {
@@ -53,7 +53,7 @@ const Register = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Найдено",
+          title: "Topildi",
           showConfirmButton: false,
           timer: 2000,
           timerProgressBar: true,
@@ -72,7 +72,7 @@ const Register = () => {
     } catch (err) {
       Swal.fire({
         icon: "error",
-        title: "Не найдено",
+        title: "Ushbu PINFL bo'yicha ma'lumot topilmadi",
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -89,23 +89,23 @@ const Register = () => {
       <div className="container form_wrapper">
         <Form
           onFinish={handleRegister}
-          autoComplete="false"
+          autoComplete="off"
           layout="vertical"
           form={form}
           id="registerForm"
         >
           <div className="main_text">
-            <h1>Регистрация</h1>
+            <h1>Ro'yxatdan o'tish</h1>
           </div>
           <div>
             <div className="d-flex align-center gap-2">
               <Form.Item
                 name="first_name"
-                label="Имя"
+                label="Ism"
                 rules={[
                   {
                     required: true,
-                    message: "Не указань или указан неправильно",
+                    message: "Ism noto'g'ri kiritildi",
                     whitespace: true,
                   },
                 ]}
@@ -114,11 +114,11 @@ const Register = () => {
               </Form.Item>
               <Form.Item
                 name="last_name"
-                label="Фамилия"
+                label="Familiya"
                 rules={[
                   {
                     required: true,
-                    message: "Не указань или указан неправильно",
+                    message: "Familiya noto'g'ri kiritildi",
                     whitespace: true,
                   },
                 ]}
@@ -126,24 +126,24 @@ const Register = () => {
                 <Input disabled={disabled} />
               </Form.Item>
             </div>
-            <Form.Item name="patronymic" label="Отчество">
+            <Form.Item name="patronymic" label="Otasining ismi">
               <Input disabled={disabled} />
             </Form.Item>
             <div className="d-flex align-center gap-2">
-              <Form.Item name="series" label="Серия пасспорта">
+              <Form.Item name="series" label="Pasport seriya">
                 <Input disabled={disabled} placeholder="AA" />
               </Form.Item>
-              <Form.Item name="number" label="Номер пасспорта">
+              <Form.Item name="number" label="Pasport raqam">
                 <Input disabled={disabled} placeholder="1234567" />
               </Form.Item>
             </div>
             <Form.Item
               name="pinfl"
-              label="ПНФЛ"
+              label="PINFL"
               rules={[
                 {
                   required: true,
-                  message: "Введите ПНФЛ",
+                  message: "PINFL kiriting",
                   whitespace: true,
                   min: 14,
                   max: 14,
@@ -153,35 +153,35 @@ const Register = () => {
               <Input
                 className="d-flex align-start"
                 disabled={loading}
-                placeholder="14 цифр"
-                suffix={<Button onClick={getPnflInfo}>Проверить</Button>}
+                placeholder="14ta son"
+                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
               />
             </Form.Item>
-            <Form.Item name="phone" label="Номер телефона">
+            <Form.Item name="phone" label="Telefon raqam">
               <Input
                 disabled={loading}
                 placeholder="998901234567"
                 rules={[
                   {
                     required: true,
-                    message: "Введите номер телефона",
+                    message: "Telefon raqam kiriting",
                     whitespace: true,
                     min: 12,
                   },
                 ]}
               />
             </Form.Item>
-            <Form.Item name="birth_date" label="Дата рождения">
+            <Form.Item name="birth_date" label="Tug'ilgan sanasi">
               <DatePicker disabled/>
             </Form.Item>
             <div className="d-flex align-center gap-2">
               <Form.Item
                 name="password"
-                label="Пароль"
+                label="Parol"
                 rules={[
                   {
                     required: true,
-                    message: "Введите пароль",
+                    message: "Parol kiriting",
                     whitespace: true,
                     min: 6,
                   },
@@ -191,11 +191,11 @@ const Register = () => {
               </Form.Item>
               <Form.Item
                 name="password_confirmation"
-                label="Подтвердите пароль"
+                label="Parolni takrorlang"
                 rules={[
                   {
                     required: true,
-                    message: "Введите пароль",
+                    message: "Parol kiriting",
                     whitespace: true,
                     min: 6,
                   },
@@ -211,11 +211,11 @@ const Register = () => {
             htmlType="submit"
             style={{ width: "100%", marginTop: "1rem" }}
           >
-            Регистрация
+            Ro'yxatdan o'tish
           </Button>
           <div className="other__sign">
             <p>
-              уже есть аккаунт <Link to="/login">Войти</Link>
+              sizda akkaunt bormi unday bo'lsa, <Link to="/login">Kirish</Link>
             </p>
           </div>
         </Form>

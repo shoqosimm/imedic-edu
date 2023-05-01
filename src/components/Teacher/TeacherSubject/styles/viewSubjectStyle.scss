@@ -28,21 +28,29 @@ input[type="file"] {
   }
 }
 
-.ant-table{
+.ant-table {
   overflow: scroll;
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     display: none;
   }
-  .ant-table-thead{
-    th{
-      background:#1389f8 !important;
+  .ant-table-thead {
+    th {
+      background: #1389f8 !important;
       color: #fff !important;
     }
   }
-  .ant-table-tbody{
+  .ant-table-tbody {
     background: rgb(247, 250, 252);
-    td{
+
+    td {
       border-color: #dadada !important;
     }
+  }
+}
+
+.teacher__subject__content{
+  img{
+    width: auto;
+    max-width: 100%;
   }
 }
