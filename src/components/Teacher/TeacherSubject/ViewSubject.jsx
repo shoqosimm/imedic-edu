@@ -24,6 +24,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import { SiMicrosoftexcel } from "react-icons/si";
 import CommentCard from "../../generics/CommentCard";
+import { AiFillEye } from "react-icons/ai";
 
 const ViewSubject = () => {
   const param = useParams();
@@ -248,10 +249,48 @@ const ViewSubject = () => {
               <p>{subject?.name}</p>
             </Card>
             <Card centered="true">
-              <div
-                className="teacher__subject__content"
-                dangerouslySetInnerHTML={{ __html: subject?.content }}
-              />
+              {(subject?.type === "pdf" && (
+                <>
+                  <div
+                    style={{
+                      margin: "1rem 0",
+                    }}
+                    className="d-flex align-center"
+                  >
+                    <Button
+                      className="d-flex align-center gap-1"
+                      style={{ margin: "0 auto" }}
+                    >
+                      <AiFillEye style={{ fontSize: "18px" }} />
+                      <a
+                        href={`https://api.edu.imedic.uz${subject?.content}`}
+                        target="_blank"
+                      >
+                        PDF -ni ko'rish
+                      </a>
+                    </Button>
+                  </div>
+                  <object
+                    data={`https://api.edu.imedic.uz${subject?.content}`}
+                    width="100%"
+                    type="application/pdf"
+                    style={{ height: "100vh" }}
+                  />
+                </>
+              )) ||
+                (subject?.type === "video" && (
+                  <video controls width={"100%"}>
+                    <source
+                      src={`https://api.edu.imedic.uz${subject?.content}`}
+                      type="video/mp4"
+                    />
+                  </video>
+                )) || (
+                  <div
+                    className="teacher__subject__content"
+                    dangerouslySetInnerHTML={{ __html: subject?.content }}
+                  />
+                )}
             </Card>
           </Card>
         </div>

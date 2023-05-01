@@ -74,7 +74,7 @@ const CreateSubject = () => {
         const fmData = new FormData();
         fmData.append("video", videoUrl.file);
         body.content = fmData.get("video");
-        body.content_type = "video";
+        body.type = "video";
         body.course_id = parseInt(params.id);
         body.subject_type = "topic";
         body.name = values.name;
@@ -83,7 +83,7 @@ const CreateSubject = () => {
         const fmData = new FormData();
         fmData.append("pdf", pdfUrl.file);
         body.content = fmData.get("pdf");
-        body.content_type = "pdf";
+        body.type = "pdf";
         body.course_id = parseInt(params.id);
         body.subject_type = "topic";
         body.name = values.name;

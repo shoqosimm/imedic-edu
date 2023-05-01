@@ -44,6 +44,7 @@ const MySubjectItemPage = () => {
         setSubject({
           data: res.data.content,
           subject_id: res.data.course_subject_id,
+          type: res.data.content.type,
         });
         getComments(res.data.course_subject_id, paginateComment);
       })
@@ -79,7 +80,11 @@ const MySubjectItemPage = () => {
           }
           setConfirmLoading(false);
           setSkeleton(false);
-          setSubject(res.data.content);
+          setSubject({
+            data: res.data.content,
+            subject_id: res.data.course_subject_id,
+            type: res.data.content.type,
+          });
         }
       })
       .catch((err) => {
@@ -185,11 +190,11 @@ const MySubjectItemPage = () => {
           <Rate
             disabled
             allowClear={false}
-            value={subject?.data.average_rate}
+            value={subject?.data?.average_rate}
           />
         </div>
         <div className="d-flex align-center gap-1">
-          <p>Ovoz berganlar soni:</p> <p>{subject?.data.rate_count}ta</p>
+          <p>Ovoz berganlar soni:</p> <p>{subject?.data?.rate_count}ta</p>
         </div>
       </div>
       <Row gutter={16} className="ItemCard">
@@ -199,7 +204,7 @@ const MySubjectItemPage = () => {
               skeleton ? (
                 <Skeleton title paragraph={false} />
               ) : (
-                subject?.data.name
+                subject?.data?.name
               )
             }
           >
@@ -215,17 +220,55 @@ const MySubjectItemPage = () => {
               {skeleton ? (
                 <Skeleton title={false} paragraph />
               ) : (
-                <p>{subject?.data.teaser}</p>
+                <p>{subject?.data?.teaser}</p>
               )}
             </div>
             {skeleton ? (
               <Skeleton title={false} paragraph />
             ) : (
-              <div
-                className="content"
-                style={{ width: "90%", margin: "0 auto" }}
-                dangerouslySetInnerHTML={{ __html: subject?.data.content }}
-              />
+              (subject?.type === "pdf" && (
+                <>
+                  <div
+                    style={{
+                      margin: "1rem 0",
+                    }}
+                    className="d-flex align-center"
+                  >
+                    <Button
+                      className="d-flex align-center gap-1"
+                      style={{ margin: "0 auto" }}
+                    >
+                      <AiFillEye style={{ fontSize: "18px" }} />
+                      <a
+                        href={`https://api.edu.imedic.uz${subject?.content}`}
+                        target="_blank"
+                      >
+                        PDF -ni ko'rish
+                      </a>
+                    </Button>
+                  </div>
+                  <object
+                    data={`https://api.edu.imedic.uz${subject?.data?.content}`}
+                    width="100%"
+                    type="application/pdf"
+                    style={{ height: "100vh" }}
+                  />
+                </>
+              )) ||
+              (subject?.type === "video" && (
+                <video controls width={"100%"}>
+                  <source
+                    src={`https://api.edu.imedic.uz${subject?.data?.content}`}
+                    type="video/mp4"
+                  />
+                </video>
+              )) || (
+                <div
+                  className="content"
+                  style={{ width: "90%", margin: "0 auto" }}
+                  dangerouslySetInnerHTML={{ __html: subject?.data?.content }}
+                />
+              )
             )}
           </Card>
 
@@ -252,7 +295,7 @@ const MySubjectItemPage = () => {
               <Form.Item label="Sizning ovozingiz">
                 <Rate
                   onChange={handleRate}
-                  value={subject?.data.user_rate?.rate}
+                  value={subject?.data?.user_rate?.rate}
                   allowClear={false}
                 />
               </Form.Item>

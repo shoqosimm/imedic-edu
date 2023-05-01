@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Card,  Form, Input } from "antd";
+import { Breadcrumb, Button, Card, Form, Input } from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
@@ -8,7 +8,11 @@ import { Notification } from "../../Notification/Notification";
 import "./styles/edtSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
-import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import {
+  AiFillEye,
+  AiOutlineClose,
+  AiOutlineVideoCameraAdd,
+} from "react-icons/ai";
 import { VscFilePdf } from "react-icons/vsc";
 
 // quill-modules
@@ -61,6 +65,7 @@ const EditSubject = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState();
+  const [contentType, setContentType] = useState(false);
   const [videoUrl, setVideoUrl] = useState();
 
   //   getSubject
@@ -70,12 +75,22 @@ const EditSubject = () => {
       .get(`api/teacher/course-subject/show/${id}`)
       .then((res) => {
         setLoading(false);
-        if (location.state.subject_type !== "test") {
+        if (location.state?.subject_type !== "test") {
           form.setFieldsValue({
             name: res.data.data.name,
             content: res.data.data.content,
             teaser: res.data.data.teaser,
           });
+          setContentType(res.data.data.type);
+          if (res.data.data.type === "pdf") {
+            setPdfUrl({
+              url: `https://api.edu.imedic.uz${res.data.data.content}`,
+            });
+          } else if (res.data.data.type === "video") {
+            setVideoUrl({
+              url: `https://api.edu.imedic.uz${res.data.data.content}`,
+            });
+          }
         }
         form.setFieldsValue({
           name: res.data.data.name,
@@ -96,9 +111,36 @@ const EditSubject = () => {
   //   editSubject
   const onFinish = (values) => {
     setLoading(true);
-    values.subject_type = "topic";
+    if (contentType === "pdf") {
+      if (pdfUrl.file) {
+        const fm = new FormData();
+        fm.append("pdf", pdfUrl.file);
+        values.content = fm.get("pdf");
+        values.subject_type = "topic";
+        values.type = "pdf";
+      }
+      values.subject_type = "topic";
+    } else if (contentType === "video") {
+      if (videoUrl.file) {
+        const fm = new FormData();
+        fm.append("video", videoUrl.file);
+        values.content = fm.get("video");
+        values.subject_type = "topic";
+        values.type = "video";
+      }
+      values.subject_type = "topic";
+    } else {
+      values.subject_type = "topic";
+      values.type = "text";
+    }
+
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
     api
-      .post(`api/teacher/course-subject/update/${params.id}`, values)
+      .post(`api/teacher/course-subject/update/${params.id}`, values, config)
       .then((res) => {
         if (res.data.success === 1) {
           Notification();
@@ -139,6 +181,7 @@ const EditSubject = () => {
   // handlePdf
   const handlePdf = (e) => {
     setVideoUrl(false);
+    setContentType("pdf");
     setPdfUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
@@ -147,6 +190,7 @@ const EditSubject = () => {
   // handleVideo
   const handleVideo = (e) => {
     setPdfUrl(false);
+    setContentType("video");
     setVideoUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
@@ -157,12 +201,14 @@ const EditSubject = () => {
   const handleCloseFiles = () => {
     setVideoUrl(false);
     setPdfUrl(false);
+    setContentType(false);
   };
 
   useEffect(() => {
     getSubject(params.id);
   }, []);
 
+  console.log(pdfUrl?.url, "pdf");
   return (
     <div className="editSubject__teacher">
       <Breadcrumb
@@ -177,7 +223,7 @@ const EditSubject = () => {
           },
           {
             title: (
-              <Link to={`/teacher/course/${location.state.message}/view`}>
+              <Link to={`/teacher/course/${location.state?.message}/view`}>
                 Ortga
               </Link>
             ),
@@ -192,7 +238,7 @@ const EditSubject = () => {
         ]}
       />
       <Card title="O'zgartirish">
-        {location.state.subject_type !== "test" ? (
+        {location.state?.subject_type !== "test" ? (
           <Form id="sujectForm" name="basic" form={form} onFinish={onFinish}>
             <Form.Item name="name">
               <Input disabled={loading} />
@@ -239,18 +285,38 @@ const EditSubject = () => {
               {pdfUrl || videoUrl ? (
                 <Button
                   onClick={handleCloseFiles}
-                  style={{ background: "red", color: "#fff" }}
+                  style={{ background: "red" }}
                 >
-                  X
+                  <AiOutlineClose style={{ fill: "#fff" }} />
                 </Button>
               ) : null}
             </div>
+
             {(pdfUrl && (
-              <object
-                data={pdfUrl?.url}
-                width="100%"
-                style={{ height: "100vh" }}
-              />
+              <>
+                <div
+                  style={{
+                    margin: "1rem 0",
+                  }}
+                  className="d-flex align-center"
+                >
+                  <Button
+                    className="d-flex align-center gap-1"
+                    style={{ margin: "0 auto" }}
+                  >
+                    <AiFillEye style={{ fontSize: "18px" }} />
+                    <a href={pdfUrl?.url} target="_blank">
+                      PDF -ni ko'rish
+                    </a>
+                  </Button>
+                </div>
+                <object
+                  data={pdfUrl?.url}
+                  width="100%"
+                  type="application/pdf"
+                  style={{ height: "100vh" }}
+                ></object>
+              </>
             )) ||
               (videoUrl && (
                 <video controls width="100%">
@@ -330,7 +396,7 @@ const EditSubject = () => {
             <Form.Item>
               <Button
                 form={
-                  location.state.subject_type === "test"
+                  location.state?.subject_type === "test"
                     ? "testForm"
                     : "sujectForm"
                 }

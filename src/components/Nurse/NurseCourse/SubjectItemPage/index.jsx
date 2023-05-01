@@ -18,6 +18,7 @@ import { Notification } from "../../../Notification/Notification";
 import { BsPlus } from "react-icons/bs";
 import { ToastContainer } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
+import { AiFillEye } from "react-icons/ai";
 
 const SubjectItemPage = () => {
   const param = useParams();
@@ -44,6 +45,7 @@ const SubjectItemPage = () => {
         teaser: res.data.teaser,
         content: res.data.content,
         average_rate: res.data.average_rate,
+        type: res.data.type,
       });
       getComments(param.id, paginateComment);
       setSkeleton(false);
@@ -154,7 +156,7 @@ const SubjectItemPage = () => {
           },
         ]}
       />
-      
+
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
           <Card
@@ -187,11 +189,49 @@ const SubjectItemPage = () => {
             {skeleton ? (
               <Skeleton title={false} paragraph />
             ) : (
-              <div
-                className="content"
-                style={{ width: "90%", margin: "0 auto" }}
-                dangerouslySetInnerHTML={{ __html: subject?.content }}
-              />
+              (subject?.type === "pdf" && (
+                <>
+                  <div
+                    style={{
+                      margin: "1rem 0",
+                    }}
+                    className="d-flex align-center"
+                  >
+                    <Button
+                      className="d-flex align-center gap-1"
+                      style={{ margin: "0 auto" }}
+                    >
+                      <AiFillEye style={{ fontSize: "18px" }} />
+                      <a
+                        href={`https://api.edu.imedic.uz${subject?.content}`}
+                        target="_blank"
+                      >
+                        PDF -ni ko'rish
+                      </a>
+                    </Button>
+                  </div>
+                  <object
+                    data={`https://api.edu.imedic.uz${subject?.content}`}
+                    width="100%"
+                    type="application/pdf"
+                    style={{ height: "100vh" }}
+                  />
+                </>
+              )) ||
+              (subject?.type === "video" && (
+                <video controls width={"100%"}>
+                  <source
+                    src={`https://api.edu.imedic.uz${subject?.content}`}
+                    type="video/mp4"
+                  />
+                </video>
+              )) || (
+                <div
+                  className="content"
+                  style={{ width: "90%", margin: "0 auto" }}
+                  dangerouslySetInnerHTML={{ __html: subject?.content }}
+                />
+              )
             )}
           </Card>
           <div
