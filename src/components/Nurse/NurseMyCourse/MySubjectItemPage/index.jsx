@@ -76,6 +76,7 @@ const MySubjectItemPage = () => {
             navigate(`/nurse/mycourse/${subject_id}/subject/${res.data.id}`, {
               state: { message: subject_id },
             });
+            getComments(res.data.course_subject_id, paginateComment);
             Notification();
           }
           setConfirmLoading(false);
