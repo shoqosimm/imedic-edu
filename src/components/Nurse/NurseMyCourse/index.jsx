@@ -11,6 +11,7 @@ import { BsBookmarks } from "react-icons/bs";
 const NurseMyCourseList = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
+  const controller = new AbortController();
   const [pagination, setPagination] = useState({
     current_page: 1,
     per_page: 15,
@@ -145,7 +146,7 @@ const NurseMyCourseList = () => {
       per_page,
     };
     api
-      .get("api/nurse/course/list", { params })
+      .get("api/nurse/course/list", { params }, { signal: controller.signal })
       .then((res) => {
         setCourses(
           res.data.data.map((item) => {
@@ -174,6 +175,10 @@ const NurseMyCourseList = () => {
 
   useEffect(() => {
     getCourseList(1, 15);
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

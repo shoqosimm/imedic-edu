@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Card, Col,  Row, Spin } from "antd";
+import { Breadcrumb, Button, Card, Col, Row, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
@@ -17,12 +17,12 @@ const SubjectPage = () => {
   const [comment, setComment] = useState();
   const [paginateComment, setPaginateComment] = useState(12);
   const [loadingBtn, setLoadingBtn] = useState(false);
-
+  const controller = new AbortController();
   // getSubjects
   const getSubjects = (id) => {
     setLoading(true);
     api
-      .get(`api/nurse/course/list/${id}`)
+      .get(`api/nurse/course/list/${id}`, { signal: controller.signal })
       .then((res) => {
         setLoading(false);
         if (res.data.data.length <= 0) {
@@ -89,6 +89,10 @@ const SubjectPage = () => {
 
   useEffect(() => {
     getSubjects(param.id);
+
+    return () => {
+      controller.abort();
+    };
   }, [param]);
 
   return (
