@@ -1,14 +1,12 @@
-import React, { useState,  useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import screenfull from "screenfull";
 import "./style.scss";
 import { Button, Modal, Pagination, Radio } from "antd";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
 import Countdown from "react-countdown";
-
-
 
 const MySubjectTest = () => {
   const navigate = useNavigate();
@@ -29,10 +27,14 @@ const MySubjectTest = () => {
     variant: [],
   });
 
+  const controller = new AbortController();
+
   // getTest
   const getTest = async () => {
     try {
-      const res = await api.get(`api/nurse/test/data/${id}`);
+      const res = await api.get(`api/nurse/test/data/${id}`, {
+        signal: controller.signal,
+      });
       setTestInfo(res.data);
       if (res.data.test_start && res.data.status == 1) {
         handleStartTest();
@@ -168,6 +170,10 @@ const MySubjectTest = () => {
 
   useEffect(() => {
     getTest();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
@@ -237,7 +243,8 @@ const MySubjectTest = () => {
               Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
             </p>
             <p>
-              Test soni: <strong>{testInfo?.course_subject.count_test}</strong> ta
+              Test soni: <strong>{testInfo?.course_subject.count_test}</strong>{" "}
+              ta
             </p>
             <p>
               To'g'ri javoblarning minimal soni:
@@ -250,7 +257,12 @@ const MySubjectTest = () => {
           </div>
           <div className="test__modal__desctiption">
             <p>
-              Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu testni yakunlamasdan sahifani tark etish mumkin emas, Agarda testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test ham yakunlanadi va testni javoblari qa'bul qilinadi, test "Testni boshlash" tugmasini bosilgandan so'ng boshlanadi.
+              Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu
+              testni yakunlamasdan sahifani tark etish mumkin emas, Agarda
+              testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga
+              ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test ham
+              yakunlanadi va testni javoblari qa'bul qilinadi, test "Testni
+              boshlash" tugmasini bosilgandan so'ng boshlanadi.
             </p>
           </div>
         </div>

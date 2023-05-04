@@ -33,12 +33,14 @@ const SubjectItemPage = () => {
   const [paginateComment, setPaginateComment] = useState(12);
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [commentEmptyText, setCommentEmptyText] = useState(false);
-
+  const controller = new AbortController();
   // getSubject
   const getSubject = async () => {
     setSkeleton(true);
     try {
-      const res = await api.get(`api/nurse/course/subject/${param.id}`);
+      const res = await api.get(`api/nurse/course/subject/${param.id}`, {
+        signal: controller.signal,
+      });
       setSubject({
         id: res.data.id,
         name: res.data.name,
@@ -135,6 +137,10 @@ const SubjectItemPage = () => {
     getSubject();
     addCourseList();
     addCourseListText(subject);
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

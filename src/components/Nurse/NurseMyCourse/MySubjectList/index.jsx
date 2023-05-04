@@ -20,12 +20,15 @@ const NurseMyCourse = () => {
   const [comment, setComment] = useState();
   const [initialRate, setInitialRate] = useState(false);
   const [form] = Form.useForm();
+  const controller = new AbortController();
 
   // getCourseList
   const getCourseList = () => {
     setLoading(true);
     api
-      .get(`api/nurse/subject/mycourse/${params.id}`)
+      .get(`api/nurse/subject/mycourse/${params.id}`, {
+        signal: controller.signal,
+      })
       .then((res) => {
         if (res.data.length <= 0) {
           setEmptyText("Bu kurs bo'yicha mavzular mavjud emas!");
@@ -119,6 +122,10 @@ const NurseMyCourse = () => {
 
   useEffect(() => {
     getCourseList();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (

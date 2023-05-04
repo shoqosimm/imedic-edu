@@ -33,12 +33,13 @@ const MySubjectItemPage = () => {
   const [comment, setComment] = useState();
   const [paginateComment, setPaginateComment] = useState(12);
   const [form] = Form.useForm();
+  const controller = new AbortController();
 
   // getSubject
   const getSubject = () => {
     setSkeleton(true);
     api
-      .get(`api/nurse/subject/item/${param.id}`)
+      .get(`api/nurse/subject/item/${param.id}`, { signal: controller.signal })
       .then((res) => {
         setSkeleton(false);
         setSubject({
@@ -156,6 +157,10 @@ const MySubjectItemPage = () => {
   useEffect(() => {
     setSubject_id(location.state.message);
     getSubject();
+
+    return () => {
+      controller.abort();
+    };
   }, []);
 
   return (
