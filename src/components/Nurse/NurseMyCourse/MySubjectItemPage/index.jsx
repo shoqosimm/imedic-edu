@@ -19,6 +19,7 @@ import { Notification } from "../../../Notification/Notification";
 import { BsArrowRight } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
+import { AiFillEye } from "react-icons/ai";
 
 const MySubjectItemPage = () => {
   const param = useParams();
@@ -246,7 +247,7 @@ const MySubjectItemPage = () => {
                     >
                       <AiFillEye style={{ fontSize: "18px" }} />
                       <a
-                        href={`https://api.edu.imedic.uz${subject?.content}`}
+                        href={`https://api.edu.imedic.uz${subject?.data?.content}`}
                         target="_blank"
                       >
                         PDF -ni ko'rish
