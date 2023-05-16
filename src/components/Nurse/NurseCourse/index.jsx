@@ -1,12 +1,13 @@
 import { Row, Select, Col, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiUser, BiWindowOpen } from "react-icons/bi";
+import { BiPin, BiUser, BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
-import { BsBookmarks } from "react-icons/bs";
+import { BsBookmarks, BsFillPinAngleFill, BsPin } from "react-icons/bs";
 import { FaUserMd } from "react-icons/fa";
 import { MdStarRate } from "react-icons/md";
+import { ToastContainer, toast } from "react-toastify";
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
@@ -81,6 +82,20 @@ const NurseCourse = () => {
     });
   }
 
+  // handleAddCourse
+  const handleAddCourse = async (id) => {
+    console.log(id, "id");
+    try {
+      const body = {
+        course_id: id,
+      };
+      const res = await api.post("api/nurse/course/add", body);
+      res.status===200 && toast.success('Добавлено!')
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const columns = [
     {
       title: "№",
@@ -126,14 +141,14 @@ const NurseCourse = () => {
             <Tooltip title="o'rtacha baho">
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
-                <MdStarRate style={{fill:'orangered',fontSize:'18px'}}/>
+                <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
               </div>
             </Tooltip>
             {"-"}
             <Tooltip title="baho qo'yganlar soni">
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
-                <BiUser  />
+                <BiUser />
               </div>
             </Tooltip>
           </div>
@@ -155,11 +170,19 @@ const NurseCourse = () => {
       align: "center",
       width: "10%",
       render: (text, record) => (
-        <Tooltip title="Batafsil">
-          <Link to={`/nurse/course/${record.id}`}>
-            <BiWindowOpen style={{ fontSize: "18px" }} />
-          </Link>
-        </Tooltip>
+        <div className="d-flex align-center justify-evenly ">
+          <Tooltip title="Biriktirish">
+            <BsFillPinAngleFill
+              onClick={() => handleAddCourse(record.id)}
+              style={{ fill: "red", fontSize: "18px", cursor: "pointer" }}
+            />
+          </Tooltip>
+          <Tooltip title="Batafsil">
+            <Link to={`/nurse/course/${record.id}`}>
+              <BiWindowOpen style={{ fontSize: "18px" }} />
+            </Link>
+          </Tooltip>
+        </div>
       ),
     },
   ];
@@ -214,6 +237,7 @@ const NurseCourse = () => {
           )}
         </Col>
       </Row>
+      <ToastContainer/>
     </>
   );
 };
