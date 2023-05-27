@@ -9,6 +9,7 @@ import "./styles/createSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { VscFilePdf } from "react-icons/vsc";
 import { AiOutlineVideoCameraAdd } from "react-icons/ai";
+import { ToastContainer } from "react-toastify";
 
 // quill-modules
 const modules = {
@@ -380,6 +381,7 @@ const CreateSubject = () => {
           </Form>
         </Card>
       </Card>
+      <ToastContainer />
     </div>
   );
 };
