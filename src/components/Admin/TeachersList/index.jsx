@@ -260,12 +260,12 @@ const AdminTeacherList = () => {
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item name="series" label="Pasport seriyasi">
-                <Input disabled />
+                <Input disabled={loading} />
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item name="number" label="Pasport raqami">
-                <Input disabled />
+                <Input disabled={loading} />
               </Form.Item>
             </Col>
           </Row>
