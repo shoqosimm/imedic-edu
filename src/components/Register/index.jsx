@@ -131,10 +131,10 @@ const Register = () => {
             </Form.Item>
             <div className="d-flex align-center gap-2">
               <Form.Item name="series" label="Pasport seriya">
-                <Input disabled={disabled} placeholder="AA" />
+                <Input disabled={loading} placeholder="AA" />
               </Form.Item>
               <Form.Item name="number" label="Pasport raqam">
-                <Input disabled={disabled} placeholder="1234567" />
+                <Input disabled={loading} placeholder="1234567" />
               </Form.Item>
             </div>
             <Form.Item
@@ -172,7 +172,7 @@ const Register = () => {
               />
             </Form.Item>
             <Form.Item name="birth_date" label="Tug'ilgan sanasi">
-              <DatePicker disabled/>
+              <DatePicker disabled />
             </Form.Item>
             <div className="d-flex align-center gap-2">
               <Form.Item

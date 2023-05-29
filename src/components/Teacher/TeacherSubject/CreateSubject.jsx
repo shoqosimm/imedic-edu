@@ -95,6 +95,7 @@ const CreateSubject = () => {
         body.subject_type = "topic";
         body.name = values.name;
         body.teaser = values.teaser;
+        body.type='text'
       }
     } else {
       body.course_id = parseInt(params.id);
@@ -114,7 +115,7 @@ const CreateSubject = () => {
     api
       .post("/api/teacher/course-subject/add", body, config)
       .then((res) => {
-        if (res.data.success) {
+        if (res.status === 200) {
           setTimeout(() => {
             Notification();
             setLoading(false);
