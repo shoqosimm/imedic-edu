@@ -34,6 +34,8 @@ const SubjectItemPage = () => {
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [commentEmptyText, setCommentEmptyText] = useState(false);
   const controller = new AbortController();
+  const [myCourse, setMyCourse] = useState(false);
+
   // getSubject
   const getSubject = async () => {
     setSkeleton(true);
@@ -50,7 +52,15 @@ const SubjectItemPage = () => {
         type: res.data.type,
       });
       getComments(param.id, paginateComment);
-      setSkeleton(false);
+      setMyCourse(res.data.my_course);
+      if (!res.data.my_course) {
+        setTimeout(() => {
+          setAddCours(true);
+        }, 10000);
+        setAddCourseText(
+          `Kursni o'qishda davom etish uchun ushbu kursni "Ha" tugmasi orqali mening kurslarim ro'yxatiga qo'shing.`
+        );
+      }
     } catch (err) {
       console.log(err, "err");
       setSkeleton(false);
@@ -91,21 +101,7 @@ const SubjectItemPage = () => {
   // modal
   // handleCancelModal
   const handleCancelModal = () => {
-    navigate("/");
-  };
-
-  // addCourseList
-  const addCourseList = () => {
-    setTimeout(() => {
-      setAddCours(true);
-    }, 10000);
-  };
-
-  // addCourseListText
-  const addCourseListText = () => {
-    setAddCourseText(
-      `Kursni o'qishda davom etish uchun ushbu kursni "Ha" tugmasi orqali mening kurslarim ro'yxatiga qo'shing.`
-    );
+    navigate(-1);
   };
 
   // setAddCoursList
@@ -135,8 +131,6 @@ const SubjectItemPage = () => {
 
   useEffect(() => {
     getSubject();
-    addCourseList();
-    addCourseListText(subject);
 
     return () => {
       controller.abort();
@@ -244,14 +238,16 @@ const SubjectItemPage = () => {
             style={{ flexWrap: "wrap" }}
             className="d-flex align-center gap-2"
           >
-            <Button
-              icon={<BsPlus style={{ fontSize: "22px" }} />}
-              className="d-flex align-center gap-x-1"
-              type="primary"
-              onClick={() => setAddCoursList(false)}
-            >
-              Kursni qo`shish
-            </Button>
+            {!myCourse && (
+              <Button
+                icon={<BsPlus style={{ fontSize: "22px" }} />}
+                className="d-flex align-center gap-x-1"
+                type="primary"
+                onClick={() => setAddCoursList(false)}
+              >
+                Kursni qo`shish
+              </Button>
+            )}
           </div>
         </Col>
       </Row>
