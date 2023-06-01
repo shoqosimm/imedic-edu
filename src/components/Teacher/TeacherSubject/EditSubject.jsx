@@ -180,7 +180,6 @@ const EditSubject = () => {
 
   // handlePdf
   const handlePdf = (e) => {
-    setVideoUrl(false);
     setContentType("pdf");
     setPdfUrl({
       url: URL.createObjectURL(e.target.files[0]),
@@ -189,7 +188,6 @@ const EditSubject = () => {
   };
   // handleVideo
   const handleVideo = (e) => {
-    setPdfUrl(false);
     setContentType("video");
     setVideoUrl({
       url: URL.createObjectURL(e.target.files[0]),
@@ -292,7 +290,7 @@ const EditSubject = () => {
               ) : null}
             </div>
 
-            {(pdfUrl && (
+            {pdfUrl && (
               <>
                 <div
                   style={{
@@ -317,19 +315,20 @@ const EditSubject = () => {
                   style={{ height: "100vh" }}
                 ></object>
               </>
-            )) ||
-              (videoUrl && (
-                <video controls width="100%">
-                  <source src={videoUrl?.url} type="video/mp4" />
-                </video>
-              )) || (
-                <Form.Item
-                  name="content"
-                  rules={[{ required: true, whitespace: true }]}
-                >
-                  <ReactQuill modules={modules} formats={formats} />
-                </Form.Item>
-              )}
+            )}
+            {videoUrl && (
+              <video controls width="100%">
+                <source src={videoUrl?.url} type="video/mp4" />
+              </video>
+            )}
+            {pdfUrl || videoUrl ? null : (
+              <Form.Item
+                name="content"
+                rules={[{ required: true, whitespace: true }]}
+              >
+                <ReactQuill modules={modules} formats={formats} />
+              </Form.Item>
+            )}
 
             <Form.Item>
               <Button loading={loading} type="primary" htmlType="submit">
@@ -377,9 +376,17 @@ const EditSubject = () => {
               <Form.Item
                 name="resubmit"
                 label="Qayta topshirish oraliq vaqti"
-                rules={[{ required: true, whitespace: true }]}
+                rules={[
+                  {
+                    required: true,
+                    whitespace: true,
+                    min: 1,
+                    message: "son ko'rinishida bo'lishi kerak!",
+                  },
+                ]}
               >
                 <Input
+                  type="number"
                   placeholder="Qayta topshirish vaqti"
                   disabled={loading}
                 />

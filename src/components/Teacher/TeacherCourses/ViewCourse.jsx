@@ -27,6 +27,7 @@ import { AiOutlineSync } from "react-icons/ai";
 import moment from "moment";
 import CommentCard from "../../generics/CommentCard";
 import { MdStarRate } from "react-icons/md";
+import { ToastContainer } from "react-toastify";
 
 const ViewCourse = () => {
   const params = useParams();
@@ -271,7 +272,6 @@ const ViewCourse = () => {
   //   modal
   const handleOk = () => {
     setConfirmLoading(true);
-    setModalText("Yuklanmoqda...");
     api
       .get(`/api/teacher/course-subject/active/${idModal}`)
       .then((res) => {
@@ -287,8 +287,10 @@ const ViewCourse = () => {
             );
           }, 1500);
         }
+        setConfirmLoading(false);
       })
       .catch((err) => {
+        setConfirmLoading(false);
         console.log(err);
       });
   };
@@ -400,6 +402,7 @@ const ViewCourse = () => {
       >
         <p>{ModalText}</p>
       </Modal>
+      <ToastContainer />
     </div>
   );
 };
