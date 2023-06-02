@@ -1,4 +1,14 @@
-import { Breadcrumb, Button, Card, Col, Form, Input, Modal, Row } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Modal,
+  Row,
+} from "antd";
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -95,7 +105,7 @@ const CreateSubject = () => {
         body.subject_type = "topic";
         body.name = values.name;
         body.teaser = values.teaser;
-        body.type='text'
+        body.type = "text";
       }
     } else {
       body.course_id = parseInt(params.id);
@@ -132,7 +142,7 @@ const CreateSubject = () => {
 
   // handlePdf
   const handlePdf = (e) => {
-    setVideoUrl(false);
+    // setVideoUrl(false);
     setPdfUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
@@ -140,7 +150,7 @@ const CreateSubject = () => {
   };
   // handleVideo
   const handleVideo = (e) => {
-    setPdfUrl(false);
+    // setPdfUrl(false);
     setVideoUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
@@ -306,30 +316,31 @@ const CreateSubject = () => {
                     </Button>
                   ) : null}
                 </div>
-                {(pdfUrl && (
+                {pdfUrl && (
                   <object
                     data={pdfUrl?.url}
                     width="100%"
                     style={{ height: "100vh" }}
                   />
-                )) ||
-                  (videoUrl && (
-                    <video controls width="100%">
-                      <source src={videoUrl?.url} type="video/mp4" />
-                    </video>
-                  )) || (
-                    <Form.Item
-                      name="content"
-                      rules={[{ required: true, whitespace: true }]}
-                    >
-                      <ReactQuill
-                        modules={modules}
-                        formats={formats}
-                        value={contentValue}
-                        onChange={setContentValue}
-                      />
-                    </Form.Item>
-                  )}
+                )}
+                {videoUrl && (
+                  <video controls width="100%">
+                    <source src={videoUrl?.url} type="video/mp4" />
+                  </video>
+                )}
+                {pdfUrl || videoUrl ? null : (
+                  <Form.Item
+                    name="content"
+                    rules={[{ required: true, whitespace: true }]}
+                  >
+                    <ReactQuill
+                      modules={modules}
+                      formats={formats}
+                      value={contentValue}
+                      onChange={setContentValue}
+                    />
+                  </Form.Item>
+                )}
               </>
             ) : (
               <>
@@ -359,9 +370,18 @@ const CreateSubject = () => {
                 </Form.Item>
                 <Form.Item
                   name="resubmit"
-                  rules={[{ required: true, whitespace: true }]}
+                  rules={[
+                    {
+                      required: true,
+                      whitespace: true,
+                      min: 1,
+                      message: "son ko'rinishida bo'lishi kerak!",
+                    },
+                  ]}
                 >
                   <Input
+                    type="number"
+                    controls={false}
                     placeholder="Qayta topshirish vaqti"
                     disabled={loading}
                   />

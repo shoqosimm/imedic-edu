@@ -201,12 +201,12 @@ const NurseSetting = () => {
             <Row gutter={[20]}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item name="series" label="Pasport seriyasi">
-                  <Input disabled={disabled} placeholder="AA" />
+                  <Input  placeholder="AA" />
                 </Form.Item>
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item name="number" label="Pasport raqami">
-                  <Input disabled={disabled} placeholder="1234567" />
+                  <Input  placeholder="1234567" />
                 </Form.Item>
               </Col>
             </Row>

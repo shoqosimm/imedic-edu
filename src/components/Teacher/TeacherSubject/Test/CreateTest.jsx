@@ -1,12 +1,4 @@
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Form,
-  Input,
-  Select,
-  
-} from "antd";
+import { Breadcrumb, Button, Card, Form, Input, Select } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
@@ -31,6 +23,10 @@ const CreateTest = () => {
     },
     {
       id: 2,
+      text: `noto'g'ri javob`,
+    },
+    {
+      id: 3,
       text: `noto'g'ri javob`,
     },
   ]);
@@ -170,9 +166,12 @@ const CreateTest = () => {
                   </Form.Item>
                   {index > 1 ? (
                     <Button
-                      style={{ marginBottom: "2rem",background:'orangered',color:'#fff' }}
+                      style={{
+                        marginBottom: "2rem",
+                        background: "orangered",
+                        color: "#fff",
+                      }}
                       disabled={loading}
-                      
                       onClick={() => DeleteField(item.id)}
                     >
                       O'chirish
@@ -188,7 +187,7 @@ const CreateTest = () => {
                   type="primary"
                   onClick={() => AddForm(answer)}
                 >
-                 Variant qo'shish
+                  Variant qo'shish
                 </Button>
               </Form.Item>
               <Form.Item>
