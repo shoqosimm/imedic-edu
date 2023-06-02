@@ -254,10 +254,17 @@ const ViewSubject = () => {
                   <div
                     style={{
                       margin: "1rem 0",
+                      height: "100vh",
                     }}
                     className="d-flex align-center"
                   >
-                    <Button
+                    <iframe
+                      src={`https://api.edu.imedic.uz${subject?.content}`}
+                      width="100%"
+                      type="application/pdf"
+                      style={{ height: "100%" }}
+                    />
+                    {/* <Button
                       className="d-flex align-center gap-1"
                       style={{ margin: "0 auto" }}
                     >
@@ -268,14 +275,8 @@ const ViewSubject = () => {
                       >
                         PDF -ni ko'rish
                       </a>
-                    </Button>
+                    </Button> */}
                   </div>
-                  <object
-                    data={`https://api.edu.imedic.uz${subject?.content}`}
-                    width="100%"
-                    type="application/pdf"
-                    style={{ height: "100vh" }}
-                  />
                 </>
               )) ||
                 (subject?.type === "video" && (
