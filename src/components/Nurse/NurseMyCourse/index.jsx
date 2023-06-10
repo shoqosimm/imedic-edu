@@ -186,6 +186,7 @@ const NurseMyCourseList = () => {
       <Col span={24}>
         <Card title="Mening kurslarim">
           <Table
+            size="small"
             pagination={{
               current: pagination.current_page,
               pageSize: pagination.per_page,

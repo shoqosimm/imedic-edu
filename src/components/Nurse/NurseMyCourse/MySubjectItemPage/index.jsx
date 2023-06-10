@@ -235,15 +235,10 @@ const MySubjectItemPage = () => {
             ) : (
               (subject?.type === "pdf" && (
                 <>
-                  <div
-                    style={{
-                      margin: "1rem 0",
-                    }}
-                    className="d-flex align-center"
-                  >
+                  <div>
                     <Button
                       className="d-flex align-center gap-1"
-                      style={{ margin: "0 auto" }}
+                      style={{ margin: "1rem auto" }}
                     >
                       <AiFillEye style={{ fontSize: "18px" }} />
                       <a

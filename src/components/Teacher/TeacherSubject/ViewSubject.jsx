@@ -256,26 +256,27 @@ const ViewSubject = () => {
                       margin: "1rem 0",
                       height: "100vh",
                     }}
-                    className="d-flex align-center"
                   >
-                    <iframe
-                      src={`https://api.edu.imedic.uz${subject?.content}`}
+                  
+                      <Button
+                        className="d-flex align-center gap-1"
+                        style={{ margin: "1rem auto" }}
+                      >
+                        <AiFillEye style={{ fontSize: "18px" }} />
+                        <a
+                          href={`https://api.edu.imedic.uz${subject?.content}`}
+                          target="_blank"
+                        >
+                          PDF -ni ko'rish
+                        </a>
+                      </Button>
+                  
+                    <object
+                      data={`https://api.edu.imedic.uz${subject?.content}`}
                       width="100%"
                       type="application/pdf"
-                      style={{ height: "100%" }}
+                      style={{ height: "100%", aspectRatio:"1" }}
                     />
-                    {/* <Button
-                      className="d-flex align-center gap-1"
-                      style={{ margin: "0 auto" }}
-                    >
-                      <AiFillEye style={{ fontSize: "18px" }} />
-                      <a
-                        href={`https://api.edu.imedic.uz${subject?.content}`}
-                        target="_blank"
-                      >
-                        PDF -ni ko'rish
-                      </a>
-                    </Button> */}
                   </div>
                 </>
               )) ||

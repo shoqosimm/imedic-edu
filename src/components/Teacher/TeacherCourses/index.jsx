@@ -200,6 +200,7 @@ const TeacherCourses = () => {
       </div>
       <Card>
         <Table
+          size={"small"}
           bordered
           loading={loadingTable}
           columns={columns}

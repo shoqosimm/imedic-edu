@@ -350,6 +350,7 @@ const ViewCourse = () => {
           }
         >
           <Table
+            size="small"
             loading={loading}
             bordered
             columns={columns}

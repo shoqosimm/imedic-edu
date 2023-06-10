@@ -282,6 +282,7 @@ const EditSubject = () => {
               </label>
               {pdfUrl || videoUrl ? (
                 <Button
+                className="restore-btn"
                   onClick={handleCloseFiles}
                   style={{ background: "red" }}
                 >
@@ -292,27 +293,23 @@ const EditSubject = () => {
 
             {pdfUrl && (
               <>
-                <div
-                  style={{
-                    margin: "1rem 0",
-                  }}
-                  className="d-flex align-center"
+                <Button
+                  className="d-flex align-center gap-1"
+                  style={{ margin: "1rem auto" }}
                 >
-                  <Button
-                    className="d-flex align-center gap-1"
-                    style={{ margin: "0 auto" }}
+                  <AiFillEye style={{ fontSize: "18px" }} />
+                  <a
+                    href={`${pdfUrl?.url}`}
+                    target="_blank"
                   >
-                    <AiFillEye style={{ fontSize: "18px" }} />
-                    <a href={pdfUrl?.url} target="_blank">
-                      PDF -ni ko'rish
-                    </a>
-                  </Button>
-                </div>
+                    PDF -ni ko'rish
+                  </a>
+                </Button>
                 <object
                   data={pdfUrl?.url}
                   width="100%"
                   type="application/pdf"
-                  style={{ height: "100vh" }}
+                  style={{ height: "100%", aspectRatio:"1" }}
                 ></object>
               </>
             )}
@@ -331,7 +328,7 @@ const EditSubject = () => {
             )}
 
             <Form.Item>
-              <Button loading={loading} type="primary" htmlType="submit">
+              <Button className="add-button" loading={loading} type="primary" htmlType="submit">
                 Saqlash
               </Button>
             </Form.Item>

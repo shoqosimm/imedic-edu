@@ -10,7 +10,7 @@
 #loginForm {
   width: 50%;
   max-width: 500px;
-  height:450px;
+  height: 450px;
   background: rgb(255, 255, 255);
   border-radius: 4px;
   padding: 1rem 2rem;
@@ -18,7 +18,7 @@
   flex-direction: column;
   justify-content: space-evenly;
   overflow: scroll;
-margin: 2rem auto;
+  margin: 2rem auto;
   &::-webkit-scrollbar {
     display: none;
   }
@@ -46,5 +46,28 @@ margin: 2rem auto;
     border-top: 1px solid lightgrey;
     text-align: center;
     margin: 10px;
+  }
+}
+
+@media screen and (max-width: 565px) {
+  #loginForm {
+    width: 90% !important;
+    max-width: 100% !important;
+    height: 350px !important;
+  }
+
+  h1 {
+    font-size: 18px !important;
+    font-weight: bold !important;
+  }
+  .ant-input {
+    height: 30px !important;
+  }
+  .ant-btn {
+    height: 30px !important;
+    margin-top: 1rem;
+  }
+  .ant-form-item {
+    margin-bottom: 5px !important;
   }
 }
