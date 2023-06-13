@@ -20,9 +20,9 @@ const TeacherCourses = () => {
   );
   const [idModal, setIdModal] = useState(null);
   const [pagination, setPagination] = useState({
-    current_page: 1,
-    per_page: 15,
-    total: 15,
+    current_page: sessionStorage.getItem("course_current_page") || 1,
+    per_page: 10,
+    total: '',
   });
   const columns = [
     {
@@ -194,22 +194,24 @@ const TeacherCourses = () => {
         className="d-flex align-center justify-between gap-y-2"
       >
         <p style={{ fontSize: "20px", fontWeight: "600" }}>Kurslar</p>
-        <Link to="/teacher/course/create">
+        <Link to="/teacher/course/create" >
           <Button type="primary">Kurs yaratish</Button>
         </Link>
       </div>
       <Card>
         <Table
+          size={"small"}
           bordered
           loading={loadingTable}
           columns={columns}
           dataSource={course}
           pagination={{
-            current_page: pagination.current_page,
+            current: pagination.current_page,
             per_page: pagination.per_page,
             total: pagination.total,
-            onChange: (current_page, per_page) => {
-              getCourse(current_page, per_page);
+            onChange: (current, per_page) => {
+              getCourse(current, per_page);
+              sessionStorage.setItem("course_current_page", current);
             },
           }}
         />

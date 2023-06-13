@@ -47,7 +47,7 @@ const ViewCourse = () => {
   const [paginateComment, setPaginateComment] = useState(12);
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [pagination, setPagination] = useState({
-    current_page: sessionStorage.getItem("current_page") ?? "1",
+    current_page: sessionStorage.getItem("subject_current_page") || 1,
     per_page: 10,
     total: 15,
   });
@@ -298,10 +298,6 @@ const ViewCourse = () => {
   useEffect(() => {
     getCourse(params.id);
     getSubjects(params.id, pagination.current_page, pagination.per_page);
-
-    return () => {
-      sessionStorage.removeItem("current_page");
-    };
   }, []);
 
   return (
@@ -311,7 +307,12 @@ const ViewCourse = () => {
         items={[
           {
             title: (
-              <Link to="/teacher/course">
+              <Link
+                to="/teacher/course"
+                onClick={() =>
+                  sessionStorage.removeItem("subject_current_page")
+                }
+              >
                 <BiHome />
               </Link>
             ),
@@ -325,6 +326,7 @@ const ViewCourse = () => {
           },
         ]}
       />
+      <h1></h1>
       <Card title={course.name}>
         <Card
           className="inside_card"
@@ -350,17 +352,18 @@ const ViewCourse = () => {
           }
         >
           <Table
+            size="small"
             loading={loading}
             bordered
             columns={columns}
             dataSource={subjects}
             pagination={{
-              current_page: pagination.current_page,
+              current: pagination.current_page,
               per_page: pagination.per_page,
               total: pagination.total,
-              onChange: (current_page, per_page) => {
-                getSubjects(params.id, current_page, per_page);
-                sessionStorage.setItem("current_page", current_page);
+              onChange: (current, per_page) => {
+                getSubjects(params.id, current, per_page);
+                sessionStorage.setItem("subject_current_page", current);
               },
             }}
           />

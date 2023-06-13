@@ -1,14 +1,4 @@
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Modal,
-  Row,
-} from "antd";
+import { Breadcrumb, Button, Card, Col, Form, Input, Modal, Row } from "antd";
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -18,8 +8,8 @@ import { Notification } from "../../Notification/Notification";
 import "./styles/createSubjectStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { VscFilePdf } from "react-icons/vsc";
-import { AiOutlineVideoCameraAdd } from "react-icons/ai";
-import { ToastContainer } from "react-toastify";
+import { AiOutlineClose, AiOutlineVideoCameraAdd } from "react-icons/ai";
+import { ToastContainer, toast } from "react-toastify";
 
 // quill-modules
 const modules = {
@@ -75,26 +65,17 @@ const CreateSubject = () => {
   const [form] = Form.useForm();
   const location = useLocation();
   const params = useParams();
+  const [pdfToken, setPdfTokens] = useState();
+  const [videoToken, setVideoTokens] = useState();
 
   //   create
   const onFinish = (values) => {
     setLoading(true);
     let body = {};
     if (type === 0) {
-      if (videoUrl) {
-        const fmData = new FormData();
-        fmData.append("video", videoUrl.file);
-        body.content = fmData.get("video");
-        body.type = "video";
-        body.course_id = parseInt(params.id);
-        body.subject_type = "topic";
-        body.name = values.name;
-        body.teaser = values.teaser;
-      } else if (pdfUrl) {
-        const fmData = new FormData();
-        fmData.append("pdf", pdfUrl.file);
-        body.content = fmData.get("pdf");
-        body.type = "pdf";
+      if (pdfToken || videoToken) {
+        body.content = [pdfToken, videoToken];
+        body.type = "media";
         body.course_id = parseInt(params.id);
         body.subject_type = "topic";
         body.name = values.name;
@@ -117,13 +98,9 @@ const CreateSubject = () => {
       body.resubmit = values.resubmit;
       body.teaser = values.teaser;
     }
-    const config = {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
-    };
+
     api
-      .post("/api/teacher/course-subject/add", body, config)
+      .post("/api/teacher/course-subject/add", body)
       .then((res) => {
         if (res.status === 200) {
           setTimeout(() => {
@@ -141,26 +118,83 @@ const CreateSubject = () => {
   };
 
   // handlePdf
-  const handlePdf = (e) => {
-    // setVideoUrl(false);
+  const handlePdf = async (e) => {
     setPdfUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
     });
+    const body = {
+      type: "pdf",
+      file: e.target.files[0],
+    };
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+    try {
+      const res = await api.post(`api/media/upload`, body, config);
+      res.status === 200 &&
+        toast.success("Загружено", { position: "bottom-right" });
+      setPdfTokens((prev) => (prev = res.data.token));
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
   };
+
   // handleVideo
-  const handleVideo = (e) => {
-    // setPdfUrl(false);
+  const handleVideo = async (e) => {
     setVideoUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
     });
+    const body = {
+      type: "video",
+      file: e.target.files[0],
+    };
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+    try {
+      const res = await api.post(`api/media/upload`, body, config);
+      res.status === 200 &&
+        toast.success("Загружено", { position: "bottom-right" });
+      setVideoTokens((prev) => (prev = res.data.token));
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
   };
 
   // handleCloseFiles
-  const handleCloseFiles = () => {
+  const handleCloseFilesVideo = async () => {
     setVideoUrl(false);
+    try {
+      const res = await api.post(`api/media/delete`, { token: videoToken });
+      res.status === 200 &&
+        toast.success("Отменено", { position: "bottom-right" });
+      setVideoTokens(false);
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
+  };
+
+  // handleCloseFilesPdf
+  const handleCloseFilesPdf = async () => {
     setPdfUrl(false);
+    try {
+      const res = await api.post(`api/media/delete`, { token: pdfToken });
+      res.status === 200 &&
+        toast.success("Отменено", { position: "bottom-right" });
+      setPdfTokens(false);
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
   };
 
   useEffect(() => {
@@ -276,11 +310,16 @@ const CreateSubject = () => {
                 >
                   <label
                     htmlFor="pdf"
-                    className={"uploadLabelPDF d-flex align-center gap-x-1"}
+                    className={
+                      pdfToken
+                        ? "disabled d-flex align-center gap-x-1"
+                        : "uploadLabelPDF d-flex align-center gap-x-1"
+                    }
                   >
                     <VscFilePdf style={{ fontSize: "18px" }} />
                     PDF yuklash
                     <input
+                      disabled={pdfToken}
                       type="file"
                       id="pdf"
                       accept="application/pdf"
@@ -291,7 +330,7 @@ const CreateSubject = () => {
                   <label
                     htmlFor="video"
                     className={
-                      videoUrl
+                      videoToken
                         ? "disabled d-flex align-center gap-x-1"
                         : "uploadLabelVideo d-flex align-center gap-x-1"
                     }
@@ -299,7 +338,7 @@ const CreateSubject = () => {
                     <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
                     Video yuklash
                     <input
-                      disabled={videoUrl}
+                      disabled={videoToken}
                       type="file"
                       id="video"
                       accept="video/mp4,video/x-m4v,video/*"
@@ -307,14 +346,26 @@ const CreateSubject = () => {
                     />
                   </label>
 
-                  {pdfUrl || videoUrl ? (
+                  {pdfToken && (
                     <Button
-                      onClick={handleCloseFiles}
+                      className="restore-btn d-flex align-center gap-1"
+                      onClick={handleCloseFilesPdf}
                       style={{ background: "red", color: "#fff" }}
                     >
-                      X
+                      <AiOutlineClose style={{ fill: "#fff" }} />
+                      Сбросить pdf
                     </Button>
-                  ) : null}
+                  )}
+                  {videoToken && (
+                    <Button
+                      className="restore-btn d-flex align-center gap-1"
+                      onClick={handleCloseFilesVideo}
+                      style={{ background: "red", color: "#fff" }}
+                    >
+                      <AiOutlineClose style={{ fill: "#fff" }} />
+                      Сбросить video
+                    </Button>
+                  )}
                 </div>
                 {pdfUrl && (
                   <object

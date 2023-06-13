@@ -52,6 +52,16 @@
 }
 
 @media screen and (max-width: 565px) {
+  .layout_content {
+    padding: 15px !important;
+    margin: 15px 8px !important;
+  }
+  .ant-layout-header{
+    margin: 0px 8px !important;
+  }
+  .ant-card-body{
+    padding: 15px !important;
+  }
   .siderTeacher {
     display: none;
   }

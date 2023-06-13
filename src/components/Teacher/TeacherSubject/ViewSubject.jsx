@@ -9,7 +9,7 @@ import {
   Button,
   Spin,
 } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../utils/api";
 import "./styles/viewSubjectStyle.scss";
@@ -25,6 +25,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { SiMicrosoftexcel } from "react-icons/si";
 import CommentCard from "../../generics/CommentCard";
 import { AiFillEye } from "react-icons/ai";
+import * as XLSX from "xlsx";
 
 const ViewSubject = () => {
   const param = useParams();
@@ -41,6 +42,9 @@ const ViewSubject = () => {
   const [paginateComment, setPaginateComment] = useState(12);
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState();
+  const [videoUrl, setVideoUrl] = useState();
+  const downloadRef = useRef();
   const columns = [
     {
       title: "№",
@@ -125,6 +129,21 @@ const ViewSubject = () => {
     try {
       const res1 = await api.get(`api/teacher/course-subject/show/${id}`);
       const res2 = await api.get(`api/teacher/test/list/${id}`);
+      if (res1.data.data.type === "media") {
+        res1.data.data?.media
+          ?.filter((value) => value.type === "pdf")
+          .map((item) => {
+            setPdfUrl({ url: `https://api.edu.imedic.uz${item.file_url}` });
+          });
+        res1.data.data?.media
+          ?.filter((value) => value.type === "video")
+          .map((item) => {
+            setVideoUrl({
+              url: `https://api.edu.imedic.uz${item.file_url}`,
+            });
+          });
+      }
+
       setSubject(res1.data.data);
       setData(
         res2.data.data.map((item) => {
@@ -198,14 +217,43 @@ const ViewSubject = () => {
 
   // handleExcel
   const handleExcel = (e) => {
-    const formData = new FormData();
-    formData.append("file", e.target.files[0]);
+    const [file] = e.target.files;
+    const reader = new FileReader();
 
-    api.post(``, formData, {
-      onUploadProgress: (data) => {
-        setProgress(Math.round((100 * data.loaded) / data.total));
-      },
-    });
+    reader.onload = async (evt) => {
+      const bstr = evt.target.result;
+      const wb = XLSX.read(bstr, { type: "array" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, {
+        defval: "",
+        raw: false,
+        header: 1,
+      });
+      const excel = data;
+      const body = {
+        course_subject_id: Number(param.id),
+        exel: excel.slice(1).map((item) => {
+          return {
+            question: item[1],
+            from_subject_id: item[0],
+            answer: item.slice(2),
+          };
+        }),
+      };
+      setLoading(true);
+      try {
+        const res = await api.post(`api/teacher/test/exel`, body);
+        res.status === 200 &&
+          toast.success("Загружено", { position: "bottom-right" });
+        getSubject(param.id);
+      } catch (err) {
+        console.log(err, "err");
+      } finally {
+        setLoading(false);
+      }
+    };
+    reader.readAsArrayBuffer(file);
   };
 
   useEffect(() => {
@@ -249,49 +297,41 @@ const ViewSubject = () => {
               <p>{subject?.name}</p>
             </Card>
             <Card centered="true">
-              {(subject?.type === "pdf" && (
+              {pdfUrl && (
                 <>
-                  <div
-                    style={{
-                      margin: "1rem 0",
-                      height: "100vh",
-                    }}
-                    className="d-flex align-center"
+                  <Button
+                    className="d-flex align-center gap-1"
+                    style={{ margin: "1rem auto" }}
                   >
-                    <iframe
-                      src={`https://api.edu.imedic.uz${subject?.content}`}
-                      width="100%"
-                      type="application/pdf"
-                      style={{ height: "100%" }}
-                    />
-                    {/* <Button
-                      className="d-flex align-center gap-1"
-                      style={{ margin: "0 auto" }}
-                    >
-                      <AiFillEye style={{ fontSize: "18px" }} />
-                      <a
-                        href={`https://api.edu.imedic.uz${subject?.content}`}
-                        target="_blank"
-                      >
-                        PDF -ni ko'rish
-                      </a>
-                    </Button> */}
-                  </div>
+                    <AiFillEye style={{ fontSize: "18px" }} />
+                    <a href={`${pdfUrl?.url}`} target="_blank">
+                      PDF -ni ko'rish
+                    </a>
+                  </Button>
+                  <object
+                    data={pdfUrl?.url}
+                    width="100%"
+                    type="application/pdf"
+                    style={{
+                      height: "100%",
+                      aspectRatio: "1",
+                      marginBottom: "1rem",
+                    }}
+                  ></object>
                 </>
-              )) ||
-                (subject?.type === "video" && (
-                  <video controls width={"100%"}>
-                    <source
-                      src={`https://api.edu.imedic.uz${subject?.content}`}
-                      type="video/mp4"
-                    />
-                  </video>
-                )) || (
-                  <div
-                    className="teacher__subject__content"
-                    dangerouslySetInnerHTML={{ __html: subject?.content }}
-                  />
-                )}
+              )}
+              {videoUrl && (
+                <video controls width="100%">
+                  <source src={videoUrl?.url} type="video/mp4" />
+                </video>
+              )}
+
+              {pdfUrl || videoUrl ? null : (
+                <div
+                  className="teacher__subject__content"
+                  dangerouslySetInnerHTML={{ __html: subject?.content }}
+                />
+              )}
             </Card>
           </Card>
         </div>
@@ -334,11 +374,24 @@ const ViewSubject = () => {
                     onChange={handleExcel}
                   />
                 </label>
+
+                <a
+                  className="uploadLabel"
+                  href="https://api.edu.imedic.uz/example.xls"
+                  target="_blank"
+                >
+                  <p className="d-flex align-center gap-1">
+                    <SiMicrosoftexcel style={{ fontSize: "18px" }} />
+                    Образец
+                  </p>
+                </a>
+
                 {progress && (
                   <Progress size={40} type="circle" percent={progress} />
                 )}
               </div>
               <Table
+                size="small"
                 loading={loading}
                 bordered
                 columns={columns}

@@ -65,8 +65,9 @@ const EditSubject = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState();
-  const [contentType, setContentType] = useState(false);
   const [videoUrl, setVideoUrl] = useState();
+  const [pdfToken, setPdfTokens] = useState();
+  const [videoToken, setVideoTokens] = useState();
 
   //   getSubject
   const getSubject = (id) => {
@@ -81,15 +82,19 @@ const EditSubject = () => {
             content: res.data.data.content,
             teaser: res.data.data.teaser,
           });
-          setContentType(res.data.data.type);
-          if (res.data.data.type === "pdf") {
-            setPdfUrl({
-              url: `https://api.edu.imedic.uz${res.data.data.content}`,
-            });
-          } else if (res.data.data.type === "video") {
-            setVideoUrl({
-              url: `https://api.edu.imedic.uz${res.data.data.content}`,
-            });
+          if (res.data.data.type === "media") {
+            res.data.data?.media
+              ?.filter((value) => value.type === "pdf")
+              .map((item) => {
+                setPdfUrl({ url: `https://api.edu.imedic.uz${item.file_url}` });
+              });
+            res.data.data?.media
+              ?.filter((value) => value.type === "video")
+              .map((item) => {
+                setVideoUrl({
+                  url: `https://api.edu.imedic.uz${item.file_url}`,
+                });
+              });
           }
         }
         form.setFieldsValue({
@@ -111,36 +116,16 @@ const EditSubject = () => {
   //   editSubject
   const onFinish = (values) => {
     setLoading(true);
-    if (contentType === "pdf") {
-      if (pdfUrl.file) {
-        const fm = new FormData();
-        fm.append("pdf", pdfUrl.file);
-        values.content = fm.get("pdf");
-        values.subject_type = "topic";
-        values.type = "pdf";
-      }
-      values.subject_type = "topic";
-    } else if (contentType === "video") {
-      if (videoUrl.file) {
-        const fm = new FormData();
-        fm.append("video", videoUrl.file);
-        values.content = fm.get("video");
-        values.subject_type = "topic";
-        values.type = "video";
-      }
-      values.subject_type = "topic";
+    if (pdfToken || videoToken) {
+      values.content = [pdfToken, videoToken];
+      (values.type = "media"), (values.subject_type = "topic");
     } else {
       values.subject_type = "topic";
       values.type = "text";
     }
 
-    const config = {
-      headers: {
-        "Content-type": "multipart/form-data",
-      },
-    };
     api
-      .post(`api/teacher/course-subject/update/${params.id}`, values, config)
+      .post(`api/teacher/course-subject/update/${params.id}`, values)
       .then((res) => {
         if (res.data.success === 1) {
           Notification();
@@ -179,34 +164,89 @@ const EditSubject = () => {
   };
 
   // handlePdf
-  const handlePdf = (e) => {
-    setContentType("pdf");
+  const handlePdf = async (e) => {
     setPdfUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
     });
+    const body = {
+      type: "pdf",
+      file: e.target.files[0],
+    };
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+    try {
+      const res = await api.post(`api/media/upload`, body, config);
+      res.status === 200 &&
+        toast.success("Загружено", { position: "bottom-right" });
+      setPdfTokens((prev) => (prev = res.data.token));
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
   };
+
   // handleVideo
-  const handleVideo = (e) => {
-    setContentType("video");
+  const handleVideo = async (e) => {
     setVideoUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
     });
+    const body = {
+      type: "video",
+      file: e.target.files[0],
+    };
+    const config = {
+      headers: {
+        "Content-type": "multipart/form-data",
+      },
+    };
+    try {
+      const res = await api.post(`api/media/upload`, body, config);
+      res.status === 200 &&
+        toast.success("Загружено", { position: "bottom-right" });
+      setVideoTokens((prev) => (prev = res.data.token));
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
   };
 
   // handleCloseFiles
-  const handleCloseFiles = () => {
+  const handleCloseFilesVideo = async () => {
     setVideoUrl(false);
+    try {
+      const res = await api.post(`api/media/delete`, { token: videoToken });
+      res.status === 200 &&
+        toast.success("Отменено", { position: "bottom-right" });
+      setVideoTokens(false);
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
+  };
+
+  // handleCloseFilesPdf
+  const handleCloseFilesPdf = async () => {
     setPdfUrl(false);
-    setContentType(false);
+    try {
+      const res = await api.post(`api/media/delete`, { token: pdfToken });
+      res.status === 200 &&
+        toast.success("Отменено", { position: "bottom-right" });
+      setPdfTokens(false);
+    } catch (err) {
+      console.log(err, "err");
+      toast.warn(err.message, { position: "bottom-right" });
+    }
   };
 
   useEffect(() => {
     getSubject(params.id);
   }, []);
 
-  console.log(pdfUrl?.url, "pdf");
   return (
     <div className="editSubject__teacher">
       <Breadcrumb
@@ -250,11 +290,16 @@ const EditSubject = () => {
             >
               <label
                 htmlFor="pdf"
-                className={"uploadLabelPDF d-flex align-center gap-x-1"}
+                className={
+                  pdfToken
+                    ? "disabled d-flex align-center gap-x-1"
+                    : "uploadLabelPDF d-flex align-center gap-x-1"
+                }
               >
                 <VscFilePdf style={{ fontSize: "18px" }} />
                 PDF yuklash
                 <input
+                  disabled={pdfToken}
                   type="file"
                   id="pdf"
                   accept="application/pdf"
@@ -265,7 +310,7 @@ const EditSubject = () => {
               <label
                 htmlFor="video"
                 className={
-                  videoUrl
+                  videoToken
                     ? "disabled d-flex align-center gap-x-1"
                     : "uploadLabelVideo d-flex align-center gap-x-1"
                 }
@@ -273,46 +318,51 @@ const EditSubject = () => {
                 <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
                 Video yuklash
                 <input
-                  disabled={videoUrl}
+                  disabled={videoToken}
                   type="file"
                   id="video"
                   accept="video/mp4,video/x-m4v,video/*"
                   onChange={handleVideo}
                 />
               </label>
-              {pdfUrl || videoUrl ? (
+              {pdfToken && (
                 <Button
-                  onClick={handleCloseFiles}
-                  style={{ background: "red" }}
+                  className="restore-btn d-flex align-center gap-1"
+                  onClick={handleCloseFilesPdf}
+                  style={{ background: "red", color: "#fff" }}
                 >
                   <AiOutlineClose style={{ fill: "#fff" }} />
+                  Сбросить pdf
                 </Button>
-              ) : null}
+              )}
+              {videoToken && (
+                <Button
+                  className="restore-btn d-flex align-center gap-1"
+                  onClick={handleCloseFilesVideo}
+                  style={{ background: "red", color: "#fff" }}
+                >
+                  <AiOutlineClose style={{ fill: "#fff" }} />
+                  Сбросить video
+                </Button>
+              )}
             </div>
 
             {pdfUrl && (
               <>
-                <div
-                  style={{
-                    margin: "1rem 0",
-                  }}
-                  className="d-flex align-center"
+                <Button
+                  className="d-flex align-center gap-1"
+                  style={{ margin: "1rem auto" }}
                 >
-                  <Button
-                    className="d-flex align-center gap-1"
-                    style={{ margin: "0 auto" }}
-                  >
-                    <AiFillEye style={{ fontSize: "18px" }} />
-                    <a href={pdfUrl?.url} target="_blank">
-                      PDF -ni ko'rish
-                    </a>
-                  </Button>
-                </div>
+                  <AiFillEye style={{ fontSize: "18px" }} />
+                  <a href={`${pdfUrl?.url}`} target="_blank">
+                    PDF -ni ko'rish
+                  </a>
+                </Button>
                 <object
                   data={pdfUrl?.url}
                   width="100%"
                   type="application/pdf"
-                  style={{ height: "100vh" }}
+                  style={{ height: "100%", aspectRatio: "1",marginBottom:'1rem' }}
                 ></object>
               </>
             )}
@@ -331,7 +381,12 @@ const EditSubject = () => {
             )}
 
             <Form.Item>
-              <Button loading={loading} type="primary" htmlType="submit">
+              <Button
+                className="add-button"
+                loading={loading}
+                type="primary"
+                htmlType="submit"
+              >
                 Saqlash
               </Button>
             </Form.Item>

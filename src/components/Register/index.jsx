@@ -98,7 +98,7 @@ const Register = () => {
             <h1>Ro'yxatdan o'tish</h1>
           </div>
           <div>
-            <div className="d-flex align-center gap-2">
+            <div className="inputWrapper d-flex align-center gap-2">
               <Form.Item
                 name="first_name"
                 label="Ism"
@@ -129,7 +129,7 @@ const Register = () => {
             <Form.Item name="patronymic" label="Otasining ismi">
               <Input disabled={disabled} />
             </Form.Item>
-            <div className="d-flex align-center gap-2">
+            <div className="inputWrapper d-flex align-center gap-2">
               <Form.Item name="series" label="Pasport seriya">
                 <Input disabled={loading} placeholder="AA" />
               </Form.Item>
@@ -174,7 +174,7 @@ const Register = () => {
             <Form.Item name="birth_date" label="Tug'ilgan sanasi">
               <DatePicker disabled />
             </Form.Item>
-            <div className="d-flex align-center gap-2">
+            <div className="inputWrapper d-flex align-center gap-2">
               <Form.Item
                 name="password"
                 label="Parol"

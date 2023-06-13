@@ -213,6 +213,7 @@ const NurseCourse = () => {
         <Col span={24}>
           {course ? (
             <Table
+            size="small"
               bordered
               style={{ height: "100%" }}
               loading={loadingCard}
