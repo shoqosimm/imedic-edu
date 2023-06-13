@@ -35,6 +35,8 @@ const SubjectItemPage = () => {
   const [commentEmptyText, setCommentEmptyText] = useState(false);
   const controller = new AbortController();
   const [myCourse, setMyCourse] = useState(false);
+  const [pdfUrl, setPdfUrl] = useState();
+  const [videoUrl, setVideoUrl] = useState();
 
   // getSubject
   const getSubject = async () => {
@@ -43,6 +45,20 @@ const SubjectItemPage = () => {
       const res = await api.get(`api/nurse/course/subject/${param.id}`, {
         signal: controller.signal,
       });
+      if (res.data.type === "media") {
+        res.data?.media
+          ?.filter((value) => value.type === "pdf")
+          .map((item) => {
+            setPdfUrl({ url: `https://api.edu.imedic.uz${item.file_url}` });
+          });
+        res.data?.media
+          ?.filter((value) => value.type === "video")
+          .map((item) => {
+            setVideoUrl({
+              url: `https://api.edu.imedic.uz${item.file_url}`,
+            });
+          });
+      }
       setSubject({
         id: res.data.id,
         name: res.data.name,
@@ -186,47 +202,40 @@ const SubjectItemPage = () => {
                 <p>{subject?.teaser}</p>
               )}
             </div>
-            {skeleton ? (
-              <Skeleton title={false} paragraph />
-            ) : (
-              (subject?.type === "pdf" && (
-                <>
-                  <div>
-                    <Button
-                      className="d-flex align-center gap-1"
-                      style={{ margin: "1rem auto" }}
-                    >
-                      <AiFillEye style={{ fontSize: "18px" }} />
-                      <a
-                        href={`https://api.edu.imedic.uz${subject?.content}`}
-                        target="_blank"
-                      >
-                        PDF -ni ko'rish
-                      </a>
-                    </Button>
-                  </div>
-                  <object
-                    data={`https://api.edu.imedic.uz${subject?.content}`}
-                    width="100%"
-                    type="application/pdf"
-                    style={{ height: "100vh" }}
-                  />
-                </>
-              )) ||
-              (subject?.type === "video" && (
-                <video controls width={"100%"}>
-                  <source
-                    src={`https://api.edu.imedic.uz${subject?.content}`}
-                    type="video/mp4"
-                  />
-                </video>
-              )) || (
-                <div
-                  className="content"
-                  style={{ width: "90%", margin: "0 auto" }}
-                  dangerouslySetInnerHTML={{ __html: subject?.content }}
-                />
-              )
+            {skeleton && <Skeleton title={false} paragraph />}
+            {pdfUrl && (
+              <>
+                <Button
+                  className="d-flex align-center gap-1"
+                  style={{ margin: "1rem auto" }}
+                >
+                  <AiFillEye style={{ fontSize: "18px" }} />
+                  <a href={`${pdfUrl?.url}`} target="_blank">
+                    PDF -ni ko'rish
+                  </a>
+                </Button>
+                <object
+                  data={pdfUrl?.url}
+                  width="100%"
+                  type="application/pdf"
+                  style={{
+                    height: "100%",
+                    aspectRatio: "1",
+                    marginBottom: "1rem",
+                  }}
+                ></object>
+              </>
+            )}
+            {videoUrl && (
+              <video controls width="100%">
+                <source src={videoUrl?.url} type="video/mp4" />
+              </video>
+            )}
+            {pdfUrl || videoUrl ? null : (
+              <div
+                className="teacher__subject__content"
+                dangerouslySetInnerHTML={{ __html: subject?.content }}
+              />
             )}
           </Card>
           <div
