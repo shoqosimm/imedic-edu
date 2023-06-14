@@ -68,6 +68,7 @@ const EditSubject = () => {
   const [videoUrl, setVideoUrl] = useState();
   const [pdfToken, setPdfTokens] = useState();
   const [videoToken, setVideoTokens] = useState();
+  const [subject, setSubject] = useState();
 
   //   getSubject
   const getSubject = (id) => {
@@ -82,6 +83,7 @@ const EditSubject = () => {
             content: res.data.data.content,
             teaser: res.data.data.teaser,
           });
+          setSubject(res.data.data);
           if (res.data.data.type === "media") {
             res.data.data?.media
               ?.filter((value) => value.type === "pdf")
@@ -267,11 +269,7 @@ const EditSubject = () => {
             ),
           },
           {
-            title: (
-              <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
-              </p>
-            ),
+            title: <p style={{ color: "grey" }}>{subject?.name}</p>,
           },
         ]}
       />
@@ -362,7 +360,11 @@ const EditSubject = () => {
                   data={pdfUrl?.url}
                   width="100%"
                   type="application/pdf"
-                  style={{ height: "100%", aspectRatio: "1",marginBottom:'1rem' }}
+                  style={{
+                    height: "100%",
+                    aspectRatio: "1",
+                    marginBottom: "1rem",
+                  }}
                 ></object>
               </>
             )}

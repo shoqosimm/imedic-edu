@@ -57,6 +57,7 @@ const ViewCourse = () => {
       dataIndex: "id",
       key: "id",
       width: "5%",
+      align:'center'
     },
     {
       title: "Mavzular nomi",
@@ -318,11 +319,7 @@ const ViewCourse = () => {
             ),
           },
           {
-            title: (
-              <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
-              </p>
-            ),
+            title: <p style={{ color: "grey" }}>{course.name}</p>,
           },
         ]}
       />

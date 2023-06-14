@@ -19,6 +19,7 @@
   padding: 2rem;
   border: 1px solid rgb(235, 233, 233);
   border-radius: 6px;
+  background: whitesmoke;
 }
 .izohCard {
   .ant-card-head {
@@ -31,5 +32,14 @@
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+}
+.teacher__subject__content {
+  width: 100%;
+  padding: 0 5%;
+
+  img {
+    width: 80%;
+    max-width: 100%;
   }
 }

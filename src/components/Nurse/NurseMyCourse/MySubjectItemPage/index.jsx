@@ -99,6 +99,20 @@ const MySubjectItemPage = () => {
           }
           setConfirmLoading(false);
           setSkeleton(false);
+          if (res.data.content.type === "media") {
+            res.data.content?.media
+              ?.filter((value) => value.type === "pdf")
+              .map((item) => {
+                setPdfUrl({ url: `https://api.edu.imedic.uz${item.file_url}` });
+              });
+            res.data.content?.media
+              ?.filter((value) => value.type === "video")
+              .map((item) => {
+                setVideoUrl({
+                  url: `https://api.edu.imedic.uz${item.file_url}`,
+                });
+              });
+          }
           setSubject({
             data: res.data.content,
             subject_id: res.data.course_subject_id,
@@ -275,10 +289,10 @@ const MySubjectItemPage = () => {
                 <source src={videoUrl?.url} type="video/mp4" />
               </video>
             )}
-            {pdfUrl || videoUrl ? null : (
+            {pdfUrl && videoUrl ? null : (
               <div
                 className="teacher__subject__content"
-                dangerouslySetInnerHTML={{ __html: subject?.content }}
+                dangerouslySetInnerHTML={{ __html: subject?.data.content }}
               />
             )}
           </Card>
@@ -288,6 +302,7 @@ const MySubjectItemPage = () => {
             className="d-flex align-center gap-2"
           >
             <Button
+              loading={confirmLoading}
               icon={<BsArrowRight />}
               className="d-flex align-center gap-x-1"
               type="primary"

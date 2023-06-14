@@ -130,10 +130,34 @@ const Register = () => {
               <Input disabled={disabled} />
             </Form.Item>
             <div className="inputWrapper d-flex align-center gap-2">
-              <Form.Item name="series" label="Pasport seriya">
+              <Form.Item
+                name="series"
+                label="Pasport seriya"
+                rules={[
+                  {
+                    required: true,
+                    message: "Pasport seriyasini kiriting",
+                    whitespace: true,
+                    min: 2,
+                    max: 2,
+                  },
+                ]}
+              >
                 <Input disabled={loading} placeholder="AA" />
               </Form.Item>
-              <Form.Item name="number" label="Pasport raqam">
+              <Form.Item
+                name="number"
+                label="Pasport raqam"
+                rules={[
+                  {
+                    required: true,
+                    message: "Pasport raqamini kiriting",
+                    whitespace: true,
+                    min: 7,
+                    max: 7,
+                  },
+                ]}
+              >
                 <Input disabled={loading} placeholder="1234567" />
               </Form.Item>
             </div>

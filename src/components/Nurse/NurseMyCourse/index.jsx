@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../../utils/api";
 import "./style.scss";
-import { BiCategory, BiUser, BiWindowOpen } from "react-icons/bi";
+import { BiBookBookmark, BiUser, BiWindowOpen } from "react-icons/bi";
 import { MdStarRate } from "react-icons/md";
 import { FaUserMd } from "react-icons/fa";
 import { BsBookmarks } from "react-icons/bs";
+import TitleText from "../../generics/TitleText";
 
 const NurseMyCourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -31,10 +32,12 @@ const NurseMyCourseList = () => {
       key: "name",
       render: (t) => {
         return (
-          <p className="d-flex align-center gap-1">
-            <BsBookmarks style={{ fontSize: "16px", fill: "#1389f8" }} />{" "}
-            {t.name}
-          </p>
+          <div className="d-flex align-center gap-1">
+            <BsBookmarks
+              style={{ fontSize: "16px", fill: "teal", flex: "0.1" }}
+            />
+            <p style={{ flex: "1" }}>{t.name}</p>
+          </div>
         );
       },
     },
@@ -44,10 +47,12 @@ const NurseMyCourseList = () => {
       key: "category",
       render: (t) => {
         return (
-          <p className="d-flex align-center gap-1">
-            <BiCategory style={{ fontSize: "16px", fill: "orangered" }} />{" "}
-            {t.name}
-          </p>
+          <div className="d-flex align-center gap-1">
+            <BiBookBookmark
+              style={{ fontSize: "16px", fill: "#353595", flex: "0.1" }}
+            />
+            <p style={{ flex: "1" }}>{t.name}</p>
+          </div>
         );
       },
     },
@@ -57,10 +62,12 @@ const NurseMyCourseList = () => {
       key: "user",
       render: (t) => {
         return (
-          <p className="d-flex align-center gap-1">
-            <FaUserMd style={{ fontSize: "16px", fill: "grey" }} />{" "}
-            {t.first_name}, {t.last_name}
-          </p>
+          <div className="d-flex align-center gap-1">
+            <FaUserMd style={{ fontSize: "16px", fill: "#254545" }} />
+            <p>
+              {t.first_name}, {t.last_name}
+            </p>
+          </div>
         );
       },
     },
@@ -132,7 +139,9 @@ const NurseMyCourseList = () => {
       render: (t, record) => {
         return (
           <Link to={`/nurse/mycourse/${record.id}`}>
-            <BiWindowOpen style={{ fontSize: "18px" }} />
+            <BiWindowOpen
+              style={{ fontSize: "18px", fill: "rgb(14 14 171)" }}
+            />
           </Link>
         );
       },
@@ -184,23 +193,22 @@ const NurseMyCourseList = () => {
   return (
     <Row className="mycourse__wrapper">
       <Col span={24}>
-        <Card title="Mening kurslarim">
-          <Table
-            size="small"
-            pagination={{
-              current: pagination.current_page,
-              pageSize: pagination.per_page,
-              total: pagination.total,
-              onChange: (current, pageSize) => {
-                getCourseList(categoryId, current, pageSize);
-              },
-            }}
-            loading={loading}
-            bordered
-            columns={columns}
-            dataSource={courses}
-          />
-        </Card>
+        <TitleText title={"Mening kurslarim"} />
+        <Table
+          size="small"
+          pagination={{
+            current: pagination.current_page,
+            pageSize: pagination.per_page,
+            total: pagination.total,
+            onChange: (current, pageSize) => {
+              getCourseList(categoryId, current, pageSize);
+            },
+          }}
+          loading={loading}
+          bordered
+          columns={columns}
+          dataSource={courses}
+        />
       </Col>
     </Row>
   );

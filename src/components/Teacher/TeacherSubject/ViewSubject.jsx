@@ -282,7 +282,7 @@ const ViewSubject = () => {
           {
             title: (
               <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
+                {subject?.name}
               </p>
             ),
           },

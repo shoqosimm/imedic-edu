@@ -8,6 +8,7 @@ import { BiHome } from "react-icons/bi";
 import { TbMoodEmpty } from "react-icons/tb";
 import { toast } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
+import TitleText from "../../../generics/TitleText";
 
 const NurseMyCourse = () => {
   const params = useParams();
@@ -143,39 +144,40 @@ const NurseMyCourse = () => {
         ]}
       />
       <div>
-        <Card title="Kursga oid mavzular">
-          <div
-            style={{
-              flexWrap: "wrap",
-              justifyContent: "center",
-              padding: "1.5rem 0",
-            }}
-            className="d-flex align-center gap-3"
-          >
-            {loading && <Spin />}
-            {emptyText ? (
-              <div
-                className="d-flex align-center "
-                style={{ flexDirection: "column" }}
-              >
-                <TbMoodEmpty style={{ fontSize: "54px", fill: "yellow" }} />
-                <p style={{ fontSize: "24px", textAlign: "center" }}>
-                  {emptyText}
-                </p>
-              </div>
-            ) : (
-              courses?.map((item) => {
-                return (
-                  <MyCardItem
-                    disabled={item.status === 0 ? true : false}
-                    key={item.id}
-                    item={item}
-                  />
-                );
-              })
-            )}
-          </div>
-        </Card>
+        <TitleText title="Kursga oid mavzular" />
+
+        <div
+          style={{
+            flexWrap: "wrap",
+            justifyContent: "center",
+            padding: "1.5rem 0",
+          }}
+          className="d-flex align-center gap-3"
+        >
+          {loading && <Spin />}
+          {emptyText ? (
+            <div
+              className="d-flex align-center "
+              style={{ flexDirection: "column" }}
+            >
+              <TbMoodEmpty style={{ fontSize: "54px", fill: "yellow" }} />
+              <p style={{ fontSize: "24px", textAlign: "center" }}>
+                {emptyText}
+              </p>
+            </div>
+          ) : (
+            courses?.map((item) => {
+              return (
+                <MyCardItem
+                  disabled={item.status === 0 ? true : false}
+                  key={item.id}
+                  item={item}
+                />
+              );
+            })
+          )}
+        </div>
+
         <div className="wrapperComment">
           <Form
             onFinish={handleComment}

@@ -1,13 +1,14 @@
 import { Row, Select, Col, Table, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiPin, BiUser, BiWindowOpen } from "react-icons/bi";
+import { BiBookBookmark, BiUser, BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
-import { BsBookmarks, BsFillPinAngleFill, BsPin } from "react-icons/bs";
+import { BsFillPinAngleFill } from "react-icons/bs";
 import { FaUserMd } from "react-icons/fa";
 import { MdStarRate } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
+import TitleText from "../../generics/TitleText";
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
@@ -84,13 +85,12 @@ const NurseCourse = () => {
 
   // handleAddCourse
   const handleAddCourse = async (id) => {
-    console.log(id, "id");
     try {
       const body = {
         course_id: id,
       };
       const res = await api.post("api/nurse/course/add", body);
-      res.status===200 && toast.success('Добавлено!')
+      res.status === 200 && toast.success("Добавлено!");
     } catch (err) {
       console.log(err);
     }
@@ -110,9 +110,12 @@ const NurseCourse = () => {
       key: "text",
       render: (t) => {
         return (
-          <p className="d-flex align-center gap-1">
-            <BsBookmarks style={{ fontSize: "16px", fill: "#1389f8" }} /> {t}
-          </p>
+          <div className="d-flex align-center gap-1">
+            <BiBookBookmark
+              style={{ fontSize: "16px", fill: "#353595", flex: "0.1" }}
+            />
+            <p style={{ flex: "1" }}>{t}</p>
+          </div>
         );
       },
     },
@@ -124,9 +127,10 @@ const NurseCourse = () => {
       align: "center",
       render: (t) => {
         return (
-          <p className="d-flex align-center gap-1">
-            <FaUserMd style={{ fontSize: "16px", fill: "grey" }} /> {t}
-          </p>
+          <div className="d-flex align-center gap-2">
+            <FaUserMd style={{ fontSize: "16px", fill: "#254545" }} />
+            <p>{t}</p>
+          </div>
         );
       },
     },
@@ -179,7 +183,9 @@ const NurseCourse = () => {
           </Tooltip>
           <Tooltip title="Batafsil">
             <Link to={`/nurse/course/${record.id}`}>
-              <BiWindowOpen style={{ fontSize: "18px" }} />
+              <BiWindowOpen
+                style={{ fontSize: "18px", fill: "rgb(14 14 171)" }}
+              />
             </Link>
           </Tooltip>
         </div>
@@ -202,6 +208,7 @@ const NurseCourse = () => {
     <>
       <Row gutter={24}>
         <Col span={24} style={{ position: "sticky", top: "0" }}>
+          <TitleText title={"Kurslar"} />
           <Select
             className="subject_select"
             placeholder="Yo`nalishni tanlang"
@@ -213,7 +220,7 @@ const NurseCourse = () => {
         <Col span={24}>
           {course ? (
             <Table
-            size="small"
+              size="small"
               bordered
               style={{ height: "100%" }}
               loading={loadingCard}
@@ -230,7 +237,7 @@ const NurseCourse = () => {
             />
           ) : (
             <div
-              style={{ height: "400px" }}
+              style={{ height: "400px", color: "#fff",letterSpacing:'1.5px' }}
               className="d-flex align-center justify-center"
             >
               <h1>Yo'nalishni tanglang</h1>
@@ -238,7 +245,7 @@ const NurseCourse = () => {
           )}
         </Col>
       </Row>
-      <ToastContainer/>
+      <ToastContainer />
     </>
   );
 };

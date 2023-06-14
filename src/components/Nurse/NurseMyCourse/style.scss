@@ -8,25 +8,23 @@
     overflow: scroll !important;
     &::-webkit-scrollbar {
       display: none;
-    } 
+    }
   }
 }
 
-.ant-table{
+.ant-table {
   overflow: scroll;
-  &::-webkit-scrollbar{
+  &::-webkit-scrollbar {
     display: none;
   }
-  .ant-table-thead{
-    th{
-      background:#1389f8 !important;
+  .ant-table-thead {
+    th {
       color: #fff !important;
       border-radius: 0px !important;
     }
   }
-  .ant-table-tbody{
-    background: rgb(247, 250, 252);
-    td{
+  .ant-table-tbody {
+    td {
       border-color: #dadada !important;
     }
   }

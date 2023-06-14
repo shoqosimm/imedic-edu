@@ -230,7 +230,7 @@ const CreateSubject = () => {
           {
             title: (
               <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
+                Yaratish
               </p>
             ),
           },

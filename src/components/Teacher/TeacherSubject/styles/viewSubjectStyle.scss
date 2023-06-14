@@ -16,7 +16,7 @@ input[type="file"] {
   &:hover {
     opacity: 0.9;
     box-shadow: 0 0 2px 4px #93d78263;
-    color:#fff
+    color: #fff;
   }
   &:active {
     transform: scale(0.98);
@@ -36,22 +36,21 @@ input[type="file"] {
   }
   .ant-table-thead {
     th {
-      background: #1389f8 !important;
       color: #fff !important;
     }
   }
   .ant-table-tbody {
-    background: rgb(247, 250, 252);
-
     td {
       border-color: #dadada !important;
     }
   }
 }
 
-.teacher__subject__content{
-  img{
-    width: auto;
+.teacher__subject__content {
+  width: 100%;
+  padding: 0 5%;
+  img {
+    width: 80%;
     max-width: 100%;
   }
 }

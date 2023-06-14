@@ -38,10 +38,10 @@ const MyCardItem = ({ disabled, item }) => {
           : (item.status === 1 && (
               <p style={{ background: "yellowgreen" }}>Topshirilayotgan test</p>
             )) ||
-            (item.status === 2 && item.is_passed === '1' && (
+            (item.status === 2 && item.is_passed === "1" && (
               <p style={{ background: "green" }}>Topshirilgan test</p>
             )) ||
-            (item.status === 2 && item.is_passed === '0' && (
+            (item.status === 2 && item.is_passed === "0" && (
               <p style={{ background: "red" }}>O'ta olinmagan test</p>
             )) ||
             (item.status === 0 && (
@@ -61,7 +61,7 @@ const MyCardItem = ({ disabled, item }) => {
 
         {item.subject.subject_type == "test" && item.status === 2 ? (
           <div className="test_btn d-flex align-center justify-center gap-x-2">
-            {(item.is_passed === '0' && (
+            {(item.is_passed === "0" && (
               <>
                 <button
                   title={disabled ? "not allowed" : "Qayta topshirish"}
@@ -83,7 +83,7 @@ const MyCardItem = ({ disabled, item }) => {
                 </button>
               </>
             )) ||
-              (item.is_passed === '1' && (
+              (item.is_passed === "1" && (
                 <>
                   <button
                     title={disabled ? "not allowed" : " Natijani ko'rish"}
@@ -91,12 +91,11 @@ const MyCardItem = ({ disabled, item }) => {
                     onClick={() => showResult(item.id)}
                     className={disabled ? "disabled__card" : "card_result"}
                   >
-                    <BiShow style={{ fontSize: "24px",margin:'0 5px' }} />
+                    <BiShow style={{ fontSize: "24px", margin: "0 5px" }} />
                     Natijani ko'rish
                   </button>
                 </>
               ))}
-          
           </div>
         ) : (
           <button
@@ -109,9 +108,8 @@ const MyCardItem = ({ disabled, item }) => {
           </button>
         )}
       </div>
-      <ToastContainer/>
+      <ToastContainer />
     </div>
-    
   );
 };
 

@@ -6,6 +6,7 @@ import { api } from "../../../utils/api";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TitleText from "../../generics/TitleText";
 
 const NurseSetting = () => {
   const [form] = Form.useForm();
@@ -109,6 +110,7 @@ const NurseSetting = () => {
 
   return (
     <div className="setting">
+      <TitleText title={"Sozlamalar"} />
       <Form
         form={form}
         id="settingForm"

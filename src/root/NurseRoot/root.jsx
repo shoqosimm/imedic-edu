@@ -1,27 +1,28 @@
+import React, { Suspense, useRef, useState } from "react";
 import { Button, Drawer, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList, CiCircleList } from "react-icons/ci";
-import { SlUser } from "react-icons/sl";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
   AiOutlineMenuUnfold,
   AiOutlineSetting,
 } from "react-icons/ai";
-import React, { Suspense, useEffect, useState } from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
 import { ContextItem } from "../../components/Context";
 import { useContext } from "react";
+import { FaUserMd } from "react-icons/fa";
 
 const Nurse = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const headerRef = useRef();
 
   // handleLogOut
   const handleLogOut = () => {
@@ -43,7 +44,7 @@ const Nurse = () => {
   return (
     <Layout className="layout">
       <Sider
-        theme="light"
+        theme="dark"
         className="siderNurse"
         trigger={null}
         collapsible
@@ -54,14 +55,13 @@ const Nurse = () => {
           style={{
             textAlign: "center",
             padding: "1rem 0",
-            borderBottom: "1px solid lightgrey",
+            borderBottom: "1px solid #ffffff63",
           }}
         >
-          <SlUser style={{ fontSize: "28px" }} />
+          <FaUserMd style={{ fontSize: "28px", fill: "#fff" }} />
         </div>
         <Menu
-          theme="light"
-          mode="inline"
+          theme="dark"
           selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
           items={[
             {
@@ -104,14 +104,7 @@ const Nurse = () => {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header
-          style={{
-            padding: "0 1rem",
-            background: "#fff",
-            margin: "0 1rem",
-            borderRadius: "0 0 10px 10px",
-          }}
-        >
+        <Header ref={headerRef}>
           <div
             style={{ height: "100%" }}
             className=" d-flex align-center justify-between"
@@ -142,6 +135,7 @@ const Nurse = () => {
         </Content>
       </Layout>
       <Drawer
+        className="drawer"
         placement="left"
         title="Меню"
         onClose={() => setOpen(false)}
@@ -149,7 +143,7 @@ const Nurse = () => {
         width={200}
       >
         <Menu
-          theme="light"
+          theme="dark"
           mode="inline"
           selectedKeys={localStorage.getItem("activeLink")}
           items={[
@@ -167,19 +161,19 @@ const Nurse = () => {
             },
             {
               key: "2",
-              icon: <CiCircleList className="icon mycourseIcon" />,
+              icon: <CiCircleList className="icon " />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 2)}
                   to="mycourse"
                 >
-                   Mening kurslarim
+                  Mening kurslarim
                 </Link>
               ),
             },
             {
               key: "3",
-              icon: <AiOutlineSetting className="icon settingIcon" />,
+              icon: <AiOutlineSetting className="icon " />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 3)}

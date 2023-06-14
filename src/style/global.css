@@ -46,6 +46,8 @@ body {
 .ant-btn {
   height: 40px;
   border-radius: 2px;
+  background: teal !important;
+  color: #fff !important;
 }
 .ant-input {
   height: 40px;
@@ -58,7 +60,53 @@ body {
 .ant-modal-mask {
   backdrop-filter: blur(5px);
 }
+.ant-table-thead th {
+  height: 50px;
+  background: teal !important;
+}
+.ant-pagination-item-active {
+  border-color: teal !important;
+}
 
+.ant-pagination a {
+  color: teal !important;
+}
+.ant-table {
+  border-radius: 0px !important;
+}
+.ant-table-thead th {
+  border-radius: 0px !important;
+}
+.ant-breadcrumb{
+  display: inline-block;
+  padding: 0.3rem 0.5rem;
+  background:#fff !important;
+  border-radius: 4px;
+}
+.ant-menu {
+  color: #fff;
+}
+.ant-menu-item-selected {
+  background: teal !important;
+  border-radius: 0px !important;
+}
+.ant-menu-item-active {
+  background: teal !important;
+  border-radius: 0px !important;
+}
+.ant-drawer-header {
+  background: #001529 !important;
+}
+
+.ant-drawer-close {
+  color: #fff !important;
+}
+.ant-drawer-title {
+  color: #fff !important;
+}
+.ant-drawer-body {
+  background: #001529 !important;
+}
 /* gap-classes */
 .gap-1 {
   gap: 8px;

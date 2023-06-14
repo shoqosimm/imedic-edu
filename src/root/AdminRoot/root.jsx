@@ -3,7 +3,6 @@ import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiCircleList } from "react-icons/ci";
 import { FiUsers } from "react-icons/fi";
-import { GrUserAdmin } from "react-icons/gr";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -16,6 +15,7 @@ import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
 import { useContext } from "react";
 import { ContextItem } from "../../components/Context";
+import { FaUserShield } from "react-icons/fa";
 
 const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -44,7 +44,7 @@ const AdminRoute = () => {
     <Layout className="layout">
       <Sider
         className="siderAdmin"
-        theme="light"
+        theme="dark"
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -54,19 +54,18 @@ const AdminRoute = () => {
           style={{
             textAlign: "center",
             padding: "1rem 0",
-            borderBottom: "1px solid lightgrey",
+            borderBottom: "1px solid #ffffff63",
           }}
         >
-          <GrUserAdmin style={{ fontSize: "34px" }} />
+          <FaUserShield style={{ fontSize: "34px", fill: "#fff" }} />
         </div>
         <Menu
-          theme="light"
-          mode="inline"
+          theme="dark"
           selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
           items={[
             {
               key: "1",
-              icon: <FiUsers style={{ color: "blue" }} className="icon" />,
+              icon: <FiUsers className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
@@ -78,9 +77,7 @@ const AdminRoute = () => {
             },
             {
               key: "2",
-              icon: (
-                <CiCircleList style={{ color: "brown" }} className="icon" />
-              ),
+              icon: <CiCircleList className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
@@ -94,14 +91,7 @@ const AdminRoute = () => {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header
-          style={{
-            padding: "0 1rem",
-            background: "#fff",
-            margin: "0 1rem",
-            borderRadius: "0 0 10px 10px",
-          }}
-        >
+        <Header>
           <div
             style={{ height: "100%" }}
             className="d-flex align-center justify-between"
@@ -139,13 +129,13 @@ const AdminRoute = () => {
         width={200}
       >
         <Menu
-          theme="light"
+          theme="dark"
           mode="inline"
           selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",
-              icon: <FiUsers style={{ color: "blue" }} className="icon" />,
+              icon: <FiUsers className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 1)}
@@ -157,9 +147,7 @@ const AdminRoute = () => {
             },
             {
               key: "2",
-              icon: (
-                <CiCircleList style={{ color: "brown" }} className="icon" />
-              ),
+              icon: <CiCircleList className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 2)}

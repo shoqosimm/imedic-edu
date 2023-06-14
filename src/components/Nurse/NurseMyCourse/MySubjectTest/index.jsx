@@ -155,7 +155,6 @@ const MySubjectTest = () => {
       .get(`api/nurse/test/finish/${id}`)
       .then((res) => {
         setEndModal(false);
-        setStartTest(false);
         if (res.status === 200) {
           toast.success("Javoblar qa'bul qilindi", {
             position: "bottom-right",
@@ -169,7 +168,7 @@ const MySubjectTest = () => {
   };
 
   useEffect(() => {
-    getTest();
+    !startTest && getTest();
 
     return () => {
       controller.abort();
@@ -275,6 +274,7 @@ const MySubjectTest = () => {
         open={endModal}
         onCancel={() => {
           setEndModal(false);
+          setTestTime(prev=>new Date(prev)-new Date().getTime())
           const element = document.querySelector(".test");
           if (screenfull.isEnabled) {
             screenfull.request(element);
