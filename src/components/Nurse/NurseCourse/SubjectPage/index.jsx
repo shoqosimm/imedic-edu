@@ -108,7 +108,7 @@ const SubjectPage = () => {
 
       <Row
         gutter={[20, 20]}
-        style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
+        style={{ display: "flex", alignItems: "center", flexWrap: "wrap",marginBottom:'2rem' }}
       >
         {!emptyText ? (
           subjects.map((item, index) => {

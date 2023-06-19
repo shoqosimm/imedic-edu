@@ -125,22 +125,23 @@ const EditSubject = () => {
       values.subject_type = "topic";
       values.type = "text";
     }
-
-    api
-      .post(`api/teacher/course-subject/update/${params.id}`, values)
-      .then((res) => {
-        if (res.data.success === 1) {
-          Notification();
-          setTimeout(() => {
-            setLoading(false);
-            navigate(`/teacher/course/${location.state.message}/view`);
-          }, 1000);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
+    try {
+      api
+        .post(`api/teacher/course-subject/update/${params.id}`, values)
+        .then((res) => {
+          if (res.data.success === 1) {
+            Notification();
+            setTimeout(() => {
+              setLoading(false);
+              navigate(`/teacher/course/${location.state.message}/view`);
+            }, 1000);
+          }
+        });
+    } catch (err) {
+      console.log(err, "err");
+    } finally {
+      setLoading(false);
+    }
   };
 
   // updateTest
@@ -156,7 +157,7 @@ const EditSubject = () => {
         body
       );
       if (res) {
-        toast.success("O'zgartirildi");
+        toast.success("O'zgartirildi", { position: "bottom-right" });
         setLoading(false);
       }
     } catch (err) {

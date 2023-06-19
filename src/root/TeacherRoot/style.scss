@@ -4,6 +4,7 @@
   .site-layout {
     background: linear-gradient(rgba(00, 00, 00, 0.1), rgba(00, 00, 00, 0.1)),
       url("../../assets/bgImg/2.jpg") center no-repeat fixed;
+    background-size: cover;
   }
   .ant-layout-sider {
     box-shadow: 0 0 2px lightgrey;

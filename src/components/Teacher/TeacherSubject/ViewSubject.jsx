@@ -414,7 +414,7 @@ const ViewSubject = () => {
           <ToastContainer />
         </div>
       )}
-      <Card title="Izohlar" className="izohCard">
+      <Card title="Izohlar" className="izohCard" style={{marginTop:'2rem'}}>
         {loading && <Spin />}
         {commentEmptyText && (
           <em

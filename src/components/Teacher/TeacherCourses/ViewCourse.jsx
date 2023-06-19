@@ -366,7 +366,7 @@ const ViewCourse = () => {
           />
         </Card>
       </Card>
-      <Card title="Kursga oid izohlar" className="izohCard">
+      <Card title="Kursga oid izohlar" className="izohCard" style={{marginTop:'2rem'}}>
         {loading && <Spin />}
         {commentEmptyText && (
           <em

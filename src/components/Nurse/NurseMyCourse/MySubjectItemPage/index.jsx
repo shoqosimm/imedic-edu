@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Col,
+  Divider,
   Form,
   Input,
   Rate,
@@ -20,6 +21,7 @@ import { BsArrowRight } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
 import { AiFillEye } from "react-icons/ai";
+import TitleText from "../../../generics/TitleText";
 
 const MySubjectItemPage = () => {
   const param = useParams();
@@ -236,15 +238,12 @@ const MySubjectItemPage = () => {
       </div>
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
-          <Card
-            title={
-              skeleton ? (
-                <Skeleton title paragraph={false} />
-              ) : (
-                subject?.data?.name
-              )
-            }
-          >
+          <div className="card">
+            {skeleton ? (
+              <Skeleton title paragraph={false} />
+            ) : (
+              <TitleText style={{ margin: "0" }} title={subject?.data?.name} />
+            )}
             <div
               style={{
                 textAlign: "center",
@@ -257,7 +256,10 @@ const MySubjectItemPage = () => {
               {skeleton ? (
                 <Skeleton title={false} paragraph />
               ) : (
-                <p>{subject?.data?.teaser}</p>
+                <>
+                  <p>{subject?.data?.teaser}</p>
+                  <Divider />
+                </>
               )}
             </div>
             {skeleton && <Skeleton title={false} paragraph />}
@@ -295,7 +297,7 @@ const MySubjectItemPage = () => {
                 dangerouslySetInnerHTML={{ __html: subject?.data.content }}
               />
             )}
-          </Card>
+          </div>
 
           <div
             style={{ flexWrap: "wrap", marginTop: "1rem" }}

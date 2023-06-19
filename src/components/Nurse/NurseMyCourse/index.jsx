@@ -194,21 +194,23 @@ const NurseMyCourseList = () => {
     <Row className="mycourse__wrapper">
       <Col span={24}>
         <TitleText title={"Mening kurslarim"} />
-        <Table
-          size="small"
-          pagination={{
-            current: pagination.current_page,
-            pageSize: pagination.per_page,
-            total: pagination.total,
-            onChange: (current, pageSize) => {
-              getCourseList(categoryId, current, pageSize);
-            },
-          }}
-          loading={loading}
-          bordered
-          columns={columns}
-          dataSource={courses}
-        />
+        <Card>
+          <Table
+            size="small"
+            pagination={{
+              current: pagination.current_page,
+              pageSize: pagination.per_page,
+              total: pagination.total,
+              onChange: (current, pageSize) => {
+                getCourseList(categoryId, current, pageSize);
+              },
+            }}
+            loading={loading}
+            bordered
+            columns={columns}
+            dataSource={courses}
+          />
+        </Card>
       </Col>
     </Row>
   );

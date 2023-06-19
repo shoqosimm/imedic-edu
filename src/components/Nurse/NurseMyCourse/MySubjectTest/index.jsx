@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import screenfull from "screenfull";
 import "./style.scss";
 import { Button, Modal, Pagination, Radio } from "antd";
@@ -70,7 +70,7 @@ const MySubjectTest = () => {
   };
 
   // handleStartTest
-  const handleStartTest = () => {
+  const handleStartTest = useCallback(() => {
     api
       .post(`api/nurse/test/start/${id}`, {
         body: {
@@ -109,7 +109,7 @@ const MySubjectTest = () => {
     }
     setStartTest(true);
     setOpenModal(false);
-  };
+  }, []);
 
   // handleChangePagination
   const handleChangePagination = (current) => {
@@ -274,7 +274,6 @@ const MySubjectTest = () => {
         open={endModal}
         onCancel={() => {
           setEndModal(false);
-          setTestTime(prev=>new Date(prev)-new Date().getTime())
           const element = document.querySelector(".test");
           if (screenfull.isEnabled) {
             screenfull.request(element);

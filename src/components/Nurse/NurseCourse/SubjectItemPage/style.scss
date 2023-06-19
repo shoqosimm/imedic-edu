@@ -5,12 +5,13 @@
       width: auto;
     }
   }
-  .ant-card {
+  .card {
+    padding: 2rem;
     margin-bottom: 2rem;
     background: linear-gradient(rgb(251, 251, 251), rgb(179, 181, 181));
   }
   .ant-card-body {
-    background: oldlace;
+    background: ghostwhite;
     color: #252525;
   }
 }

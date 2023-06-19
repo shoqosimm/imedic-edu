@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   Col,
+  Divider,
   Modal,
   Rate,
   Row,
@@ -19,6 +20,7 @@ import { BsPlus } from "react-icons/bs";
 import { ToastContainer } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
 import { AiFillEye } from "react-icons/ai";
+import TitleText from "../../../generics/TitleText";
 
 const SubjectItemPage = () => {
   const param = useParams();
@@ -175,18 +177,9 @@ const SubjectItemPage = () => {
 
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
-          <Card
-            title={
-              skeleton ? (
-                <Skeleton title paragraph={false} />
-              ) : (
-                <div className="d-flex align-center justify-between">
-                  {subject?.name}
-                  <Rate disabled value={subject?.average_rate} />
-                </div>
-              )
-            }
-          >
+          <div className="card">
+            <TitleText title={subject?.name}/>
+            <Rate disabled value={subject?.average_rate} style={{marginBottom:'1rem'}}/>
             <div
               style={{
                 textAlign: "center",
@@ -199,7 +192,10 @@ const SubjectItemPage = () => {
               {skeleton ? (
                 <Skeleton title={false} paragraph />
               ) : (
+                <>
                 <p>{subject?.teaser}</p>
+                <Divider/>
+                </>
               )}
             </div>
             {skeleton && <Skeleton title={false} paragraph />}
@@ -237,7 +233,7 @@ const SubjectItemPage = () => {
                 dangerouslySetInnerHTML={{ __html: subject?.content }}
               />
             )}
-          </Card>
+          </div>
           <div
             style={{ flexWrap: "wrap" }}
             className="d-flex align-center gap-2"

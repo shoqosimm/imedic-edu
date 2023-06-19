@@ -1,4 +1,4 @@
-import { Row, Select, Col, Table, Tooltip } from "antd";
+import { Row, Select, Col, Table, Tooltip, Card } from "antd";
 import React, { useEffect, useState } from "react";
 import { BiBookBookmark, BiUser, BiWindowOpen } from "react-icons/bi";
 import { Link } from "react-router-dom";
@@ -219,25 +219,27 @@ const NurseCourse = () => {
         </Col>
         <Col span={24}>
           {course ? (
-            <Table
-              size="small"
-              bordered
-              style={{ height: "100%" }}
-              loading={loadingCard}
-              columns={columns}
-              dataSource={course}
-              pagination={{
-                current: pagination.current_page,
-                pageSize: pagination.per_page,
-                total: pagination.total,
-                onChange: (current, pageSize) => {
-                  getCourse(categoryId, current, pageSize);
-                },
-              }}
-            />
+            <Card>
+              <Table
+                size="small"
+                bordered
+                style={{ height: "100%" }}
+                loading={loadingCard}
+                columns={columns}
+                dataSource={course}
+                pagination={{
+                  current: pagination.current_page,
+                  pageSize: pagination.per_page,
+                  total: pagination.total,
+                  onChange: (current, pageSize) => {
+                    getCourse(categoryId, current, pageSize);
+                  },
+                }}
+              />
+            </Card>
           ) : (
             <div
-              style={{ height: "400px", color: "#fff",letterSpacing:'1.5px' }}
+              style={{ height: "400px", color: "#fff", letterSpacing: "1.5px" }}
               className="d-flex align-center justify-center"
             >
               <h1>Yo'nalishni tanglang</h1>
