@@ -222,7 +222,6 @@ const NurseCourse = () => {
             <Card>
               <Table
                 size="small"
-                bordered
                 style={{ height: "100%" }}
                 loading={loadingCard}
                 columns={columns}

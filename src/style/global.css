@@ -77,10 +77,10 @@ body {
 .ant-table-thead th {
   border-radius: 0px !important;
 }
-.ant-breadcrumb{
+.ant-breadcrumb {
   display: inline-block;
   padding: 0.3rem 0.5rem;
-  background:#fff !important;
+  background: #fff !important;
   border-radius: 4px;
 }
 .ant-menu {

@@ -194,7 +194,7 @@ const NurseMyCourseList = () => {
     <Row className="mycourse__wrapper">
       <Col span={24}>
         <TitleText title={"Mening kurslarim"} />
-        <Card>
+        <Card >
           <Table
             size="small"
             pagination={{
@@ -206,7 +206,7 @@ const NurseMyCourseList = () => {
               },
             }}
             loading={loading}
-            bordered
+            // bordered
             columns={columns}
             dataSource={courses}
           />
