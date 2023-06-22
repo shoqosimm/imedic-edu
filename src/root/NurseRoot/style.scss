@@ -1,105 +1,90 @@
 .layout {
   width: 100%;
   min-height: 100vh;
-  .site-layout {
-    background: linear-gradient(rgba(00, 00, 00, 0.1), rgba(00, 00, 00, 0.1)),
-      url("../../assets/bgImg/1.jpg") center no-repeat fixed;
-      background-size: cover;
-  }
-  .ant-layout-sider {
-    box-shadow: 0 0 2px lightgrey;
+  .pre__header {
+    width: 100%;
+    height: 30px;
+    background: #f6f7fa;
+    padding: 0 50px;
+    color: #757575;
   }
   .ant-layout-header {
-    box-shadow: 0 0 2px lightgrey;
+    background: #fff;
+    box-shadow: 0 0 8px rgb(240, 240, 240);
+    height: 80px;
+    overflow: hidden;
     position: sticky;
     top: 0px;
     z-index: 999;
-    background: transparent;
-    backdrop-filter: blur(10px);
-    border-radius: 0 0 10px 10px;
-    padding: 0 1rem;
-    margin: 0 1rem;
   }
   .layout_content {
     overflow: scroll;
     height: 100%;
-    margin: 24px 16px;
-    padding: 24px;
+    padding: 24px 50px;
     min-height: 280px;
-    background: transparent !important;
-    border-radius: 10px;
-    box-shadow: 0 0 2px lightgrey;
+    background: whitesmoke;
     &::-webkit-scrollbar {
       display: none;
     }
   }
-  .siderNurse {
-    height: 100vh;
-    position: sticky;
-    top: 0px;
+  .menu {
+    .menu__item {
+      font-size: 17px;
+      letter-spacing: 1px;
+      a {
+        color: #252525;
+        &:hover {
+          color: #2572ff !important;
+        }
+      }
+    }
   }
-}
-.icon {
-  font-size: 22px !important;
-  color: whitesmoke;
-}
-.menuBurger {
-  display: none;
-  background: transparent !important;
-}
-.logOut {
-  background: transparent !important;
-  border: none;
-  color: #fff;
-  &:hover {
-    color: #fff !important;
-  }
-}
-.sizeChanger {
-  border: none;
-  color: #fff;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: transparent !important;
-  &:hover {
-    color: #fff !important;
-  }
-}
-.ant-drawer-body {
-  padding: 0px !important;
 }
 
-@media screen and (max-width: 565px) {
-  .layout_content {
-    padding: 15px !important;
-    margin: 15px 8px !important;
+.logOut {
+  width: 120px;
+  height: 40px;
+  background-color: #2572ff;
+  border: 2px solid #2572ff;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50px;
+  white-space: nowrap;
+  transition: 0.5s;
+  &:hover {
+    background: #fff;
+  }
+}
+.active {
+  color: #2572ff !important;
+  border-bottom: 2px solid #2572ff;
+}
+.hamburger__menu {
+  display: none;
+}
+
+// media
+@media screen and (max-width: 600px) {
+  .menu {
+    display: none;
+  }
+  .hamburger__menu {
+    display: flex;
+  }
+  .pre__header{
+    padding: 0 5% !important;
   }
   .ant-layout-header {
-    margin: 0px 8px !important;
+    padding: 0 5% !important;
   }
-  .ant-card-body {
-    padding: 15px !important;
+  .layout_content {
+    padding: 5% !important;
   }
-  .siderNurse {
-    display: none;
-  }
-  .sizeChanger {
-    display: none;
-  }
-  .menuBurger {
-    display: block;
-    background: cornflowerblue;
-    border: none;
-    color: #fff;
-    border-radius: 8px;
-    font-size: 18px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    &:hover {
-      color: #fff !important;
-    }
+  .logOut {
+    width: 100px;
+    height: 35px;
+    font-size: 14px;
   }
 }

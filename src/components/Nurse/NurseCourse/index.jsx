@@ -1,14 +1,11 @@
-import { Row, Select, Col, Table, Tooltip, Card } from "antd";
+import { Row, Select, Col, Pagination } from "antd";
 import React, { useEffect, useState } from "react";
-import { BiBookBookmark, BiUser, BiWindowOpen } from "react-icons/bi";
-import { Link } from "react-router-dom";
 import "./style.scss";
 import { api } from "../../../utils/api";
-import { BsFillPinAngleFill } from "react-icons/bs";
-import { FaUserMd } from "react-icons/fa";
-import { MdStarRate } from "react-icons/md";
 import { ToastContainer, toast } from "react-toastify";
-import TitleText from "../../generics/TitleText";
+import { motion } from "framer-motion";
+import CardCourseList from "../../generics/CardCourseList";
+import ChooseIllus from "../../../assets/illustration/choose.webp";
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
@@ -20,7 +17,7 @@ const NurseCourse = () => {
   const [pagination, setPagination] = useState({
     current_page: sessionStorage.getItem("current_page") ?? 1,
     per_page: sessionStorage.getItem("per_page") ?? 15,
-    total: 15,
+    total: 100,
   });
 
   // getCategoryforSelect
@@ -96,103 +93,6 @@ const NurseCourse = () => {
     }
   };
 
-  const columns = [
-    {
-      title: "№",
-      dataIndex: "num",
-      key: "num",
-      align: "center",
-      width: "2%",
-    },
-    {
-      title: "Kurs nomi",
-      dataIndex: "name",
-      key: "text",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center gap-1">
-            <BiBookBookmark
-              style={{ fontSize: "16px", fill: "#353595", flex: "0.1" }}
-            />
-            <p style={{ flex: "1" }}>{t}</p>
-          </div>
-        );
-      },
-    },
-    {
-      title: "O'qituvchi",
-      dataIndex: "teacher",
-      key: "teacher",
-      width: "20%",
-      align: "center",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center gap-2">
-            <FaUserMd style={{ fontSize: "16px", fill: "#254545" }} />
-            <p>{t}</p>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Reyting",
-      dataIndex: "rate",
-      key: "rate",
-      align: "center",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center justify-center gap-x-1">
-            <Tooltip title="o'rtacha baho">
-              <div className="d-flex align-center gap-1">
-                {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
-                <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
-              </div>
-            </Tooltip>
-            {"-"}
-            <Tooltip title="baho qo'yganlar soni">
-              <div className="d-flex align-center gap-1">
-                {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
-                <BiUser />
-              </div>
-            </Tooltip>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Mavzular soni",
-      dataIndex: "count_tema",
-      key: "count_tema",
-      width: "10%",
-      align: "center",
-    },
-
-    {
-      title: "Ba'tafsil",
-      dataIndex: "action",
-      key: "action",
-      align: "center",
-      width: "10%",
-      render: (text, record) => (
-        <div className="d-flex align-center justify-evenly ">
-          <Tooltip title="Biriktirish">
-            <BsFillPinAngleFill
-              onClick={() => handleAddCourse(record.id)}
-              style={{ fill: "red", fontSize: "18px", cursor: "pointer" }}
-            />
-          </Tooltip>
-          <Tooltip title="Batafsil">
-            <Link to={`/nurse/course/${record.id}`}>
-              <BiWindowOpen
-                style={{ fontSize: "18px", fill: "rgb(14 14 171)" }}
-              />
-            </Link>
-          </Tooltip>
-        </div>
-      ),
-    },
-  ];
-
   useEffect(() => {
     categoryId &&
       getCourse(
@@ -205,49 +105,65 @@ const NurseCourse = () => {
   }, []);
 
   return (
-    <>
+    <div className="courseList">
       <Row gutter={24}>
-        <Col span={24} style={{ position: "sticky", top: "0" }}>
-          <TitleText title={"Kurslar"} />
-          <Select
-            className="subject_select"
-            placeholder="Yo`nalishni tanlang"
-            onChange={handleChange}
-            options={category}
-            value={String(categoryId)}
-          />
+        <Col span={24} className="category__wrapper">
+          <div>
+            <label htmlFor="catSelect">Tanlang</label>
+            <Select
+              id="catSelect"
+              className="subject_select"
+              onChange={handleChange}
+              options={category}
+              value={String(categoryId)}
+            />
+          </div>
         </Col>
-        <Col span={24}>
+        <Col span={24} className="list">
           {course ? (
-            <Card>
-              <Table
-                size="small"
-                style={{ height: "100%" }}
-                loading={loadingCard}
-                columns={columns}
-                dataSource={course}
-                pagination={{
-                  current: pagination.current_page,
-                  pageSize: pagination.per_page,
-                  total: pagination.total,
-                  onChange: (current, pageSize) => {
-                    getCourse(categoryId, current, pageSize);
-                  },
+            <>
+              {course.map((item) => {
+                return (
+                  <motion.div
+                    initial={{ x: "100%", opacity: 0 }}
+                    whileInView={{ x: 0, opacity: 1 }}
+                    transition={{ type: "spring", duration: 2, bounce: 0.1 }}
+                    viewport={{ once: true }}
+                    key={item.id}
+                  >
+                    <CardCourseList
+                      course={item}
+                      handleAddCourse={handleAddCourse}
+                      mycourse={false}
+                    />
+                  </motion.div>
+                );
+              })}
+              <Pagination
+                current={pagination?.current_page}
+                total={pagination?.total}
+                onChange={(current, per_page) => {
+                  getCourse(categoryId, current, per_page);
                 }}
               />
-            </Card>
+            </>
           ) : (
             <div
-              style={{ height: "400px", color: "#fff", letterSpacing: "1.5px" }}
-              className="d-flex align-center justify-center"
+              style={{
+                marginTop: "2rem",
+                color: "#252525",
+                letterSpacing: "1px",
+              }}
+              className="d-flex align-center justify-center flex-column"
             >
-              <h1>Yo'nalishni tanglang</h1>
+              <img src={ChooseIllus} alt="chooseIllustrat" width={"400px"} />
+              <em style={{ fontSize: "18px" }}>Yo'nalishni tanglang...</em>
             </div>
           )}
         </Col>
       </Row>
       <ToastContainer />
-    </>
+    </div>
   );
 };
 

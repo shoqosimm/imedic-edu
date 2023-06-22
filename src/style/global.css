@@ -20,6 +20,12 @@ body {
 .d-flex {
   display: flex;
 }
+.flex-column{
+  flex-direction: column;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
 .align-center {
   align-items: center;
 }
@@ -44,10 +50,18 @@ body {
 
 /* ant-styles */
 .ant-btn {
-  height: 40px;
-  border-radius: 2px;
-  background: teal !important;
-  color: #fff !important;
+  background-color: #2572ff;
+  border: 2px solid #2572ff;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50px;
+  white-space: nowrap;
+  line-height: normal;
+}
+.ant-btn:hover{
+  background: #fff;
 }
 .ant-input {
   height: 40px;
@@ -64,12 +78,40 @@ body {
   height: 50px;
   background: teal !important;
 }
-.ant-pagination-item-active {
-  border-color: teal !important;
+.ant-pagination-item {
+  height: 50px !important;
+  width: 50px !important;
+  border: 2px solid #dce1e9 !important;
+  font-size: 18px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  margin: 0px 5px !important;
 }
-
+.ant-pagination-item-active {
+  background-color: #2572ff !important;
+  border: 2px solid #2572ff !important;
+  box-shadow: 0px 10px 20px 0px rgb(89 149 253 / 40%);
+}
 .ant-pagination a {
-  color: teal !important;
+  color: #9198a4 !important;
+}
+.ant-pagination-item:hover {
+  background-color: #2572ff !important;
+  border: 2px solid #2572ff !important;
+}
+.ant-pagination-item:hover a {
+  color: #fff !important;
+}
+.ant-pagination-item-active a {
+  color: #fff !important;
+}
+.ant-pagination {
+  display: flex;
+  align-items: center;
+  float: right;
+  margin: 1.5rem 0;
 }
 .ant-table {
   border-radius: 0px !important;
@@ -83,17 +125,7 @@ body {
   background: #fff !important;
   border-radius: 4px;
 }
-.ant-menu {
-  color: #fff;
-}
-.ant-menu-item-selected {
-  background: teal !important;
-  border-radius: 0px !important;
-}
-.ant-menu-item-active {
-  background: teal !important;
-  border-radius: 0px !important;
-}
+
 .ant-drawer-header {
   background: #001529 !important;
 }

@@ -1,12 +1,13 @@
 import { Breadcrumb, Button, Card, Col, Row, Spin } from "antd";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../../../../utils/api";
-import CardItem from "../../../generics/Card";
 import { TbMoodEmpty } from "react-icons/tb";
 import CommentCard from "../../../generics/CommentCard";
+import CardSubjectList from "../../../generics/CardSubjectList";
 
 const SubjectPage = () => {
   const param = useParams();
@@ -108,19 +109,32 @@ const SubjectPage = () => {
 
       <Row
         gutter={[20, 20]}
-        style={{ display: "flex", alignItems: "center", flexWrap: "wrap",marginBottom:'2rem' }}
+        style={{
+          display: "flex",
+          alignItems: "flex-start",
+          flexWrap: "wrap",
+          marginBottom: "2rem",
+        }}
       >
         {!emptyText ? (
           subjects.map((item, index) => {
             return (
               <Col key={index}>
-                <CardItem
-                  title={item.name}
-                  teaser={item.teaser}
-                  subject={item.subject_type}
-                  click={item.id}
-                  disabled={index === 0 ? false : true}
-                />
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ type: "just", duration: 1.7 }}
+                  viewport={{ once: true }}
+                >
+                  <CardSubjectList
+                    title={item.name}
+                    teaser={item.teaser}
+                    subject={item.subject_type}
+                    click={item.id}
+                    disabled={index === 0 ? false : true}
+                  />
+                </motion.div>
               </Col>
             );
           })
@@ -162,15 +176,27 @@ const SubjectPage = () => {
           </em>
         )}
         {comment?.map((item) => {
-          return <CommentCard key={item.id} data={item} />;
+          return (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ type: "just", duration: 1.7 }}
+              viewport={{ once: true }}
+            >
+              <CommentCard data={item} />
+            </motion.div>
+          );
         })}
-        <Button
-          disabled={commentEmptyText ? true : false}
-          onClick={handleMoreComment}
-          loading={loadingBtn}
-        >
-          Ko'proq ko'rsatish
-        </Button>
+        {!loading && (
+          <Button
+            disabled={commentEmptyText ? true : false}
+            onClick={handleMoreComment}
+            loading={loadingBtn}
+          >
+            Ko'proq ko'rsatish
+          </Button>
+        )}
       </Card>
     </>
   );

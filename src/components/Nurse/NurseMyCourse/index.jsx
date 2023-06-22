@@ -1,13 +1,10 @@
-import { Card, Col, Row, Slider, Table, Tooltip } from "antd";
+import { Col, Pagination, Row, Spin } from "antd";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { api } from "../../../utils/api";
 import "./style.scss";
-import { BiBookBookmark, BiUser, BiWindowOpen } from "react-icons/bi";
-import { MdStarRate } from "react-icons/md";
-import { FaUserMd } from "react-icons/fa";
-import { BsBookmarks } from "react-icons/bs";
-import TitleText from "../../generics/TitleText";
+import CardCourseList from "../../generics/CardCourseList";
+import EmptyBox from "../../../assets/illustration/emptyBox.webp";
 
 const NurseMyCourseList = () => {
   const [courses, setCourses] = useState([]);
@@ -18,135 +15,7 @@ const NurseMyCourseList = () => {
     per_page: 15,
     total: 10,
   });
-  const columns = [
-    {
-      title: "№",
-      dataIndex: "id",
-      key: "id",
-      width: "2%",
-      align: "center",
-    },
-    {
-      title: "Kurs nomi",
-      dataIndex: "name",
-      key: "name",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center gap-1">
-            <BsBookmarks
-              style={{ fontSize: "16px", fill: "teal", flex: "0.1" }}
-            />
-            <p style={{ flex: "1" }}>{t.name}</p>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Turkum",
-      dataIndex: "category",
-      key: "category",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center gap-1">
-            <BiBookBookmark
-              style={{ fontSize: "16px", fill: "#353595", flex: "0.1" }}
-            />
-            <p style={{ flex: "1" }}>{t.name}</p>
-          </div>
-        );
-      },
-    },
-    {
-      title: "O'qituvchi",
-      dataIndex: "user",
-      key: "user",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center gap-1">
-            <FaUserMd style={{ fontSize: "16px", fill: "#254545" }} />
-            <p>
-              {t.first_name}, {t.last_name}
-            </p>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Reyting",
-      dataIndex: "rate",
-      key: "rate",
-      align: "center",
-      render: (t) => {
-        return (
-          <div className="d-flex align-center justify-center gap-x-1">
-            <Tooltip title="o'rtacha baho">
-              <div className="d-flex align-center gap-1">
-                {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
-                <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
-              </div>
-            </Tooltip>
-            {"-"}
-            <Tooltip title="baho qo'yganlar soni">
-              <div className="d-flex align-center gap-1">
-                {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
-                <BiUser />
-              </div>
-            </Tooltip>
-          </div>
-        );
-      },
-    },
-    {
-      title: "Bajarilgan",
-      dataIndex: "percent",
-      key: "percent",
-      align: "center",
-      width: "2%",
-      render: (t) => {
-        return (
-          <>
-            {t === 100 ? (
-              <>
-                <p>{t} %</p>
-                <Slider
-                  style={{ margin: "0" }}
-                  trackStyle={{ background: "green", height: "6px" }}
-                  value={t}
-                  handleStyle={{ display: "none" }}
-                />
-              </>
-            ) : (
-              <>
-                <p>{t} %</p>
-                <Slider
-                  style={{ margin: "0" }}
-                  trackStyle={{ background: "#ffc107", height: "6px" }}
-                  value={t}
-                  handleStyle={{ display: "none" }}
-                />
-              </>
-            )}
-          </>
-        );
-      },
-    },
-    {
-      title: "Ba'tafsil",
-      dataIndex: "view",
-      key: "view",
-      align: "center",
-      width: "5%",
-      render: (t, record) => {
-        return (
-          <Link to={`/nurse/mycourse/${record.id}`}>
-            <BiWindowOpen
-              style={{ fontSize: "18px", fill: "rgb(14 14 171)" }}
-            />
-          </Link>
-        );
-      },
-    },
-  ];
+
   // getCourseList
   const getCourseList = (page, per_page) => {
     setLoading(true);
@@ -193,24 +62,47 @@ const NurseMyCourseList = () => {
   return (
     <Row className="mycourse__wrapper">
       <Col span={24}>
-        <TitleText title={"Mening kurslarim"} />
-        <Card >
-          <Table
-            size="small"
-            pagination={{
-              current: pagination.current_page,
-              pageSize: pagination.per_page,
-              total: pagination.total,
-              onChange: (current, pageSize) => {
-                getCourseList(categoryId, current, pageSize);
-              },
+        {courses &&
+          courses.map((item) => {
+            return (
+              <motion.div
+                style={{ margin: "2rem 0" }}
+                initial={{ x: "100%", opacity: 0 }}
+                whileInView={{ x: 0, opacity: 1 }}
+                transition={{ type: "spring", duration: 2, bounce: 0.1 }}
+                viewport={{ once: true }}
+                key={item.id}
+              >
+                <CardCourseList course={item} mycourse={true} />
+              </motion.div>
+            );
+          })}
+        {courses.length > 0 && (
+          <Pagination
+            current={pagination?.current_page}
+            total={pagination?.total}
+            onChange={(current, per_page) => {
+              getCourseList(current, per_page);
             }}
-            loading={loading}
-            // bordered
-            columns={columns}
-            dataSource={courses}
           />
-        </Card>
+        )}
+        {loading && (
+          <div
+            className="d-flex flex-column align-center justify-center"
+            style={{ background: "#fff", width: "100%", height: "500px" }}
+          >
+            <Spin />
+          </div>
+        )}
+        {courses.length < 0 && (
+          <div
+            className="d-flex flex-column align-center justify-center"
+            style={{ background: "#fff", width: "100%", height: "500px" }}
+          >
+            <img src={EmptyBox} alt="empty" width={"200px"} />
+            <em style={{ fontSize: "18px" }}>Sizda kurslar mavjud emas!</em>
+          </div>
+        )}
       </Col>
     </Row>
   );

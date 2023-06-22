@@ -1,0 +1,48 @@
+.cardSubject {
+  width: 300px;
+  height: 440px !important;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between !important;
+
+  .card__img {
+    width: 100%;
+    height: 204px;
+    background: lightgrey;
+    position: relative;
+  }
+  .card__type {
+    width: fit-content;
+    margin: 0 !important;
+    position: absolute;
+    top: 0.5rem;
+    right: 0;
+    padding: 2px 12px 2px 22px;
+    -webkit-clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 12px 50%);
+    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 12px 50%);
+    background: #2572ff;
+    color: #fff;
+  }
+  .card__btn {
+    width: 120px;
+    height: 40px;
+    border-radius: 2px;
+    line-height: normal;
+    &:hover {
+      background: #fff;
+    }
+  }
+  .card__icon {
+    font-size: 20px;
+  }
+
+  .ant-card-body {
+    overflow-y: hidden;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .cardSubject {
+    width: 100%;
+  }
+}
