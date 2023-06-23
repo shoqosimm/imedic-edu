@@ -91,6 +91,13 @@
       text-transform: uppercase;
     }
   }
+  .teacher__subject__content{
+    width: 100%;
+    padding: 0 5%;
+    img{
+      width:100%;
+    }
+  }
 }
 
 @media screen and (max-width: 745px) {

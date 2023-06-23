@@ -1,8 +1,7 @@
 .test {
-  width: 95%;
+  flex: 1;
   height: 100%;
-  margin: auto auto;
-  padding: 1rem;
+  padding: 2rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -33,13 +32,21 @@
   }
   .test__finish {
     width: 120px;
+    height: 40px;
     margin-left: auto;
+    color: #fff;
     background: green;
+    border: 1px solid green !important;
+    &:hover {
+      background: #fff;
+      color: green;
+    }
     color: #fff;
     @media screen and (max-width: 565px) {
       width: 100%;
     }
   }
+
   .test__part {
     h1 {
       margin: 1rem 0;
@@ -74,7 +81,63 @@
     margin: 2rem 0;
     flex-wrap: wrap;
   }
+  .ant-pagination-next {
+    button {
+      height: 40px;
+      span {
+        color: #fff;
+      }
+      svg {
+        color: #fff;
+      }
+    }
+    &:hover {
+      span {
+        color: #1677ff;
+      }
+      svg {
+        color: #1677ff;
+      }
+    }
+  }
+  .ant-pagination-prev {
+    button {
+      height: 40px;
+      span {
+        color: #fff;
+      }
+      svg {
+        color: #fff;
+      }
+    }
+    &:hover {
+      span {
+        color: #1677ff;
+      }
+      svg {
+        color: #1677ff;
+      }
+    }
+  }
+  .ant-pagination-disabled {
+    button {
+      height: 40px;
+      span {
+        color: #252525 !important;
+      }
+      svg {
+        color: #252525 !important;
+      }
+    }
+  }
 }
+
+.drawer {
+  width: 15vw;
+  height: 100vh;
+  background: #ffffff;
+}
+
 .btn {
   display: flex;
   justify-content: center;

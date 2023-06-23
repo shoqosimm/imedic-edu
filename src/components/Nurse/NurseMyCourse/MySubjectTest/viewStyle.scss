@@ -1,5 +1,53 @@
-.ant-card{
-  .ant-card-head{
-    background: linear-gradient(rgba(255, 255, 255, 0.7),rgba(230, 228, 228, 0.7)) !important;
+.answers__card {
+  margin-top: 2rem;
+  background: #f8f9fb;
+  -webkit-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  -moz-box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+  box-shadow: 0px 5px 10px 2px rgba(34, 60, 80, 0.2);
+}
+.badge__answers {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  margin-bottom: 2rem;
+}
+.spinner {
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.content__wrapper {
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0 0.5rem;
+    color: #575757;
+    font-size: 17px;
+    border-bottom: 1px solid rgb(236, 233, 233);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
   }
+
+  .icon {
+    font-size: 20px;
+    fill: #2572ff;
+  }
+}
+.ant-collapse-header-text {
+  font-size: 17px;
+  color: #757575;
+}
+.ant-collapse-item {
+  background: #fff;
+}
+.ant-collapse-expand-icon {
+  color: #757575 !important;
 }

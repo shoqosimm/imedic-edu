@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { api } from "../../../../utils/api";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { Breadcrumb, Card, Collapse } from "antd";
+import { Breadcrumb, Card, Collapse, Divider, Spin } from "antd";
 import moment from "moment";
-import { BiCheckCircle, BiHome } from "react-icons/bi";
-import { BsClock } from "react-icons/bs";
+import { BiHome } from "react-icons/bi";
+import { BsCheckCircle, BsClock, BsFileCode } from "react-icons/bs";
 import "./viewStyle.scss";
 
 const ViewAnswers = () => {
   const [info, setInfo] = useState();
   const location = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const getInfo = () => {
+    setLoading(true);
     api
       .post(`api/nurse/test/result/${location.state.message}`)
       .then((res) => {
         setInfo(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err, "err");
+        setLoading(false);
       });
   };
 
@@ -51,43 +55,90 @@ const ViewAnswers = () => {
         ]}
       />
 
-      <Card title={info?.course.name}>
-        <div>
-          <p>Umumiy testlar soni: {info?.subject_result.count_test} ta</p>
-          <p>Testga ajratilgan vaqt: {info?.subject_result.time} min</p>
-          <p className="d-flex align-center gap-x-1">
-            Test topshirilgan vaqt:{" "}
-            {moment(info?.test_start).format("DD.MM.YYYY HH:mm")}{" "}
-            <BsClock style={{ fill: "orange", fontSize: "16px" }} />
-          </p>
-          <p className="d-flex align-center gap-x-1">
-            Test tugatilgan vaqt:{" "}
-            {moment(info?.test_end).format("DD.MM.YYYY HH:mm")}{" "}
-            <BsClock style={{ fill: "red", fontSize: "16px" }} />
-          </p>
-          <div className="d-flex align-center gap-x-1">
-            <p>To'gri topilgan testlar soni: {info?.result} ta</p>
-            <BiCheckCircle style={{ fill: "green", fontSize: "18px" }} />
-          </div>
-        </div>
-        <Collapse style={{ margin: "1.5rem 0" }}>
-          <Collapse.Panel
-            header="Notog'ri javoblarga tegishli mavzular"
-            key="1"
-          >
-            <h2 style={{textAlign:'center',marginBottom:'1rem'}}>Bu yerda mavzular nomi ko'rsatiladi</h2>
-            <ol style={{ padding: "0.5rem 2rem" }}>
-              {info?.incorrect.map((item) => {
-                return (
-                  <li style={{ fontSize: "18px" }} key={item.id}>
-                    {item?.test?.from_subject?.name}
-                  </li>
-                );
-              })}
-            </ol>
-          </Collapse.Panel>
-        </Collapse>
-      </Card>
+      {loading && <Spin className="spinner" />}
+
+      {!loading && (
+        <Card className="answers__card" title={info?.course.name}>
+          {info?.is_passed === "0" ? (
+            <>
+              <div className="badge__answers" style={{ color: "red" }}>
+                <em>{"O'ta olinmadi"}</em>
+              </div>
+              <Divider />
+            </>
+          ) : (
+            <>
+              <div className="badge__answers" style={{ color: "green" }}>
+                <em>{"Topshirildi"}</em>
+              </div>
+              <Divider />
+            </>
+          )}
+          <ol className="content__wrapper">
+            <li>
+              <p className="d-flex align-center gap-x-1">
+                <BsFileCode className="icon" />
+                Umumiy testlar soni:
+              </p>
+              <div className="d-flex align-center gap-x-1">
+                {info?.subject_result.count_test} ta
+              </div>
+            </li>
+            <li>
+              <p className="d-flex align-center gap-x-1">
+                <BsClock className="icon" /> Testga ajratilgan vaqt:
+              </p>
+              <div className="d-flex align-center gap-x-1">
+                {info?.subject_result.time} min
+              </div>
+            </li>
+            <li className="d-flex align-center gap-x-1">
+              <p className="d-flex align-center gap-x-1">
+                <BsClock className="icon" /> Test topshirilgan vaqt:
+              </p>
+              <div className="d-flex align-center gap-x-1">
+                {moment(info?.test_start).format("DD.MM.YYYY HH:mm")}
+              </div>
+            </li>
+            <li className="d-flex align-center gap-x-1">
+              <p className="d-flex align-center gap-x-1">
+                <BsClock className="icon" /> Test tugatilgan vaqt:
+              </p>
+              <div className="d-flex align-center gap-x-1">
+                {moment(info?.test_end).format("DD.MM.YYYY HH:mm")}
+              </div>
+            </li>
+            <li>
+              <p className="d-flex align-center gap-x-1">
+                <BsCheckCircle className="icon" />
+                To'gri topilgan testlar soni:
+              </p>
+              <div className="d-flex align-center gap-x-1">
+                {info?.result} ta
+              </div>
+            </li>
+          </ol>
+          <Collapse style={{ margin: "1.5rem 0" }}>
+            <Collapse.Panel
+              header="Notog'ri javoblarga tegishli mavzular"
+              key="1"
+            >
+              <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
+                Bu yerda mavzular nomi ko'rsatiladi
+              </h2>
+              <ol style={{ padding: "0.5rem 2rem" }}>
+                {info?.incorrect.map((item) => {
+                  return (
+                    <li style={{ fontSize: "18px" }} key={item.id}>
+                      {item?.test?.from_subject?.name}
+                    </li>
+                  );
+                })}
+              </ol>
+            </Collapse.Panel>
+          </Collapse>
+        </Card>
+      )}
     </div>
   );
 };

@@ -10,6 +10,7 @@ import Loading from "../../components/Loader";
 import { ContextItem } from "../../components/Context";
 import { useContext } from "react";
 import { BiGlobe } from "react-icons/bi";
+import MedicLogo from "../../assets/logo.png";
 
 const Nurse = () => {
   const [, setToken] = useContext(ContextItem);
@@ -76,7 +77,7 @@ const Nurse = () => {
     <div>
       <Layout className="layout">
         <div className="pre__header d-flex align-center gap-x-1">
-          <BiGlobe  style={{fill:'#2572ff'}}/>
+          <BiGlobe style={{ fill: "#2572ff" }} />
           <p>www.edu.Imedic.uz</p>
         </div>
         <Header className="d-flex align-center justify-between">
@@ -88,35 +89,44 @@ const Nurse = () => {
           >
             <CiMenuBurger />
           </Popover>
-          <ul className="menu d-flex align-center gap-x-3">
-            <li className="menu__item d-flex align-center gap-x-1">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={() => sessionStorage.setItem("activeLink", 1)}
-                to="course"
-              >
-                Kurslar
-              </NavLink>
-            </li>
-            <li className="menu__item d-flex align-center gap-x-1">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={() => sessionStorage.setItem("activeLink", 2)}
-                to="mycourse"
-              >
-                Mening kurslarim
-              </NavLink>
-            </li>
-            <li className="menu__item d-flex align-center gap-x-1">
-              <NavLink
-                className={({ isActive }) => (isActive ? "active" : "")}
-                onClick={() => sessionStorage.setItem("activeLink", 3)}
-                to="setting"
-              >
-                Sozlamalar
-              </NavLink>
-            </li>
-          </ul>
+          <div className="d-flex align-end  ">
+            <img
+              src={MedicLogo}
+              alt="MedicLogo"
+              width={60}
+              height={60}
+              className="logo"
+            />
+            <ul className="menu d-flex align-center gap-x-3">
+              <li className="menu__item d-flex align-center gap-x-1">
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                  onClick={() => sessionStorage.setItem("activeLink", 1)}
+                  to="course"
+                >
+                  Kurslar
+                </NavLink>
+              </li>
+              <li className="menu__item d-flex align-center gap-x-1">
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                  onClick={() => sessionStorage.setItem("activeLink", 2)}
+                  to="mycourse"
+                >
+                  Mening kurslarim
+                </NavLink>
+              </li>
+              <li className="menu__item d-flex align-center gap-x-1">
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                  onClick={() => sessionStorage.setItem("activeLink", 3)}
+                  to="setting"
+                >
+                  Sozlamalar
+                </NavLink>
+              </li>
+            </ul>
+          </div>
           <Button
             className="logOut d-flex align-center gap-x-1"
             icon={<AiOutlineLogout />}

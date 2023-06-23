@@ -107,25 +107,27 @@ const SubjectPage = () => {
         />
       )}
 
-      <Row
-        gutter={[20, 20]}
-        style={{
-          display: "flex",
-          alignItems: "flex-start",
-          flexWrap: "wrap",
-          marginBottom: "2rem",
-        }}
-      >
-        {!emptyText ? (
-          subjects.map((item, index) => {
-            return (
-              <Col key={index}>
+      <div>
+        {emptyText && (
+          <div
+            className="d-flex flex-column align-center justify-center"
+            style={{ background: "#fff", width: "100%", height: "500px" }}
+          >
+            <img src={EmptyBox} alt="empty" width={"200px"} />
+            <em style={{ fontSize: "18px" }}>{emptyText}</em>
+          </div>
+        )}
+        <div className="w-100 d-flex align-center justify-center gap-3 flex-wrap">
+          {!loading &&
+            subjects &&
+            subjects?.map((item, index) => {
+              return (
                 <motion.div
                   key={item.id}
                   initial={{ opacity: 0 }}
                   whileInView={{ opacity: 1 }}
-                  transition={{ type: "just", duration: 1.7 }}
                   viewport={{ once: true }}
+                  transition={{ type: "just", duration: 1.4, bounce: 0.1 }}
                 >
                   <CardSubjectList
                     title={item.name}
@@ -135,32 +137,11 @@ const SubjectPage = () => {
                     disabled={index === 0 ? false : true}
                   />
                 </motion.div>
-              </Col>
-            );
-          })
-        ) : (
-          <div
-            style={{
-              width: "100%",
-              height: "20rem",
-              fontSize: "18px",
-              letterSpacing: "1px",
-              fontWeight: "600",
-            }}
-            className="d-flex align-center justify-center"
-          >
-            <div
-              className="d-flex align-center "
-              style={{ flexDirection: "column" }}
-            >
-              <TbMoodEmpty style={{ fontSize: "54px", fill: "yellow" }} />
-              <p style={{ fontSize: "24px", textAlign: "center" }}>
-                {emptyText}
-              </p>
-            </div>
-          </div>
-        )}
-      </Row>
+              );
+            })}
+        </div>
+      </div>
+
       <Card title="Izohlar" className="izohCard">
         {loading && <Spin />}
         {commentEmptyText && (

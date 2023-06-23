@@ -6,7 +6,6 @@ import { api } from "../../../../utils/api";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
-import TitleText from "../../../generics/TitleText";
 import EmptyBox from "../../../../assets/illustration/emptyBox.webp";
 import { motion } from "framer-motion";
 import MyCardSubjectList from "../../../generics/MyCardSubjectList";
@@ -252,13 +251,15 @@ const NurseMyCourse = () => {
                   </motion.div>
                 );
               })}
-              <Button
-                disabled={emptyText ? true : false}
-                onClick={handleMoreComment}
-                loading={loadingBtn}
-              >
-                Ko'proq ko'rsatish
-              </Button>
+              {!loading && (
+                <Button
+                  disabled={emptyText ? true : false}
+                  onClick={handleMoreComment}
+                  loading={loadingBtn}
+                >
+                  Ko'proq ko'rsatish
+                </Button>
+              )}
             </Card>
           </Form>
         </div>

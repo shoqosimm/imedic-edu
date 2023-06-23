@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import screenfull from "screenfull";
 import "./style.scss";
-import { Button, Modal, Pagination, Radio } from "antd";
+import { Button, Drawer, Modal, Pagination, Radio } from "antd";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
@@ -146,7 +146,8 @@ const MySubjectTest = () => {
 
   // handleBackFromTest
   const handleBackFromTest = () => {
-    navigate(`/nurse/mycourse`);
+    setOpenModal(false);
+    // navigate(`/nurse/mycourse`);
   };
 
   // handleFinish
@@ -176,123 +177,139 @@ const MySubjectTest = () => {
   }, []);
 
   return (
-    <div className="test">
-      <div className="timer_wrapper d-flex align-end justify-between">
-        <div className="timer">
-          {testTime && (
-            <Countdown
-              onComplete={handleFinish}
-              date={Date.now() + Number(testTime)}
-            />
-          )}
-        </div>
-        <Button
-          onClick={() => {
-            setEndModal(true);
-            screenfull.exit();
-          }}
-          className="test__finish"
-        >
-          Yakunlash
-        </Button>
-      </div>
-      <div className="test__part">
-        <h1>
-          {pagination.ordering}. {test.title}
-        </h1>
-        {test.variant?.map((item, index) => {
-          return (
-            <Radio.Group
-              buttonStyle="solid"
-              optionType="button"
-              key={index}
-              style={{ display: "flex" }}
-              onChange={handleSendAnswer}
-              value={answer}
-            >
-              <Radio value={index} className="test__questions">
-                {item}
-              </Radio>
-            </Radio.Group>
-          );
-        })}
-      </div>
-      <div>
+    <div className="d-flex gap-x-2">
+      <div className="drawer">
         <Pagination
-          className="control__btns d-flex align-center justify-center"
+          className=" d-flex align-center justify-center flex-column"
           defaultCurrent={pagination.ordering}
           total={pagination?.total}
-          itemRender={itemRender}
           onChange={handleChangePagination}
-          showSizeChanger={false}
           pageSize={3}
           responsive
         />
       </div>
-      <Modal
-        onOk={handleStartTest}
-        onCancel={handleBackFromTest}
-        okText={"Testni boshlash"}
-        cancelText={"Bekor qilish va ortga qaytish"}
-        open={openModal}
-      >
-        <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
+
+      <div className="test">
+        <div className="d-flex flex-column gap-3">
+          <div className="timer_wrapper d-flex align-end justify-between">
+            <div className="timer">
+              {testTime && (
+                <Countdown
+                  onComplete={handleFinish}
+                  date={Date.now() + Number(testTime)}
+                />
+              )}
+            </div>
+            <Button
+              onClick={() => {
+                setEndModal(true);
+                screenfull.exit();
+              }}
+              className="test__finish"
+            >
+              Yakunlash
+            </Button>
+          </div>
+          <div className="test__part">
+            <h1>
+              {pagination.ordering}. {test.title}
+            </h1>
+            {test.variant?.map((item, index) => {
+              return (
+                <Radio.Group
+                  buttonStyle="solid"
+                  optionType="button"
+                  key={index}
+                  style={{ display: "flex" }}
+                  onChange={handleSendAnswer}
+                  value={answer}
+                >
+                  <Radio value={index} className="test__questions">
+                    {item}
+                  </Radio>
+                </Radio.Group>
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          <Pagination
+            className="control__btns d-flex align-center justify-center"
+            defaultCurrent={pagination.ordering}
+            total={pagination?.total}
+            itemRender={itemRender}
+            onChange={handleChangePagination}
+            showSizeChanger={false}
+            pageSize={3}
+            responsive
+          />
+        </div>
+
+        <Modal
+          onOk={handleStartTest}
+          onCancel={handleBackFromTest}
+          okText={"Testni boshlash"}
+          cancelText={"Bekor qilish va ortga qaytish"}
+          open={openModal}
+        >
+          <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
+            <div>
+              <p>
+                Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
+              </p>
+              <p>
+                Test soni:{" "}
+                <strong>{testInfo?.course_subject.count_test}</strong> ta
+              </p>
+              <p>
+                To'g'ri javoblarning minimal soni:
+                <strong> {testInfo?.course_subject.right_test}</strong> ta
+              </p>
+              <p>
+                Qayta topshirish oraliq vaqti:
+                <strong> {testInfo?.course_subject.resubmit}</strong> min
+              </p>
+            </div>
+            <div className="test__modal__desctiption">
+              <p>
+                Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu
+                testni yakunlamasdan sahifani tark etish mumkin emas, Agarda
+                testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga
+                ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test
+                ham yakunlanadi va testni javoblari qa'bul qilinadi, test
+                "Testni boshlash" tugmasini bosilgandan so'ng boshlanadi.
+              </p>
+            </div>
+          </div>
+        </Modal>
+        <Modal
+          onOk={handleFinish}
+          title="Yakunlash"
+          okText={"Ha"}
+          cancelText={"Yo'q"}
+          open={endModal}
+          onCancel={() => {
+            setEndModal(false);
+            const element = document.querySelector(".test");
+            if (screenfull.isEnabled) {
+              screenfull.request(element);
+            }
+          }}
+        >
           <div>
             <p>
-              Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
+              Siz haqiqatdan ham ushbu testni yakunlamoqchimisiz, test
+              yakunlangandan so'ng barcha javoblaringiz qa'bul qilinadi va
+              o'zgartira olmaysiz.
             </p>
+            <br />
             <p>
-              Test soni: <strong>{testInfo?.course_subject.count_test}</strong>{" "}
-              ta
-            </p>
-            <p>
-              To'g'ri javoblarning minimal soni:
-              <strong> {testInfo?.course_subject.right_test}</strong> ta
-            </p>
-            <p>
-              Qayta topshirish oraliq vaqti:
-              <strong> {testInfo?.course_subject.resubmit}</strong> min
+              Qayta topshirish {testInfo?.resubmit} daqiqadan so'ng mumkin
+              bo'ladi.
             </p>
           </div>
-          <div className="test__modal__desctiption">
-            <p>
-              Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu
-              testni yakunlamasdan sahifani tark etish mumkin emas, Agarda
-              testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga
-              ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test ham
-              yakunlanadi va testni javoblari qa'bul qilinadi, test "Testni
-              boshlash" tugmasini bosilgandan so'ng boshlanadi.
-            </p>
-          </div>
-        </div>
-      </Modal>
-      <Modal
-        onOk={handleFinish}
-        title="Yakunlash"
-        okText={"Ha"}
-        cancelText={"Yo'q"}
-        open={endModal}
-        onCancel={() => {
-          setEndModal(false);
-          const element = document.querySelector(".test");
-          if (screenfull.isEnabled) {
-            screenfull.request(element);
-          }
-        }}
-      >
-        <div>
-          <p>
-            Siz haqiqatdan ham ushbu testni yakunlamoqchimisiz, test
-            yakunlangandan so'ng barcha javoblaringiz qa'bul qilinadi va
-            o'zgartira olmaysiz.
-          </p>
-          <br />
-          <p>
-            Qayta topshirish {testInfo?.resubmit} daqiqadan so'ng mumkin
-            bo'ladi.
-          </p>
-        </div>
-      </Modal>
+        </Modal>
+      </div>
       <ToastContainer />
     </div>
   );

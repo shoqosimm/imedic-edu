@@ -158,7 +158,6 @@ const SubjectItemPage = () => {
     };
   }, []);
 
-  // console.log(subject,'subjcet');
 
   return (
     <>
@@ -323,11 +322,11 @@ const SubjectItemPage = () => {
             {!myCourse && (
               <Button
                 icon={<BsPlus style={{ fontSize: "22px" }} />}
-                className="d-flex align-center gap-x-1"
+                className="card__btn d-flex align-center gap-x-1"
                 type="primary"
                 onClick={() => setAddCoursList(false)}
               >
-                Kursni qo`shish
+                {'Kursni qo`shish'}
               </Button>
             )}
           </div>
