@@ -1,12 +1,16 @@
-import React, { useState, useEffect, useCallback } from "react";
-import screenfull from "screenfull";
+import React, { useState, useEffect, useCallback, memo } from "react";
 import "./style.scss";
-import { Button, Drawer, Modal, Pagination, Radio } from "antd";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { Button, Menu, Modal, Pagination, Radio } from "antd";
+import {
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
 import Countdown from "react-countdown";
+import Swal from "sweetalert2";
+import moment from "moment/moment";
 
 const MySubjectTest = () => {
   const navigate = useNavigate();
@@ -16,10 +20,10 @@ const MySubjectTest = () => {
   const [answer, setAnswer] = useState();
   const [testTime, setTestTime] = useState();
   const [startTest, setStartTest] = useState(false);
-  const [endModal, setEndModal] = useState(false);
+  const [testAmount, setTestAmount] = useState([]);
   const [pagination, setPagination] = useState({
-    ordering: 1,
-    total: 15,
+    ordering: localStorage.getItem("testPagination") ?? 1,
+    total: 10,
   });
   const [test, setTest] = useState({
     id: "",
@@ -52,7 +56,7 @@ const MySubjectTest = () => {
       return (
         <Button
           className="btn d-flex align-center gap-x-1"
-          icon={<BsArrowLeft />}
+          icon={<MdKeyboardDoubleArrowLeft />}
         >
           {window.innerWidth >= 565 ? "Oldingisi" : null}
         </Button>
@@ -62,7 +66,7 @@ const MySubjectTest = () => {
       return (
         <Button className="btn d-flex align-center gap-1">
           {window.innerWidth >= 565 ? "Keyingisi" : null}
-          <BsArrowRight />
+          <MdKeyboardDoubleArrowRight />
         </Button>
       );
     }
@@ -70,7 +74,7 @@ const MySubjectTest = () => {
   };
 
   // handleStartTest
-  const handleStartTest = useCallback(() => {
+  const handleStartTest = () => {
     api
       .post(`api/nurse/test/start/${id}`, {
         body: {
@@ -82,7 +86,9 @@ const MySubjectTest = () => {
           new Date(res.data.test_start).getDate() ===
           new Date(res.data.test_end).getDate()
         ) {
+          const countdown = new Date(res.data.test_end) - new Date().getTime();
           setTestTime(new Date(res.data.test_end) - new Date().getTime());
+          localStorage.setItem("countTime", countdown);
         }
         setTest({
           id: res.data.id,
@@ -103,16 +109,14 @@ const MySubjectTest = () => {
           navigate(-1);
         }, 2000);
       });
-    const element = document.querySelector(".test");
-    if (screenfull.isEnabled) {
-      screenfull.request(element);
-    }
+
     setStartTest(true);
     setOpenModal(false);
-  }, []);
+  };
 
   // handleChangePagination
   const handleChangePagination = (current) => {
+    localStorage.setItem("testPagination", current);
     setPagination({ ...pagination, ordering: current });
     const body = {
       ordering: current,
@@ -120,6 +124,7 @@ const MySubjectTest = () => {
     api
       .post(`api/nurse/test/start/${id}`, body)
       .then((res) => {
+        window.location.reload();
         setTest({
           id: res.data.id,
           title: res.data.question,
@@ -147,7 +152,7 @@ const MySubjectTest = () => {
   // handleBackFromTest
   const handleBackFromTest = () => {
     setOpenModal(false);
-    // navigate(`/nurse/mycourse`);
+    // navigate(-1);
   };
 
   // handleFinish
@@ -155,7 +160,6 @@ const MySubjectTest = () => {
     api
       .get(`api/nurse/test/finish/${id}`)
       .then((res) => {
-        setEndModal(false);
         if (res.status === 200) {
           toast.success("Javoblar qa'bul qilindi", {
             position: "bottom-right",
@@ -170,6 +174,11 @@ const MySubjectTest = () => {
 
   useEffect(() => {
     !startTest && getTest();
+    if (testAmount.length === 0) {
+      for (let i = 1; i <= pagination?.total; i++) {
+        setTestAmount((prev) => [...prev, i]);
+      }
+    }
 
     return () => {
       controller.abort();
@@ -177,15 +186,20 @@ const MySubjectTest = () => {
   }, []);
 
   return (
-    <div className="d-flex gap-x-2">
+    <div className="container__test d-flex gap-x-2">
       <div className="drawer">
-        <Pagination
-          className=" d-flex align-center justify-center flex-column"
-          defaultCurrent={pagination.ordering}
-          total={pagination?.total}
-          onChange={handleChangePagination}
-          pageSize={3}
-          responsive
+        <Menu
+          defaultSelectedKeys={[localStorage.getItem("testPagination") ?? "1"]}
+          mode="inline"
+          inlineCollapsed
+          multiple={false}
+          onSelect={(e) => handleChangePagination(e.key)}
+          items={testAmount?.map((item) => {
+            return {
+              label: item,
+              key: item,
+            };
+          })}
         />
       </div>
 
@@ -196,14 +210,23 @@ const MySubjectTest = () => {
               {testTime && (
                 <Countdown
                   onComplete={handleFinish}
-                  date={Date.now() + Number(testTime)}
+                  date={Date.now() + Number(localStorage.getItem("countTime"))}
                 />
               )}
             </div>
             <Button
               onClick={() => {
-                setEndModal(true);
-                screenfull.exit();
+                Swal.fire({
+                  title: "Yakunlash",
+                  text: "Siz haqiqatdan ham ushbu testni yakunlamoqchimisz?",
+                  confirmButtonText: "Ha, yakunlash",
+                  cancelButtonText: "Yo'q, davom etish",
+                  showCancelButton: true,
+                }).then((res) => {
+                  if (res.isConfirmed) {
+                    handleFinish();
+                  }
+                });
               }}
               className="test__finish"
             >
@@ -282,35 +305,9 @@ const MySubjectTest = () => {
             </div>
           </div>
         </Modal>
-        <Modal
-          onOk={handleFinish}
-          title="Yakunlash"
-          okText={"Ha"}
-          cancelText={"Yo'q"}
-          open={endModal}
-          onCancel={() => {
-            setEndModal(false);
-            const element = document.querySelector(".test");
-            if (screenfull.isEnabled) {
-              screenfull.request(element);
-            }
-          }}
-        >
-          <div>
-            <p>
-              Siz haqiqatdan ham ushbu testni yakunlamoqchimisiz, test
-              yakunlangandan so'ng barcha javoblaringiz qa'bul qilinadi va
-              o'zgartira olmaysiz.
-            </p>
-            <br />
-            <p>
-              Qayta topshirish {testInfo?.resubmit} daqiqadan so'ng mumkin
-              bo'ladi.
-            </p>
-          </div>
-        </Modal>
+
+        <ToastContainer />
       </div>
-      <ToastContainer />
     </div>
   );
 };

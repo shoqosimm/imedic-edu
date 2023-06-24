@@ -77,10 +77,16 @@
       color: #fff;
     }
   }
+
   .control__btns {
+    width: 100% !important;
     margin: 2rem 0;
     flex-wrap: wrap;
+    .ant-pagination-item {
+      display: none !important;
+    }
   }
+
   .ant-pagination-next {
     button {
       height: 40px;
@@ -134,8 +140,13 @@
 
 .drawer {
   width: 15vw;
-  height: 100vh;
+  height: 100%;
+  max-height: 100vh;
   background: #ffffff;
+  .ant-menu {
+    width: 100%;
+    text-align: center;
+  }
 }
 
 .btn {
@@ -144,4 +155,24 @@
   align-items: center;
   color: #080808 !important;
   min-width: 50px;
+  margin: 0 0.5rem;
+}
+
+// media
+@media screen and (max-width: 909px) {
+  .container__test {
+    flex-direction: column;
+  }
+  .drawer {
+    width: 100%;
+    margin-bottom: 1rem;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .ant-menu {
+      display: flex;
+      width: 100px;
+    }
+  }
 }
