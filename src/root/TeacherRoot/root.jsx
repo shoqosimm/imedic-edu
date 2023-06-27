@@ -3,7 +3,7 @@ import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList } from "react-icons/ci";
 import { TbReport } from "react-icons/tb";
-import { GrUserPolice } from "react-icons/gr";
+import { FaUserNurse } from "react-icons/fa";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
@@ -45,7 +45,7 @@ const Teacher = () => {
     <Layout className="layout">
       <Sider
         className="siderTeacher"
-        theme="light"
+        theme="dark"
         trigger={null}
         collapsible
         collapsed={collapsed}
@@ -55,19 +55,18 @@ const Teacher = () => {
           style={{
             textAlign: "center",
             padding: "1rem 0",
-            borderBottom: "1px solid lightgrey",
+            borderBottom: "1px solid #ffffff63",
           }}
         >
-          <GrUserPolice style={{ fontSize: "34px" }} />
+          <FaUserNurse style={{ fontSize: "34px", fill: "white" }} />
         </div>
         <Menu
-          theme="light"
-          mode="inline"
+          theme="dark"
           selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
           items={[
             {
               key: "1",
-              icon: <CiViewList style={{ color: "brown" }} className="icon" />,
+              icon: <CiViewList className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
@@ -79,12 +78,10 @@ const Teacher = () => {
             },
             {
               key: "2",
-              icon: (
-                <TbReport style={{ color: "lightskyblue" }} className="icon" />
-              ),
+              icon: <TbReport className="icon" />,
               label: (
                 <Link
-                  onClick={() => sessionStorage.setItem("activeLink", 3)}
+                  onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="report"
                 >
                   Hisobot
@@ -93,12 +90,10 @@ const Teacher = () => {
             },
             {
               key: "3",
-              icon: (
-                <AiOutlineSetting style={{ fill: "grey" }} className="icon" />
-              ),
+              icon: <AiOutlineSetting className="icon" />,
               label: (
                 <Link
-                  onClick={() => sessionStorage.setItem("activeLink", 2)}
+                  onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
                   Sozlamalar
@@ -109,14 +104,7 @@ const Teacher = () => {
         />
       </Sider>
       <Layout className="site-layout">
-        <Header
-          style={{
-            padding: "0 1rem",
-            background: "#fff",
-            margin: "0 1rem",
-            borderRadius: "0 0 10px 10px",
-          }}
-        >
+        <Header>
           <div
             style={{ height: "100%" }}
             className="d-flex align-center justify-between"
@@ -154,13 +142,13 @@ const Teacher = () => {
         width={200}
       >
         <Menu
-          theme="light"
+          theme="dark"
           mode="inline"
           selectedKeys={localStorage.getItem("activeLink")}
           items={[
             {
               key: "1",
-              icon: <CiViewList style={{ color: "brown" }} className="icon" />,
+              icon: <CiViewList className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 1)}
@@ -172,12 +160,10 @@ const Teacher = () => {
             },
             {
               key: "2",
-              icon: (
-                <TbReport style={{ color: "lightskyblue" }} className="icon" />
-              ),
+              icon: <TbReport className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 3)}
+                  onClick={() => localStorage.setItem("activeLink", 2)}
                   to="report"
                 >
                   Hisobot
@@ -186,12 +172,10 @@ const Teacher = () => {
             },
             {
               key: "3",
-              icon: (
-                <AiOutlineSetting style={{ fill: "grey" }} className="icon" />
-              ),
+              icon: <AiOutlineSetting className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 2)}
+                  onClick={() => localStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
                   Sozlamalar

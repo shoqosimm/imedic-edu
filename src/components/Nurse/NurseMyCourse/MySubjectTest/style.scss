@@ -1,8 +1,7 @@
 .test {
-  width: 95%;
+  flex: 1;
   height: 100%;
-  margin: auto auto;
-  padding: 1rem;
+  padding: 2rem;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -28,18 +27,29 @@
       justify-content: center;
       @media screen and (max-width: 565px) {
         width: 100%;
+        p{
+          font-size: 18px;
+        }
       }
     }
   }
   .test__finish {
     width: 120px;
+    height: 40px;
     margin-left: auto;
+    color: #fff;
     background: green;
+    border: 1px solid green !important;
+    &:hover {
+      background: #fff;
+      color: green;
+    }
     color: #fff;
     @media screen and (max-width: 565px) {
       width: 100%;
     }
   }
+
   .test__part {
     h1 {
       margin: 1rem 0;
@@ -70,15 +80,57 @@
       color: #fff;
     }
   }
+
   .control__btns {
+    width: 100% !important;
     margin: 2rem 0;
     flex-wrap: wrap;
+   
+  }
+
+ 
+}
+
+.drawer {
+  width: 15vw;
+  height: 100%;
+  max-height: 100vh;
+  background: #ffffff;
+  .ant-menu {
+    width: 100%;
+    text-align: center;
   }
 }
+
 .btn {
   display: flex;
   justify-content: center;
   align-items: center;
   color: #080808 !important;
   min-width: 50px;
+  margin: 0 0.5rem;
+}
+.paginate__btns{
+  border-radius: 4px;
+  background: whitesmoke;
+  color: #252525;
+}
+
+// media
+@media screen and (max-width: 909px) {
+  .container__test {
+    flex-direction: column;
+  }
+  .drawer {
+    width: 100%;
+    margin-bottom: 1rem;
+    overflow: scroll;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    .ant-menu {
+      display: flex;
+      width: 100px;
+    }
+  }
 }

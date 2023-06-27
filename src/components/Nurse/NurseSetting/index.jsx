@@ -1,27 +1,32 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Col, DatePicker, Form, Input, Button, Row, Modal } from "antd";
+import { Col, DatePicker, Form, Input, Button, Row, Modal, Spin } from "antd";
 import Swal from "sweetalert2";
 import { api } from "../../../utils/api";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TitleText from "../../generics/TitleText";
 
 const NurseSetting = () => {
   const [form] = Form.useForm();
   const [formPassword] = Form.useForm();
   const [loading, setloading] = useState(false);
+  const [firstLoading, setFirstLoading] = useState(false);
   const [userInfo, setUserInfo] = useState();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
 
   // getUserInfo
   const getUserInfo = async () => {
+    setFirstLoading(true);
     const res = await api.get("api/user/me");
     try {
       setUserInfo(res.data);
     } catch (err) {
       console.log(err, "err");
+    } finally {
+      setFirstLoading(false);
     }
   };
 
@@ -104,11 +109,12 @@ const NurseSetting = () => {
   };
 
   useEffect(() => {
-    getUserInfo();
+    !userInfo && getUserInfo();
   }, []);
 
   return (
     <div className="setting">
+      <TitleText title={"Sozlamalar"} />
       <Form
         form={form}
         id="settingForm"
@@ -124,41 +130,44 @@ const NurseSetting = () => {
             sm={24}
             xs={24}
           >
-            <ul>
-              <li>
-                <strong>Ism:</strong> {userInfo?.first_name}
-              </li>
-              <li>
-                <strong>Familiya:</strong> {userInfo?.last_name}
-              </li>
-              <li>
-                <strong>Otasining ismi:</strong> {userInfo?.patronymic}
-              </li>
-              <li>
-                <strong>Pasport seriyasi:</strong> {userInfo?.series}
-              </li>
-              <li>
-                <strong>Pasport raqami:</strong> {userInfo?.number}
-              </li>
-              <li>
-                <strong>PINFL:</strong> {userInfo?.pinfl}
-              </li>
-              <li>
-                <strong>Telefon raqami:</strong> {userInfo?.phone}
-              </li>
-              <li>
-                <strong>Tug'ilgan:</strong> {userInfo?.birth_date}
-              </li>
-              <li>
-                <Button
-                  className="passwordBtn"
-                  type="primary"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Parolni o'zgartirish
-                </Button>
-              </li>
-            </ul>
+            {firstLoading && <Spin className="d-flex align-center justify-center" style={{ height: "100% "}} />}
+            {userInfo && (
+              <ul>
+                <li>
+                  <strong>Ism:</strong> {userInfo?.first_name}
+                </li>
+                <li>
+                  <strong>Familiya:</strong> {userInfo?.last_name}
+                </li>
+                <li>
+                  <strong>Otasining ismi:</strong> {userInfo?.patronymic}
+                </li>
+                <li>
+                  <strong>Pasport seriyasi:</strong> {userInfo?.series}
+                </li>
+                <li>
+                  <strong>Pasport raqami:</strong> {userInfo?.number}
+                </li>
+                <li>
+                  <strong>PINFL:</strong> {userInfo?.pinfl}
+                </li>
+                <li>
+                  <strong>Telefon raqami:</strong> {userInfo?.phone}
+                </li>
+                <li>
+                  <strong>Tug'ilgan:</strong> {userInfo?.birth_date}
+                </li>
+                <li>
+                  <Button
+                    className="passwordBtn"
+                    type="primary"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    Parolni o'zgartirish
+                  </Button>
+                </li>
+              </ul>
+            )}
           </Col>
           <Col className="updateForm" xl={12} lg={12} md={24} sm={24} xs={24}>
             <Row gutter={[20]}>
@@ -201,12 +210,12 @@ const NurseSetting = () => {
             <Row gutter={[20]}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item name="series" label="Pasport seriyasi">
-                  <Input  placeholder="AA" />
+                  <Input placeholder="AA" />
                 </Form.Item>
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item name="number" label="Pasport raqami">
-                  <Input  placeholder="1234567" />
+                  <Input placeholder="1234567" />
                 </Form.Item>
               </Col>
             </Row>
@@ -263,7 +272,9 @@ const NurseSetting = () => {
           onCancel={() => setIsModalOpen(false)}
           footer={
             <>
-              <Button onClick={() => setIsModalOpen(false)}>Bekor qilish</Button>
+              <Button onClick={() => setIsModalOpen(false)}>
+                Bekor qilish
+              </Button>
               <Button type="primary" htmlType="submit" form="passwordUpdate">
                 Saqlash
               </Button>

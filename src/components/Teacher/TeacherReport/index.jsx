@@ -1,9 +1,10 @@
 import React from 'react';
+import TitleText from '../../generics/TitleText';
 
 const TeacherReport = () => {
   return (
     <div>
-      <h1>Teacher Report</h1>
+       <TitleText title="Hisobot" />
     </div>
   );
 };

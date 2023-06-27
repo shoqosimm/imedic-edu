@@ -121,7 +121,7 @@ const CreateTest = () => {
           {
             title: (
               <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
+                Test qo'shish
               </p>
             ),
           },

@@ -1,27 +1,20 @@
-import { Button, Drawer, Layout, Menu } from "antd";
-import Sider from "antd/es/layout/Sider";
+import React, { Suspense } from "react";
+import { Button, Layout, Menu, Popover } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
-import { CiViewList, CiCircleList } from "react-icons/ci";
-import { SlUser } from "react-icons/sl";
-import {
-  AiOutlineLogout,
-  AiOutlineMenuFold,
-  AiOutlineMenuUnfold,
-  AiOutlineSetting,
-} from "react-icons/ai";
-import React, { Suspense, useEffect, useState } from "react";
-import { Link, Navigate, Outlet, useNavigate } from "react-router-dom";
+import { CiMenuBurger } from "react-icons/ci";
+import { AiOutlineLogout } from "react-icons/ai";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
 import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
 import { ContextItem } from "../../components/Context";
 import { useContext } from "react";
+import { BiGlobe } from "react-icons/bi";
+import MedicLogo from "../../assets/logo.png";
 
 const Nurse = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
 
   // handleLogOut
   const handleLogOut = () => {
@@ -40,100 +33,107 @@ const Nurse = () => {
     });
   };
 
-  return (
-    <Layout className="layout">
-      <Sider
-        theme="light"
-        className="siderNurse"
-        trigger={null}
-        collapsible
-        collapsed={collapsed}
-      >
-        <div
-          className="logo"
-          style={{
-            textAlign: "center",
-            padding: "1rem 0",
-            borderBottom: "1px solid lightgrey",
-          }}
+  const menus = [
+    {
+      key: "1",
+      label: (
+        <NavLink
+          className={({ isActive }) => (isActive ? "active" : "")}
+          onClick={() => sessionStorage.setItem("activeLink", 1)}
+          to="course"
         >
-          <SlUser style={{ fontSize: "28px" }} />
+          Kurslar
+        </NavLink>
+      ),
+    },
+    {
+      key: "2",
+      label: (
+        <NavLink
+          className={({ isActive }) => (isActive ? "active" : "")}
+          onClick={() => sessionStorage.setItem("activeLink", 2)}
+          to="mycourse"
+        >
+          Mening kurslarim
+        </NavLink>
+      ),
+    },
+    {
+      key: "3",
+      label: (
+        <NavLink
+          className={({ isActive }) => (isActive ? "active" : "")}
+          onClick={() => sessionStorage.setItem("activeLink", 3)}
+          to="setting"
+        >
+          Sozlamalar
+        </NavLink>
+      ),
+    },
+  ];
+  const menuItem = <Menu mode="vertical" items={menus} />;
+
+  return (
+    <div>
+      <Layout className="layout">
+        <div className="pre__header d-flex align-center gap-x-1">
+          <BiGlobe style={{ fill: "#2572ff" }} />
+          <p>www.edu.Imedic.uz</p>
         </div>
-        <Menu
-          theme="light"
-          mode="inline"
-          selectedKeys={sessionStorage.getItem("activeLink") ?? "1"}
-          items={[
-            {
-              key: "1",
-              icon: <CiViewList className="icon coursesIcon" />,
-              label: (
-                <Link
+        <Header className="d-flex align-center justify-between">
+          <Popover
+            className="hamburger__menu"
+            content={menuItem}
+            placement="bottomRight"
+            trigger={"click"}
+          >
+            <CiMenuBurger />
+          </Popover>
+          <div className="d-flex align-end  ">
+            <img
+              src={MedicLogo}
+              alt="MedicLogo"
+              width={60}
+              height={60}
+              className="logo"
+            />
+            <ul className="menu d-flex align-center gap-x-3">
+              <li className="menu__item d-flex align-center gap-x-1">
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active" : "")}
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
                   Kurslar
-                </Link>
-              ),
-            },
-            {
-              key: "2",
-              icon: <CiCircleList className="icon mycourseIcon" />,
-              label: (
-                <Link
+                </NavLink>
+              </li>
+              <li className="menu__item d-flex align-center gap-x-1">
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active" : "")}
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="mycourse"
                 >
                   Mening kurslarim
-                </Link>
-              ),
-            },
-            {
-              key: "3",
-              icon: <AiOutlineSetting className="icon settingIcon" />,
-              label: (
-                <Link
+                </NavLink>
+              </li>
+              <li className="menu__item d-flex align-center gap-x-1">
+                <NavLink
+                  className={({ isActive }) => (isActive ? "active" : "")}
                   onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
                   Sozlamalar
-                </Link>
-              ),
-            },
-          ]}
-        />
-      </Sider>
-      <Layout className="site-layout">
-        <Header
-          style={{
-            padding: "0 1rem",
-            background: "#fff",
-            margin: "0 1rem",
-            borderRadius: "0 0 10px 10px",
-          }}
-        >
-          <div
-            style={{ height: "100%" }}
-            className=" d-flex align-center justify-between"
-          >
-            <Button
-              className="menuBurger"
-              icon={open ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
-              onClick={() => setOpen(true)}
-            ></Button>
-            <Button
-              className="sizeChanger"
-              icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
-              onClick={() => setCollapsed(!collapsed)}
-            ></Button>
-            <Button
-              className="logOut d-flex align-center gap-x-1"
-              icon={<AiOutlineLogout />}
-              onClick={handleLogOut}
-            >
-              Chiqish
-            </Button>
+                </NavLink>
+              </li>
+            </ul>
           </div>
+          <Button
+            className="logOut d-flex align-center gap-x-1"
+            icon={<AiOutlineLogout />}
+            onClick={handleLogOut}
+          >
+            Chiqish
+          </Button>
         </Header>
         <Content className="layout_content">
           <Suspense fallback={<Loading />}>
@@ -141,58 +141,7 @@ const Nurse = () => {
           </Suspense>
         </Content>
       </Layout>
-      <Drawer
-        placement="left"
-        title="Меню"
-        onClose={() => setOpen(false)}
-        open={open}
-        width={200}
-      >
-        <Menu
-          theme="light"
-          mode="inline"
-          selectedKeys={localStorage.getItem("activeLink")}
-          items={[
-            {
-              key: "1",
-              icon: <CiViewList className="icon coursesIcon" />,
-              label: (
-                <Link
-                  onClick={() => localStorage.setItem("activeLink", 1)}
-                  to="course"
-                >
-                  Kurslar
-                </Link>
-              ),
-            },
-            {
-              key: "2",
-              icon: <CiCircleList className="icon mycourseIcon" />,
-              label: (
-                <Link
-                  onClick={() => localStorage.setItem("activeLink", 2)}
-                  to="mycourse"
-                >
-                   Mening kurslarim
-                </Link>
-              ),
-            },
-            {
-              key: "3",
-              icon: <AiOutlineSetting className="icon settingIcon" />,
-              label: (
-                <Link
-                  onClick={() => localStorage.setItem("activeLink", 3)}
-                  to="setting"
-                >
-                  Sozlamalar
-                </Link>
-              ),
-            },
-          ]}
-        />
-      </Drawer>
-    </Layout>
+    </div>
   );
 };
 

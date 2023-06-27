@@ -48,9 +48,17 @@ api.interceptors.response.use(
         position: toast.POSITION.BOTTOM_RIGHT,
       });
     } else if (error.response.status === 400) {
-      toast.warn(error?.response.data?.data.messages.message, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      if (Array.isArray(error.response.data.data.messages)) {
+        toast.warn(error.response.data.data.messages[0].message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+        return Promise.reject(error);
+      } else {
+        toast.warn(error?.response.data?.data.messages.message, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+        });
+        return Promise.reject(error);
+      }
     } else {
       toast.error(error?.response.data?.data.messages.message, {
         position: toast.POSITION.BOTTOM_RIGHT,

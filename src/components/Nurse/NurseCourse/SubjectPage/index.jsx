@@ -1,12 +1,13 @@
-import { Breadcrumb, Button, Card, Col, Row, Spin } from "antd";
+import { Breadcrumb, Button, Card,  Spin } from "antd";
+import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../../../../utils/api";
-import CardItem from "../../../generics/Card";
-import { TbMoodEmpty } from "react-icons/tb";
 import CommentCard from "../../../generics/CommentCard";
+import CardSubjectList from "../../../generics/CardSubjectList";
+import EmptyBox from '../../../../assets/illustration/emptyBox.webp'
 
 const SubjectPage = () => {
   const param = useParams();
@@ -32,6 +33,7 @@ const SubjectPage = () => {
           setSubjects(
             res.data.data.map((item) => {
               return {
+                ...item,
                 id: item.id,
                 name: item.name,
                 teaser: item.teaser,
@@ -106,47 +108,42 @@ const SubjectPage = () => {
         />
       )}
 
-      <Row
-        gutter={[20, 20]}
-        style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}
-      >
-        {!emptyText ? (
-          subjects.map((item, index) => {
-            return (
-              <Col key={index}>
-                <CardItem
-                  title={item.name}
-                  teaser={item.teaser}
-                  subject={item.subject_type}
-                  click={item.id}
-                  disabled={index === 0 ? false : true}
-                />
-              </Col>
-            );
-          })
-        ) : (
+      <div>
+        {emptyText && (
           <div
-            style={{
-              width: "100%",
-              height: "20rem",
-              fontSize: "18px",
-              letterSpacing: "1px",
-              fontWeight: "600",
-            }}
-            className="d-flex align-center justify-center"
+            className="d-flex flex-column align-center justify-center"
+            style={{ background: "#fff", width: "100%", height: "500px" }}
           >
-            <div
-              className="d-flex align-center "
-              style={{ flexDirection: "column" }}
-            >
-              <TbMoodEmpty style={{ fontSize: "54px", fill: "yellow" }} />
-              <p style={{ fontSize: "24px", textAlign: "center" }}>
-                {emptyText}
-              </p>
-            </div>
+            <img src={EmptyBox} alt="empty" width={"200px"} />
+            <em style={{ fontSize: "18px" }}>{emptyText}</em>
           </div>
         )}
-      </Row>
+        <div className="w-100 d-flex align-center justify-center gap-3 flex-wrap">
+          {!loading &&
+            subjects &&
+            subjects?.map((item, index) => {
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "just", duration: 1.4, bounce: 0.1 }}
+                >
+                  <CardSubjectList
+                    item={item}
+                    title={item.name}
+                    teaser={item.teaser}
+                    subject={item.subject_type}
+                    click={item.id}
+                    disabled={index === 0 ? false : true}
+                  />
+                </motion.div>
+              );
+            })}
+        </div>
+      </div>
+
       <Card title="Izohlar" className="izohCard">
         {loading && <Spin />}
         {commentEmptyText && (
@@ -162,15 +159,27 @@ const SubjectPage = () => {
           </em>
         )}
         {comment?.map((item) => {
-          return <CommentCard key={item.id} data={item} />;
+          return (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ type: "just", duration: 1.7 }}
+              viewport={{ once: true }}
+            >
+              <CommentCard data={item} />
+            </motion.div>
+          );
         })}
-        <Button
-          disabled={commentEmptyText ? true : false}
-          onClick={handleMoreComment}
-          loading={loadingBtn}
-        >
-          Ko'proq ko'rsatish
-        </Button>
+        {!loading && (
+          <Button
+            disabled={commentEmptyText ? true : false}
+            onClick={handleMoreComment}
+            loading={loadingBtn}
+          >
+            Ko'proq ko'rsatish
+          </Button>
+        )}
       </Card>
     </>
   );

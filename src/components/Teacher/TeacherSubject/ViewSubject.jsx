@@ -282,7 +282,7 @@ const ViewSubject = () => {
           {
             title: (
               <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
+                {subject?.name}
               </p>
             ),
           },
@@ -414,7 +414,7 @@ const ViewSubject = () => {
           <ToastContainer />
         </div>
       )}
-      <Card title="Izohlar" className="izohCard">
+      <Card title="Izohlar" className="izohCard" style={{marginTop:'2rem'}}>
         {loading && <Spin />}
         {commentEmptyText && (
           <em

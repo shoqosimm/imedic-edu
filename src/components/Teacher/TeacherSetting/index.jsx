@@ -6,6 +6,7 @@ import { api } from "../../../utils/api";
 import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import TitleText from "../../generics/TitleText";
 
 const TeacherSetting = () => {
   const [form] = Form.useForm();
@@ -92,7 +93,10 @@ const TeacherSetting = () => {
   const handlePassword = async (values) => {
     const body = values;
     try {
-      const res = await api.post(`api/user/password-update/${userInfo.id}`, body);
+      const res = await api.post(
+        `api/user/password-update/${userInfo.id}`,
+        body
+      );
       if (res) {
         toast.success("O'zgartirildi!");
         setIsModalOpen(false);
@@ -114,6 +118,7 @@ const TeacherSetting = () => {
         layout="vertical"
         onFinish={handleUpdateInfo}
       >
+          <TitleText title="Sozlamalar" />
         <Row className="d-flex align-start justify-between" gutter={[20, 20]}>
           <Col
             className="settingTextPanel"
@@ -262,7 +267,9 @@ const TeacherSetting = () => {
           onCancel={() => setIsModalOpen(false)}
           footer={
             <>
-              <Button onClick={() => setIsModalOpen(false)}>Bekor qilish</Button>
+              <Button onClick={() => setIsModalOpen(false)}>
+                Bekor qilish
+              </Button>
               <Button type="primary" htmlType="submit" form="passwordUpdate">
                 Saqlash
               </Button>
@@ -338,5 +345,3 @@ const TeacherSetting = () => {
 };
 
 export default TeacherSetting;
-
-

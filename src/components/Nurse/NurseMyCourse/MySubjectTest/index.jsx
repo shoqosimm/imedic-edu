@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
-import screenfull from "screenfull";
 import "./style.scss";
-import { Button, Modal, Pagination, Radio } from "antd";
-import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { Button, Divider, Menu, Modal, Radio } from "antd";
+import {
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
+} from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
-import Countdown from "react-countdown";
+import Swal from "sweetalert2";
+import CountDown from "./CountDown";
+import moment from "moment";
+import { useCallback } from "react";
 
 const MySubjectTest = () => {
   const navigate = useNavigate();
@@ -16,10 +21,10 @@ const MySubjectTest = () => {
   const [answer, setAnswer] = useState();
   const [testTime, setTestTime] = useState();
   const [startTest, setStartTest] = useState(false);
-  const [endModal, setEndModal] = useState(false);
+  const [testAmount, setTestAmount] = useState([]);
   const [pagination, setPagination] = useState({
-    ordering: 1,
-    total: 15,
+    ordering: localStorage.getItem("testPagination") ?? 1,
+    total: 10,
   });
   const [test, setTest] = useState({
     id: "",
@@ -46,29 +51,6 @@ const MySubjectTest = () => {
     }
   };
 
-  // pagination
-  const itemRender = (_, type, originalElement) => {
-    if (type === "prev") {
-      return (
-        <Button
-          className="btn d-flex align-center gap-x-1"
-          icon={<BsArrowLeft />}
-        >
-          {window.innerWidth >= 565 ? "Oldingisi" : null}
-        </Button>
-      );
-    }
-    if (type === "next") {
-      return (
-        <Button className="btn d-flex align-center gap-1">
-          {window.innerWidth >= 565 ? "Keyingisi" : null}
-          <BsArrowRight />
-        </Button>
-      );
-    }
-    return originalElement;
-  };
-
   // handleStartTest
   const handleStartTest = () => {
     api
@@ -82,7 +64,11 @@ const MySubjectTest = () => {
           new Date(res.data.test_start).getDate() ===
           new Date(res.data.test_end).getDate()
         ) {
-          setTestTime(new Date(res.data.test_end) - new Date().getTime());
+          const endTest = new Date(res.data.test_end).getTime();
+          const now = new Date().getTime();
+          const difference = endTest - now;
+          const resultTime = moment(difference).format("mm");
+          setTestTime(resultTime);
         }
         setTest({
           id: res.data.id,
@@ -103,16 +89,14 @@ const MySubjectTest = () => {
           navigate(-1);
         }, 2000);
       });
-    const element = document.querySelector(".test");
-    if (screenfull.isEnabled) {
-      screenfull.request(element);
-    }
+
     setStartTest(true);
     setOpenModal(false);
   };
 
   // handleChangePagination
   const handleChangePagination = (current) => {
+    localStorage.setItem("testPagination", current);
     setPagination({ ...pagination, ordering: current });
     const body = {
       ordering: current,
@@ -146,16 +130,26 @@ const MySubjectTest = () => {
 
   // handleBackFromTest
   const handleBackFromTest = () => {
-    navigate(`/nurse/mycourse`);
+    // setOpenModal(false);
+    navigate(-1);
+  };
+
+  // hadlePaginateBtns
+  const hadlePaginateBtns = (type) => {
+    if (type === "prev") {
+      handleChangePagination(--pagination.ordering);
+    } else if (type === "next") {
+      handleChangePagination(++pagination.ordering);
+    } else {
+      console.log("unkown");
+    }
   };
 
   // handleFinish
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     api
       .get(`api/nurse/test/finish/${id}`)
       .then((res) => {
-        setEndModal(false);
-        setStartTest(false);
         if (res.status === 200) {
           toast.success("Javoblar qa'bul qilindi", {
             position: "bottom-right",
@@ -166,10 +160,15 @@ const MySubjectTest = () => {
         }
       })
       .catch((err) => console.log(err, "err"));
-  };
+  },[]);
 
   useEffect(() => {
-    getTest();
+    !startTest && getTest();
+    if (testAmount.length === 0) {
+      for (let i = 1; i <= pagination?.total; i++) {
+        setTestAmount((prev) => [...prev, i]);
+      }
+    }
 
     return () => {
       controller.abort();
@@ -177,124 +176,137 @@ const MySubjectTest = () => {
   }, []);
 
   return (
-    <div className="test">
-      <div className="timer_wrapper d-flex align-end justify-between">
-        <div className="timer">
-          {testTime && (
-            <Countdown
-              onComplete={handleFinish}
-              date={Date.now() + Number(testTime)}
-            />
-          )}
-        </div>
-        <Button
-          onClick={() => {
-            setEndModal(true);
-            screenfull.exit();
-          }}
-          className="test__finish"
-        >
-          Yakunlash
-        </Button>
-      </div>
-      <div className="test__part">
-        <h1>
-          {pagination.ordering}. {test.title}
-        </h1>
-        {test.variant?.map((item, index) => {
-          return (
-            <Radio.Group
-              buttonStyle="solid"
-              optionType="button"
-              key={index}
-              style={{ display: "flex" }}
-              onChange={handleSendAnswer}
-              value={answer}
-            >
-              <Radio value={index} className="test__questions">
-                {item}
-              </Radio>
-            </Radio.Group>
-          );
-        })}
-      </div>
-      <div>
-        <Pagination
-          className="control__btns d-flex align-center justify-center"
-          defaultCurrent={pagination.ordering}
-          total={pagination?.total}
-          itemRender={itemRender}
-          onChange={handleChangePagination}
-          showSizeChanger={false}
-          pageSize={3}
-          responsive
+    <div className="container__test d-flex gap-x-2">
+      <div className="drawer">
+        <Menu
+          selectedKeys={[localStorage.getItem("testPagination") ?? "1"]}
+          mode="inline"
+          inlineCollapsed
+          multiple={false}
+          onSelect={(e) => handleChangePagination(e.key)}
+          items={testAmount?.map((item) => {
+            return {
+              label: item,
+              key: item,
+            };
+          })}
         />
       </div>
-      <Modal
-        onOk={handleStartTest}
-        onCancel={handleBackFromTest}
-        okText={"Testni boshlash"}
-        cancelText={"Bekor qilish va ortga qaytish"}
-        open={openModal}
-      >
-        <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
-          <div>
-            <p>
-              Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
-            </p>
-            <p>
-              Test soni: <strong>{testInfo?.course_subject.count_test}</strong>{" "}
-              ta
-            </p>
-            <p>
-              To'g'ri javoblarning minimal soni:
-              <strong> {testInfo?.course_subject.right_test}</strong> ta
-            </p>
-            <p>
-              Qayta topshirish oraliq vaqti:
-              <strong> {testInfo?.course_subject.resubmit}</strong> min
-            </p>
+
+      <div className="test">
+        <div className="d-flex flex-column gap-3">
+          <div className="timer_wrapper d-flex align-end justify-between">
+            <div className="timer">
+              {testTime && (
+                <CountDown
+                  minutes={Number(testTime)}
+                  onCountdownEnd={handleFinish}
+                />
+              )}
+            </div>
+            <Button
+              onClick={() => {
+                Swal.fire({
+                  title: "Yakunlash",
+                  text: "Siz haqiqatdan ham ushbu testni yakunlamoqchimisz?",
+                  confirmButtonText: "Ha, yakunlash",
+                  cancelButtonText: "Yo'q, davom etish",
+                  showCancelButton: true,
+                }).then((res) => {
+                  if (res.isConfirmed) {
+                    handleFinish();
+                  }
+                });
+              }}
+              className="test__finish"
+            >
+              Yakunlash
+            </Button>
           </div>
-          <div className="test__modal__desctiption">
-            <p>
-              Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu
-              testni yakunlamasdan sahifani tark etish mumkin emas, Agarda
-              testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga
-              ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test ham
-              yakunlanadi va testni javoblari qa'bul qilinadi, test "Testni
-              boshlash" tugmasini bosilgandan so'ng boshlanadi.
-            </p>
+          <div className="test__part">
+            <h1>
+              {pagination.ordering}. {test.title}
+            </h1>
+            {test.variant?.map((item, index) => {
+              return (
+                <Radio.Group
+                  buttonStyle="solid"
+                  optionType="button"
+                  key={index}
+                  style={{ display: "flex" }}
+                  onChange={handleSendAnswer}
+                  value={answer}
+                >
+                  <Radio value={index} className="test__questions">
+                    {item}
+                  </Radio>
+                </Radio.Group>
+              );
+            })}
           </div>
         </div>
-      </Modal>
-      <Modal
-        onOk={handleFinish}
-        title="Yakunlash"
-        okText={"Ha"}
-        cancelText={"Yo'q"}
-        open={endModal}
-        onCancel={() => {
-          setEndModal(false);
-          const element = document.querySelector(".test");
-          if (screenfull.isEnabled) {
-            screenfull.request(element);
-          }
-        }}
-      >
-        <div>
-          <p>
-            Siz haqiqatdan ham ushbu testni yakunlamoqchimisiz, test
-            yakunlangandan so'ng barcha javoblaringiz qa'bul qilinadi va
-            o'zgartira olmaysiz.
-          </p>
-          <br />
-          <p>
-            Qayta topshirish {testInfo?.resubmit} daqiqadan so'ng mumkin
-            bo'ladi.
-          </p>
+        <Divider />
+        <div className="d-flex justify-between align-center">
+          <Button
+            className="paginate__btns d-flex align-center gap-1"
+            disabled={pagination?.ordering === 1}
+            onClick={() => hadlePaginateBtns("prev")}
+          >
+            <MdKeyboardDoubleArrowLeft />
+            Prev
+          </Button>
+          <Button
+            className="paginate__btns d-flex align-center gap-1"
+            disabled={
+              pagination?.ordering === testInfo?.course_subject.count_test
+            }
+            onClick={() => hadlePaginateBtns("next")}
+          >
+            Next
+            <MdKeyboardDoubleArrowRight />
+          </Button>
         </div>
-      </Modal>
-      <ToastContainer />
+
+        <Modal
+          onOk={handleStartTest}
+          onCancel={handleBackFromTest}
+          okText={"Testni boshlash"}
+          cancelText={"Bekor qilish va ortga qaytish"}
+          open={openModal}
+        >
+          <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
+            <div>
+              <p>
+                Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
+              </p>
+              <p>
+                Test soni:{" "}
+                <strong>{testInfo?.course_subject.count_test}</strong> ta
+              </p>
+              <p>
+                To'g'ri javoblarning minimal soni:
+                <strong> {testInfo?.course_subject.right_test}</strong> ta
+              </p>
+              <p>
+                Qayta topshirish oraliq vaqti:
+                <strong> {testInfo?.course_subject.resubmit}</strong> min
+              </p>
+            </div>
+            <div className="test__modal__desctiption">
+              <p>
+                Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu
+                testni yakunlamasdan sahifani tark etish mumkin emas, Agarda
+                testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga
+                ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test
+                ham yakunlanadi va testni javoblari qa'bul qilinadi, test
+                "Testni boshlash" tugmasini bosilgandan so'ng boshlanadi.
+              </p>
+            </div>
+          </div>
+        </Modal>
+
+        <ToastContainer />
+      </div>
     </div>
   );
 };

@@ -9,6 +9,7 @@ import moment from "moment";
 import { AiOutlineSync } from "react-icons/ai";
 import "./Indexstyle.scss";
 import { MdStarRate } from "react-icons/md";
+import TitleText from "../../generics/TitleText";
 
 const TeacherCourses = () => {
   const [course, setCourse] = useState([]);
@@ -22,7 +23,7 @@ const TeacherCourses = () => {
   const [pagination, setPagination] = useState({
     current_page: sessionStorage.getItem("course_current_page") || 1,
     per_page: 10,
-    total: '',
+    total: "",
   });
   const columns = [
     {
@@ -190,11 +191,11 @@ const TeacherCourses = () => {
   return (
     <>
       <div
-        style={{ marginBottom: "1.5rem", flexWrap: "wrap" }}
+        style={{ flexWrap: "wrap" }}
         className="d-flex align-center justify-between gap-y-2"
       >
-        <p style={{ fontSize: "20px", fontWeight: "600" }}>Kurslar</p>
-        <Link to="/teacher/course/create" >
+        <TitleText title="Kurslar" />
+        <Link to="/teacher/course/create">
           <Button type="primary">Kurs yaratish</Button>
         </Link>
       </div>

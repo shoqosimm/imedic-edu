@@ -3,22 +3,26 @@ import {
   Button,
   Card,
   Col,
+  Divider,
   Modal,
-  Rate,
   Row,
   Skeleton,
   Spin,
+  Tabs,
 } from "antd";
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import "./style.scss";
 import { BiHome } from "react-icons/bi";
 import { Link, useParams, useLocation, useNavigate } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { Notification } from "../../../Notification/Notification";
-import { BsPlus } from "react-icons/bs";
+import { BsPeopleFill, BsPlus } from "react-icons/bs";
 import { ToastContainer } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
 import { AiFillEye } from "react-icons/ai";
+import { MdStarRate } from "react-icons/md";
+import EmptyBox from "../../../../assets/illustration/emptyBox.webp";
 
 const SubjectItemPage = () => {
   const param = useParams();
@@ -65,6 +69,7 @@ const SubjectItemPage = () => {
         teaser: res.data.teaser,
         content: res.data.content,
         average_rate: res.data.average_rate,
+        rate_count: res.data.rate_count,
         type: res.data.type,
       });
       getComments(param.id, paginateComment);
@@ -153,6 +158,7 @@ const SubjectItemPage = () => {
     };
   }, []);
 
+
   return (
     <>
       <Breadcrumb
@@ -175,69 +181,141 @@ const SubjectItemPage = () => {
 
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
-          <Card
-            title={
-              skeleton ? (
-                <Skeleton title paragraph={false} />
-              ) : (
-                <div className="d-flex align-center justify-between">
-                  {subject?.name}
-                  <Rate disabled value={subject?.average_rate} />
-                </div>
-              )
-            }
-          >
-            <div
-              style={{
-                textAlign: "center",
-                letterSpacing: "1.5px",
-                fontSize: "18px",
-                fontWeight: "600",
-                marginBottom: "1.5rem",
-              }}
-            >
-              {skeleton ? (
-                <Skeleton title={false} paragraph />
-              ) : (
-                <p>{subject?.teaser}</p>
-              )}
+          <div className="card__badge">
+            <div className="badge__content">
+              <h1>{subject?.name}</h1>
+              <ul className="badge__reyting d-flex align-center gap-x-3">
+                <li className="d-flex align-center gap-x-1">
+                  <MdStarRate className="icon" />
+                  <p>{subject?.average_rate} O'rtacha baho</p>
+                </li>
+                <li className="d-flex align-center gap-x-1">
+                  <BsPeopleFill className="icon" />
+                  <p>{subject?.rate_count} Baholaganlar soni</p>
+                </li>
+              </ul>
             </div>
-            {skeleton && <Skeleton title={false} paragraph />}
-            {pdfUrl && (
-              <>
-                <Button
-                  className="d-flex align-center gap-1"
-                  style={{ margin: "1rem auto" }}
-                >
-                  <AiFillEye style={{ fontSize: "18px" }} />
-                  <a href={`${pdfUrl?.url}`} target="_blank">
-                    PDF -ni ko'rish
-                  </a>
-                </Button>
-                <object
-                  data={pdfUrl?.url}
-                  width="100%"
-                  type="application/pdf"
-                  style={{
-                    height: "100%",
-                    aspectRatio: "1",
-                    marginBottom: "1rem",
-                  }}
-                ></object>
-              </>
-            )}
-            {videoUrl && (
-              <video controls width="100%">
-                <source src={videoUrl?.url} type="video/mp4" />
-              </video>
-            )}
-            {pdfUrl || videoUrl ? null : (
-              <div
-                className="teacher__subject__content"
-                dangerouslySetInnerHTML={{ __html: subject?.content }}
-              />
-            )}
-          </Card>
+          </div>
+          <Tabs
+            items={[
+              {
+                key: "1",
+                label: "Mavzu",
+                children: (
+                  <>
+                    <div className="teaser"
+                      style={{
+                        textAlign: "center",
+                        letterSpacing: "1.5px",
+                        fontSize: "18px",
+                        fontWeight: "600",
+                        marginBottom: "1.5rem",
+                      }}
+                    >
+                      {skeleton ? (
+                        <Skeleton title={false} paragraph />
+                      ) : (
+                        <>
+                          <p>{subject?.teaser}</p>
+                          <Divider />
+                        </>
+                      )}
+                    </div>
+                    {skeleton && <Skeleton title={false} paragraph />}
+                    {pdfUrl && (
+                      <>
+                        <Button
+                          className="pdfViewBtn d-flex align-center gap-1"
+                          style={{
+                            margin: "1rem auto",
+                            height: "40px",
+                            borderRadius: "4px",
+                          }}
+                        >
+                          <AiFillEye style={{ fontSize: "18px" }} />
+                          <a href={`${pdfUrl?.url}`} target="_blank">
+                            PDF -ni ko'rish
+                          </a>
+                        </Button>
+                        <object
+                          data={pdfUrl?.url}
+                          width="100%"
+                          type="application/pdf"
+                          style={{
+                            height: "100%",
+                            aspectRatio: "1",
+                            marginBottom: "1rem",
+                          }}
+                        ></object>
+                      </>
+                    )}
+                    {pdfUrl || videoUrl ? null : (
+                      <div
+                        className="teacher__subject__content"
+                        dangerouslySetInnerHTML={{ __html: subject?.content }}
+                      />
+                    )}
+                  </>
+                ),
+              },
+              {
+                key: "2",
+                label: "Video",
+                children: videoUrl ? (
+                  <video controls width="100%">
+                    <source src={videoUrl?.url} type="video/mp4" />
+                  </video>
+                ) : (
+                  <div className="emptyBox">
+                    <img src={EmptyBox} alt="imgEmpty" />
+                    <h1>Ushbu mavzuda video fayl mavjud emas!</h1>
+                  </div>
+                ),
+              },
+              {
+                key: "4",
+                label: "Izohlar",
+                children: (
+                  <Card title="Izohlar" className="izohCard">
+                    {skeleton && <Spin />}
+                    {commentEmptyText && (
+                      <em
+                        style={{
+                          display: "block",
+                          margin: "2rem 0",
+                          textAlign: "center",
+                          color: "grey",
+                        }}
+                      >
+                        {commentEmptyText}
+                      </em>
+                    )}
+                    {comment?.map((item) => {
+                      return (
+                        <motion.div
+                        key={item.id}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          viewport={{ once: true }}
+                          transition={{ type: "just", duration: 1.7 }}
+                        >
+                          <CommentCard  data={item} />
+                        </motion.div>
+                      )
+                    })}
+                    <Button
+                      disabled={commentEmptyText ? true : false}
+                      onClick={handleMoreComment}
+                      loading={loadingBtn}
+                    >
+                      Ko'proq ko'rsatish
+                    </Button>
+                  </Card>
+                ),
+              },
+            ]}
+          />
+
           <div
             style={{ flexWrap: "wrap" }}
             className="d-flex align-center gap-2"
@@ -245,11 +323,11 @@ const SubjectItemPage = () => {
             {!myCourse && (
               <Button
                 icon={<BsPlus style={{ fontSize: "22px" }} />}
-                className="d-flex align-center gap-x-1"
+                className="card__btn d-flex align-center gap-x-1"
                 type="primary"
                 onClick={() => setAddCoursList(false)}
               >
-                Kursni qo`shish
+                {'Kursni qo`shish'}
               </Button>
             )}
           </div>
@@ -270,31 +348,6 @@ const SubjectItemPage = () => {
       </Modal>
 
       <ToastContainer />
-      <Card title="Izohlar" className="izohCard">
-        {skeleton && <Spin />}
-        {commentEmptyText && (
-          <em
-            style={{
-              display: "block",
-              margin: "2rem 0",
-              textAlign: "center",
-              color: "grey",
-            }}
-          >
-            {commentEmptyText}
-          </em>
-        )}
-        {comment?.map((item) => {
-          return <CommentCard key={item.id} data={item} />;
-        })}
-        <Button
-          disabled={commentEmptyText ? true : false}
-          onClick={handleMoreComment}
-          loading={loadingBtn}
-        >
-          Ko'proq ko'rsatish
-        </Button>
-      </Card>
     </>
   );
 };

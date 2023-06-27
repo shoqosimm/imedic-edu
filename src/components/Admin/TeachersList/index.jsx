@@ -259,12 +259,36 @@ const AdminTeacherList = () => {
           </Row>
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="series" label="Pasport seriyasi">
+              <Form.Item
+                name="series"
+                label="Pasport seriyasi"
+                rules={[
+                  {
+                    required: true,
+                    min: 2,
+                    max: 2,
+                    message: "Pasport seriyasini kiriting",
+                    whitespace: true,
+                  },
+                ]}
+              >
                 <Input disabled={loading} />
               </Form.Item>
             </Col>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="number" label="Pasport raqami">
+              <Form.Item
+                name="number"
+                label="Pasport raqami"
+                rules={[
+                  {
+                    required: true,
+                    min: 7,
+                    max: 7,
+                    message: "Pasport raqamini kiriting",
+                    whitespace: true,
+                  },
+                ]}
+              >
                 <Input disabled={loading} />
               </Form.Item>
             </Col>
@@ -272,14 +296,29 @@ const AdminTeacherList = () => {
           <Form.Item
             name="pinfl"
             label="PINFL"
-            rules={[{ required: true, min: 14, max: 14 }]}
+            rules={[
+              {
+                required: true,
+                min: 14,
+                max: 14,
+                message: "Pinfl ni kiriting",
+                whitespace: true,
+              },
+            ]}
           >
             <Input suffix={<Button onClick={handlePnfl}>Tekshirish</Button>} />
           </Form.Item>
           <Form.Item
             name="phone"
             label="Telefon raqami"
-            rules={[{ required: true, min: 12 }]}
+            rules={[
+              {
+                required: true,
+                min: 12,
+                message: "Telefon raqam kiriting",
+                whitespace: true,
+              },
+            ]}
           >
             <Input placeholder="998901234567" disabled={loading} />
           </Form.Item>

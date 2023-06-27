@@ -147,7 +147,7 @@ const EditTest = () => {
           {
             title: (
               <p style={{ color: "grey" }}>
-                {location.pathname.slice(1).replaceAll("/", "-")}
+               Testni o'zgartirish
               </p>
             ),
           },

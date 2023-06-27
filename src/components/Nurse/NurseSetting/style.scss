@@ -9,6 +9,7 @@
   width: 100%;
   border: 1px solid lightgrey;
   padding: 1rem 2rem !important;
+  background: #fff;
   .ant-input {
     height: 40px;
   }
@@ -25,6 +26,8 @@
   box-shadow: 0 0 5px 2px rgba(0, 0, 0, 0.046);
   padding: 1.5rem !important;
   height: 450px;
+  background: #fff;
+  border-radius: 4px;
   ul {
     height: 100%;
     display: flex;

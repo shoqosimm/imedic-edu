@@ -1,33 +1,8 @@
 .mycourse__wrapper {
   .ant-card {
-    background: linear-gradient(rgb(255, 255, 255), rgb(185, 185, 186));
+    border-radius: 0px !important;
   }
   .ant-card-body {
-    background: #fff;
-    padding: 0px !important;
-    overflow: scroll !important;
-    &::-webkit-scrollbar {
-      display: none;
-    } 
-  }
-}
-
-.ant-table{
-  overflow: scroll;
-  &::-webkit-scrollbar{
-    display: none;
-  }
-  .ant-table-thead{
-    th{
-      background:#1389f8 !important;
-      color: #fff !important;
-      border-radius: 0px !important;
-    }
-  }
-  .ant-table-tbody{
-    background: rgb(247, 250, 252);
-    td{
-      border-color: #dadada !important;
-    }
+    border-radius: 0px !important;
   }
 }

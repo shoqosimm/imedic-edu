@@ -1,93 +1,102 @@
 .layout {
   width: 100%;
-  height: 100vh;
-  .ant-layout-sider {
-    box-shadow: 0 0 2px lightgrey;
+  min-height: 100vh;
+  .pre__header {
+    width: 100%;
+    height: 30px;
+    background: #f6f7fa;
+    padding: 0 5%;
+    color: #757575;
   }
   .ant-layout-header {
-    box-shadow: 0 0 2px lightgrey;
+    background: #fff;
+    box-shadow: 0 0 8px rgb(240, 240, 240);
+    height: 80px;
+    overflow: hidden;
+    position: sticky;
+    top: 0px;
+    z-index: 999;
+    padding: 0 5%;
   }
   .layout_content {
     overflow: scroll;
-    margin: 24px 16px;
-    padding: 24px;
+    height: 100%;
+    padding: 24px 5%;
     min-height: 280px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 0 2px lightgrey;
+    background: whitesmoke;
     &::-webkit-scrollbar {
       display: none;
     }
   }
+  .menu {
+    .menu__item {
+      font-size: 17px;
+      letter-spacing: 1px;
+      a {
+        color: #252525;
+        &:hover {
+          color: #2572ff !important;
+        }
+      }
+    }
+  }
 }
-.icon {
-  font-size: 22px !important;
+
+.logOut {
+  width: 120px;
+  height: 40px;
+  background-color: #2572ff;
+  border: 2px solid #2572ff;
+  color: #fff;
+  text-transform: capitalize;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 50px;
+  white-space: nowrap;
+  transition: 0.5s;
+  &:hover {
+    background: #fff;
+  }
 }
-.mycourseIcon{
-  fill: orangered;
+.active {
+  color: #2572ff !important;
+  border-bottom: 2px solid #2572ff;
 }
-.coursesIcon{
-  fill: brown;
-}
-.settingIcon{
-  fill: grey;
-}
-.menuBurger {
+.hamburger__menu {
   display: none;
 }
-.logOut {
-  background: cornflowerblue;
-  border: none;
-  color: #fff;
-  &:hover {
-    color: #fff !important;
-  }
+.logo {
+  margin-right: 5em;
 }
-.sizeChanger {
-  background: cornflowerblue;
-  border: none;
-  color: #fff;
-  border-radius: 8px;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  &:hover {
-    color: #fff !important;
-  }
-}
-.ant-drawer-body {
-  padding: 0px !important;
-}
-@media screen and (max-width: 565px) {
-  .layout_content {
-    padding: 15px !important;
-    margin: 15px 8px !important;
-  }
-  .ant-layout-header{
-    margin: 0px 8px !important;
-  }
-  .ant-card-body{
-    padding: 15px !important;
-  }
-  .siderNurse {
+
+// media
+@media screen and (max-width: 745px) {
+  .logo {
     display: none;
   }
-  .sizeChanger {
+}
+@media screen and (max-width: 600px) {
+  .menu {
     display: none;
   }
-  .menuBurger {
-    display: block;
-    background: cornflowerblue;
-    border: none;
-    color: #fff;
-    border-radius: 8px;
-    font-size: 18px;
+  .hamburger__menu {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    &:hover {
-      color: #fff !important;
-    }
+  }
+  .pre__header {
+    padding: 0 5% !important;
+  }
+  .ant-layout-header {
+    padding: 0 5% !important;
+  }
+  .layout_content {
+    padding: 5% !important;
+  }
+  .logOut {
+    width: 100px;
+    height: 35px;
+    font-size: 14px;
+  }
+  .logo {
+    display: none;
   }
 }

@@ -2,12 +2,13 @@ import { Breadcrumb, Button, Card, Form, Input, Rate, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import "./style.scss";
-import MyCardItem from "../../../generics/MyCard";
 import { api } from "../../../../utils/api";
 import { BiHome } from "react-icons/bi";
-import { TbMoodEmpty } from "react-icons/tb";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import CommentCard from "../../../generics/CommentCard";
+import EmptyBox from "../../../../assets/illustration/emptyBox.webp";
+import { motion } from "framer-motion";
+import MyCardSubjectList from "../../../generics/MyCardSubjectList";
 
 const NurseMyCourse = () => {
   const params = useParams();
@@ -36,13 +37,15 @@ const NurseMyCourse = () => {
         setCourses(
           res.data.map((item) => {
             return {
-              key: item.id,
               ...item,
+              key: item.id,
             };
           })
         );
-        getComments(res.data[0].course_id, paginateComment);
-        getRate(res.data[0].course_id);
+        if (res.data.length > 0) {
+          getComments(res.data[0].course_id, paginateComment);
+          getRate(res.data[0].course_id);
+        }
         setLoading(false);
       })
       .catch((err) => {
@@ -88,35 +91,53 @@ const NurseMyCourse = () => {
 
   // handleComment
   const handleComment = async (values) => {
-    setLoadingComment(true);
-    const body = {
-      course_id: String(courses[0].course_id),
-      comment: values.comment,
-    };
-    try {
-      const response = await api.post("api/nurse/notion/comment", body);
-      response && toast.success("Sizning izohingiz qa'bul qilindi");
-      setLoadingComment(false);
-      form.resetFields();
-      getComments(courses[0].course_id, paginateComment);
-    } catch (err) {
-      console.log(err, "err");
-      setLoadingComment(false);
+    if (courses.length > 0) {
+      setLoadingComment(true);
+      const body = {
+        course_id: String(courses[0].course_id),
+        comment: values.comment,
+      };
+      try {
+        const response = await api.post("api/nurse/notion/comment", body);
+        response &&
+          toast.success("Sizning izohingiz qa'bul qilindi", {
+            position: "bottom-right",
+          });
+        setLoadingComment(false);
+        form.resetFields();
+        getComments(courses[0].course_id, paginateComment);
+      } catch (err) {
+        console.log(err, "err");
+        setLoadingComment(false);
+      }
+    } else {
+      toast.warn("Yo'q mavzuga izoh qoldirib bo'lmaydi!", {
+        position: "bottom-right",
+      });
     }
   };
 
   // handleRate
   const handleRate = async (e) => {
-    const body = {
-      rate: String(e),
-      course_id: String(courses[0].course_id),
-    };
-    try {
-      const response = await api.post(`api/nurse/notion/rate`, body);
-      response && toast.success("Sizning bahoyingiz qa'bul qilindi");
-      getRate(courses[0].course_id);
-    } catch (err) {
-      console.log(err, "err");
+    if (courses.length > 0) {
+      const body = {
+        rate: String(e),
+        course_id: String(courses[0].course_id),
+      };
+      try {
+        const response = await api.post(`api/nurse/notion/rate`, body);
+        response &&
+          toast.success("Sizning bahoyingiz qa'bul qilindi", {
+            position: "bottom-right",
+          });
+        getRate(courses[0].course_id);
+      } catch (err) {
+        console.log(err, "err");
+      }
+    } else {
+      toast.warn("Yo'q mavzuga baho qo'yib bo'lmaydi!", {
+        position: "bottom-right",
+      });
     }
   };
 
@@ -131,7 +152,7 @@ const NurseMyCourse = () => {
   return (
     <div className="mycourse__wrapper">
       <Breadcrumb
-        style={{ marginBottom: "0.5rem" }}
+        style={{ marginBottom: "1.5rem" }}
         items={[
           {
             title: (
@@ -142,40 +163,43 @@ const NurseMyCourse = () => {
           },
         ]}
       />
-      <div>
-        <Card title="Kursga oid mavzular">
+
+      <div className="w-100 d-flex  gap-3 flex-column">
+        {loading && <Spin />}
+        {emptyText && (
           <div
-            style={{
-              flexWrap: "wrap",
-              justifyContent: "center",
-              padding: "1.5rem 0",
-            }}
-            className="d-flex align-center gap-3"
+            className="d-flex flex-column align-center justify-center"
+            style={{ background: "#fff", width: "100%", height: "500px" }}
           >
-            {loading && <Spin />}
-            {emptyText ? (
-              <div
-                className="d-flex align-center "
-                style={{ flexDirection: "column" }}
-              >
-                <TbMoodEmpty style={{ fontSize: "54px", fill: "yellow" }} />
-                <p style={{ fontSize: "24px", textAlign: "center" }}>
-                  {emptyText}
-                </p>
-              </div>
-            ) : (
-              courses?.map((item) => {
-                return (
-                  <MyCardItem
-                    disabled={item.status === 0 ? true : false}
-                    key={item.id}
-                    item={item}
-                  />
-                );
-              })
-            )}
+            <img src={EmptyBox} alt="empty" width={"200px"} />
+            <em style={{ fontSize: "18px" }}>{emptyText}</em>
           </div>
-        </Card>
+        )}
+        <div className="w-100 d-flex align-center justify-center gap-3 flex-wrap">
+          {!loading &&
+            courses &&
+            courses?.map((item) => {
+              return (
+                <motion.div
+                  key={item.id}
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ type: "just", duration: 1.4, bounce: 0.1 }}
+                >
+                  <MyCardSubjectList
+                    key={item.id}
+                    title={item.subject.name}
+                    teaser={item.subject.teaser}
+                    disabled={item.status === 0 ? true : false}
+                    item={item}
+                    subject={item.subject.subject_type}
+                  />
+                </motion.div>
+              );
+            })}
+        </div>
+
         <div className="wrapperComment">
           <Form
             onFinish={handleComment}
@@ -204,7 +228,7 @@ const NurseMyCourse = () => {
                 />
               </Form.Item>
               <Button
-                style={{ background: "#5bc7d4", color: "#fff" }}
+                style={{ marginBottom: "2rem" }}
                 loading={loadingComment}
                 htmlType="submit"
                 form="form"
@@ -215,19 +239,32 @@ const NurseMyCourse = () => {
             <Card title="Izohlar" className="izohCard">
               {loading && <Spin />}
               {comment?.map((item) => {
-                return <CommentCard key={item.id} data={item} />;
+                return (
+                  <motion.div
+                    key={item.id}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ type: "just", duration: 1.4, bounce: 0.1 }}
+                  >
+                    <CommentCard data={item} />
+                  </motion.div>
+                );
               })}
-              <Button
-                disabled={emptyText ? true : false}
-                onClick={handleMoreComment}
-                loading={loadingBtn}
-              >
-                Ko'proq ko'rsatish
-              </Button>
+              {!loading && (
+                <Button
+                  disabled={emptyText ? true : false}
+                  onClick={handleMoreComment}
+                  loading={loadingBtn}
+                >
+                  Ko'proq ko'rsatish
+                </Button>
+              )}
             </Card>
           </Form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 };
