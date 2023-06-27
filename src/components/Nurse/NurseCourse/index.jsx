@@ -56,6 +56,7 @@ const NurseCourse = () => {
           let num = key + 1;
           let user_name = item.user.first_name + " " + item.user.last_name;
           return {
+            ...item,
             num: num,
             id: item.id,
             key: key,

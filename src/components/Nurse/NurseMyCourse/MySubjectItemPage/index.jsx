@@ -109,7 +109,9 @@ const MySubjectItemPage = () => {
             res.data.content?.media
               ?.filter((value) => value.type === "pdf")
               .map((item) => {
-                setPdfUrl({ url: `https://api.edu.imedic.uz${item.file_url}` });
+                setPdfUrl({
+                  url: `https://api.edu.imedic.uz${item.file_url}`,
+                });
               });
             res.data.content?.media
               ?.filter((value) => value.type === "video")
@@ -118,12 +120,16 @@ const MySubjectItemPage = () => {
                   url: `https://api.edu.imedic.uz${item.file_url}`,
                 });
               });
+          } else {
+            setPdfUrl(false);
+            setVideoUrl(false);
+
+            setSubject({
+              data: res.data.content,
+              subject_id: res.data.course_subject_id,
+              type: res.data.content.type,
+            });
           }
-          setSubject({
-            data: res.data.content,
-            subject_id: res.data.course_subject_id,
-            type: res.data.content.type,
-          });
         }
       })
       .catch((err) => {

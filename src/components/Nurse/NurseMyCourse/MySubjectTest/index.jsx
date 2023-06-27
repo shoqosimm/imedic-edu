@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useCallback, memo } from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
-import { Button, Menu, Modal, Pagination, Radio } from "antd";
+import { Button, Divider, Menu, Modal, Radio } from "antd";
 import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
@@ -8,9 +8,10 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
-import Countdown from "react-countdown";
 import Swal from "sweetalert2";
-import moment from "moment/moment";
+import CountDown from "./CountDown";
+import moment from "moment";
+import { useCallback } from "react";
 
 const MySubjectTest = () => {
   const navigate = useNavigate();
@@ -50,29 +51,6 @@ const MySubjectTest = () => {
     }
   };
 
-  // pagination
-  const itemRender = (_, type, originalElement) => {
-    if (type === "prev") {
-      return (
-        <Button
-          className="btn d-flex align-center gap-x-1"
-          icon={<MdKeyboardDoubleArrowLeft />}
-        >
-          {window.innerWidth >= 565 ? "Oldingisi" : null}
-        </Button>
-      );
-    }
-    if (type === "next") {
-      return (
-        <Button className="btn d-flex align-center gap-1">
-          {window.innerWidth >= 565 ? "Keyingisi" : null}
-          <MdKeyboardDoubleArrowRight />
-        </Button>
-      );
-    }
-    return originalElement;
-  };
-
   // handleStartTest
   const handleStartTest = () => {
     api
@@ -86,9 +64,11 @@ const MySubjectTest = () => {
           new Date(res.data.test_start).getDate() ===
           new Date(res.data.test_end).getDate()
         ) {
-          const countdown = new Date(res.data.test_end) - new Date().getTime();
-          setTestTime(new Date(res.data.test_end) - new Date().getTime());
-          localStorage.setItem("countTime", countdown);
+          const endTest = new Date(res.data.test_end).getTime();
+          const now = new Date().getTime();
+          const difference = endTest - now;
+          const resultTime = moment(difference).format("mm");
+          setTestTime(resultTime);
         }
         setTest({
           id: res.data.id,
@@ -124,7 +104,6 @@ const MySubjectTest = () => {
     api
       .post(`api/nurse/test/start/${id}`, body)
       .then((res) => {
-        window.location.reload();
         setTest({
           id: res.data.id,
           title: res.data.question,
@@ -151,12 +130,23 @@ const MySubjectTest = () => {
 
   // handleBackFromTest
   const handleBackFromTest = () => {
-    setOpenModal(false);
-    // navigate(-1);
+    // setOpenModal(false);
+    navigate(-1);
+  };
+
+  // hadlePaginateBtns
+  const hadlePaginateBtns = (type) => {
+    if (type === "prev") {
+      handleChangePagination(--pagination.ordering);
+    } else if (type === "next") {
+      handleChangePagination(++pagination.ordering);
+    } else {
+      console.log("unkown");
+    }
   };
 
   // handleFinish
-  const handleFinish = () => {
+  const handleFinish = useCallback(() => {
     api
       .get(`api/nurse/test/finish/${id}`)
       .then((res) => {
@@ -170,7 +160,7 @@ const MySubjectTest = () => {
         }
       })
       .catch((err) => console.log(err, "err"));
-  };
+  },[]);
 
   useEffect(() => {
     !startTest && getTest();
@@ -189,7 +179,7 @@ const MySubjectTest = () => {
     <div className="container__test d-flex gap-x-2">
       <div className="drawer">
         <Menu
-          defaultSelectedKeys={[localStorage.getItem("testPagination") ?? "1"]}
+          selectedKeys={[localStorage.getItem("testPagination") ?? "1"]}
           mode="inline"
           inlineCollapsed
           multiple={false}
@@ -208,9 +198,9 @@ const MySubjectTest = () => {
           <div className="timer_wrapper d-flex align-end justify-between">
             <div className="timer">
               {testTime && (
-                <Countdown
-                  onComplete={handleFinish}
-                  date={Date.now() + Number(localStorage.getItem("countTime"))}
+                <CountDown
+                  minutes={Number(testTime)}
+                  onCountdownEnd={handleFinish}
                 />
               )}
             </div>
@@ -255,17 +245,26 @@ const MySubjectTest = () => {
             })}
           </div>
         </div>
-        <div>
-          <Pagination
-            className="control__btns d-flex align-center justify-center"
-            defaultCurrent={pagination.ordering}
-            total={pagination?.total}
-            itemRender={itemRender}
-            onChange={handleChangePagination}
-            showSizeChanger={false}
-            pageSize={3}
-            responsive
-          />
+        <Divider />
+        <div className="d-flex justify-between align-center">
+          <Button
+            className="paginate__btns d-flex align-center gap-1"
+            disabled={pagination?.ordering === 1}
+            onClick={() => hadlePaginateBtns("prev")}
+          >
+            <MdKeyboardDoubleArrowLeft />
+            Prev
+          </Button>
+          <Button
+            className="paginate__btns d-flex align-center gap-1"
+            disabled={
+              pagination?.ordering === testInfo?.course_subject.count_test
+            }
+            onClick={() => hadlePaginateBtns("next")}
+          >
+            Next
+            <MdKeyboardDoubleArrowRight />
+          </Button>
         </div>
 
         <Modal

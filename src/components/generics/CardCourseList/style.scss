@@ -5,9 +5,26 @@
   justify-content: space-between;
   flex-wrap: wrap;
   .card__img__wrapper {
-    flex-grow: 0.9;
+    width: 28%;
+    max-width: 430px;
     height: 300px;
-    background-color: rgb(209, 209, 209);
+    background: lightgrey;
+    position: relative;
+    ::after{
+      content: "NO CONTENT";
+      width: 100%;
+      height: 100%;
+      color: #252525;
+      font-size: 24px;
+      position: absolute;
+      top: 44%;
+      left: 31%;
+      font-weight: 600;
+    }
+    img{
+      width: 100%;
+      height: 100%;
+    }
   }
   .card__content__wrapper {
     width: 70%;

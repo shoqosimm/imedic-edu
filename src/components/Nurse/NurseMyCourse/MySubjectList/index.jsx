@@ -37,8 +37,8 @@ const NurseMyCourse = () => {
         setCourses(
           res.data.map((item) => {
             return {
-              key: item.id,
               ...item,
+              key: item.id,
             };
           })
         );

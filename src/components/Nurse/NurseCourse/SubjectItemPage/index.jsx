@@ -293,14 +293,15 @@ const SubjectItemPage = () => {
                     {comment?.map((item) => {
                       return (
                         <motion.div
+                        key={item.id}
                           initial={{ opacity: 0 }}
                           whileInView={{ opacity: 1 }}
                           viewport={{ once: true }}
                           transition={{ type: "just", duration: 1.7 }}
                         >
-                          <CommentCard key={item.id} data={item} />;
+                          <CommentCard  data={item} />
                         </motion.div>
-                      );
+                      )
                     })}
                     <Button
                       disabled={commentEmptyText ? true : false}

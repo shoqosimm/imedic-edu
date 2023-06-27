@@ -27,6 +27,9 @@
       justify-content: center;
       @media screen and (max-width: 565px) {
         width: 100%;
+        p{
+          font-size: 18px;
+        }
       }
     }
   }
@@ -82,60 +85,10 @@
     width: 100% !important;
     margin: 2rem 0;
     flex-wrap: wrap;
-    .ant-pagination-item {
-      display: none !important;
-    }
+   
   }
 
-  .ant-pagination-next {
-    button {
-      height: 40px;
-      span {
-        color: #fff;
-      }
-      svg {
-        color: #fff;
-      }
-    }
-    &:hover {
-      span {
-        color: #1677ff;
-      }
-      svg {
-        color: #1677ff;
-      }
-    }
-  }
-  .ant-pagination-prev {
-    button {
-      height: 40px;
-      span {
-        color: #fff;
-      }
-      svg {
-        color: #fff;
-      }
-    }
-    &:hover {
-      span {
-        color: #1677ff;
-      }
-      svg {
-        color: #1677ff;
-      }
-    }
-  }
-  .ant-pagination-disabled {
-    button {
-      height: 40px;
-      span {
-        color: #252525 !important;
-      }
-      svg {
-        color: #252525 !important;
-      }
-    }
-  }
+ 
 }
 
 .drawer {
@@ -156,6 +109,11 @@
   color: #080808 !important;
   min-width: 50px;
   margin: 0 0.5rem;
+}
+.paginate__btns{
+  border-radius: 4px;
+  background: whitesmoke;
+  color: #252525;
 }
 
 // media

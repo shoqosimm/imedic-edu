@@ -1,13 +1,13 @@
-import { Breadcrumb, Button, Card, Col, Row, Spin } from "antd";
+import { Breadcrumb, Button, Card,  Spin } from "antd";
 import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import { BiHome } from "react-icons/bi";
 import "./style.scss";
 import { useParams, Link } from "react-router-dom";
 import { api } from "../../../../utils/api";
-import { TbMoodEmpty } from "react-icons/tb";
 import CommentCard from "../../../generics/CommentCard";
 import CardSubjectList from "../../../generics/CardSubjectList";
+import EmptyBox from '../../../../assets/illustration/emptyBox.webp'
 
 const SubjectPage = () => {
   const param = useParams();
@@ -33,6 +33,7 @@ const SubjectPage = () => {
           setSubjects(
             res.data.data.map((item) => {
               return {
+                ...item,
                 id: item.id,
                 name: item.name,
                 teaser: item.teaser,
@@ -130,6 +131,7 @@ const SubjectPage = () => {
                   transition={{ type: "just", duration: 1.4, bounce: 0.1 }}
                 >
                   <CardSubjectList
+                    item={item}
                     title={item.name}
                     teaser={item.teaser}
                     subject={item.subject_type}

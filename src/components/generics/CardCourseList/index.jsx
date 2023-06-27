@@ -5,6 +5,7 @@ import { BiFolder, BiPlus, BiUserVoice } from "react-icons/bi";
 import { BsFiles } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import AltImg from '../../../assets/bgImg/4.jpg'
 
 const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
   const navigate = useNavigate();
@@ -21,10 +22,30 @@ const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
   });
 
   return (
-    <Card>
+    <Card style={{ margin: "1rem 0" }}>
       <div className="card">
         <div className="card__img__wrapper">
-          <img src="" alt="img" />
+          {mycourse ? (
+            <img
+            style={{objectFit:'cover'}}
+              src={
+                course?.name.image ?
+                `https://api.edu.imedic.uz${course?.name.image?.file_url}`
+                :AltImg
+              }
+              alt="img"
+            />
+          ) : (
+            <img
+            style={{objectFit:'cover'}}
+              src={
+                course?.image ?
+                `https://api.edu.imedic.uz${course?.image?.file_url}`:
+                AltImg
+              }
+              alt="img"
+            />
+          )}
         </div>
         <div
           className="card__content__wrapper"

@@ -1,4 +1,4 @@
-import { Breadcrumb, Button, Card, Form, Input } from "antd";
+import { Breadcrumb, Button, Card, Form, Input, Modal, Upload } from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
@@ -14,7 +14,15 @@ import {
   AiOutlineVideoCameraAdd,
 } from "react-icons/ai";
 import { VscFilePdf } from "react-icons/vsc";
+import { PlusOutlined } from "@ant-design/icons";
 
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 // quill-modules
 const modules = {
   toolbar: {
@@ -69,6 +77,76 @@ const EditSubject = () => {
   const [pdfToken, setPdfTokens] = useState();
   const [videoToken, setVideoTokens] = useState();
   const [subject, setSubject] = useState();
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const [imagesToken, setImagesToken] = useState();
+
+  // img-Upload
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div
+        style={{
+          marginTop: 8,
+        }}
+      >
+        Upload
+      </div>
+    </div>
+  );
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
+  };
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
+  // handleGetToken
+  const handleGetToken = async (options) => {
+    const { onSuccess, onError, file, onProgress } = options;
+    const fmData = new FormData();
+    const config = {
+      headers: { "Content-Type": "multipart/form-data" },
+      onUploadProgress: (event) => {
+        onProgress({ percent: (event.loaded / event.total) * 100 });
+      },
+    };
+    fmData.append("file", file);
+    fmData.append("type", "image");
+    try {
+      const res = await api.post(`api/media/upload`, fmData, config);
+      if (res.data.token) {
+        onSuccess("Ok");
+        setImagesToken((prev) => (prev = res.data.token));
+      } else {
+        onError({ res });
+      }
+    } catch (err) {
+      console.log("upload error", err);
+      onError({ err });
+    }
+  };
+  // onRemove
+  const onRemove = () => {
+    const body = {
+      token: imagesToken,
+    };
+    api.post(`api/media/delete`, body).then((res) => {
+      if (res) {
+        console.log(res.data, "res");
+      }
+    });
+  };
 
   //   getSubject
   const getSubject = (id) => {
@@ -83,6 +161,13 @@ const EditSubject = () => {
             content: res.data.data.content,
             teaser: res.data.data.teaser,
           });
+          if (res.data.data.image?.file_url) {
+            setFileList([
+              {
+                url: `https://api.edu.imedic.uz${res.data.data.image?.file_url}`,
+              },
+            ]);
+          }
           setSubject(res.data.data);
           if (res.data.data.type === "media") {
             res.data.data?.media
@@ -98,6 +183,11 @@ const EditSubject = () => {
                 });
               });
           }
+        }
+        if (res.data.data.image?.file_url) {
+          setFileList([
+            { url: `https://api.edu.imedic.uz${res.data.data.image.file_url}` },
+          ]);
         }
         form.setFieldsValue({
           name: res.data.data.name,
@@ -118,12 +208,21 @@ const EditSubject = () => {
   //   editSubject
   const onFinish = (values) => {
     setLoading(true);
-    if (pdfToken || videoToken) {
-      values.content = [pdfToken, videoToken];
-      (values.type = "media"), (values.subject_type = "topic");
+    if (pdfUrl || videoUrl) {
+      if (pdfToken || videoToken) {
+        values.content = [pdfToken, videoToken];
+        (values.type = "media"), (values.subject_type = "topic");
+        values.image = imagesToken && imagesToken.split();
+      } else {
+        // values.content = [pdfToken, videoToken];
+        // (values.type = "media"),
+        values.subject_type = "topic";
+        values.image = imagesToken && imagesToken.split();
+      }
     } else {
       values.subject_type = "topic";
       values.type = "text";
+      values.image = imagesToken && imagesToken.split();
     }
     try {
       api
@@ -150,6 +249,7 @@ const EditSubject = () => {
     const body = {
       ...values,
       subject_type: "test",
+      images: imagesToken && imagesToken.split(),
     };
     try {
       const res = await api.post(
@@ -277,6 +377,31 @@ const EditSubject = () => {
       <Card title="O'zgartirish">
         {location.state?.subject_type !== "test" ? (
           <Form id="sujectForm" name="basic" form={form} onFinish={onFinish}>
+            <Upload
+              maxCount={1}
+              customRequest={handleGetToken}
+              listType="picture-card"
+              fileList={fileList}
+              onPreview={handlePreview}
+              onChange={handleChange}
+              onRemove={onRemove}
+            >
+              {fileList.length >= 8 ? null : uploadButton}
+            </Upload>
+            <Modal
+              open={previewOpen}
+              title={previewTitle}
+              footer={null}
+              onCancel={handleCancel}
+            >
+              <img
+                alt="example"
+                style={{
+                  width: "100%",
+                }}
+                src={previewImage}
+              />
+            </Modal>
             <Form.Item name="name">
               <Input disabled={loading} />
             </Form.Item>
@@ -456,6 +581,31 @@ const EditSubject = () => {
               >
                 <Input placeholder="tizer" disabled={loading} />
               </Form.Item>
+              <Upload
+                maxCount={1}
+                customRequest={handleGetToken}
+                listType="picture-card"
+                fileList={fileList}
+                onPreview={handlePreview}
+                onChange={handleChange}
+                onRemove={onRemove}
+              >
+                {fileList.length >= 8 ? null : uploadButton}
+              </Upload>
+              <Modal
+                open={previewOpen}
+                title={previewTitle}
+                footer={null}
+                onCancel={handleCancel}
+              >
+                <img
+                  alt="example"
+                  style={{
+                    width: "100%",
+                  }}
+                  src={previewImage}
+                />
+              </Modal>
             </>
 
             <Form.Item>

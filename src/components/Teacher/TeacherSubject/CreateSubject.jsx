@@ -1,4 +1,14 @@
-import { Breadcrumb, Button, Card, Col, Form, Input, Modal, Row } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Form,
+  Input,
+  Modal,
+  Row,
+  Upload,
+} from "antd";
 import React, { useState, useEffect } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -10,6 +20,15 @@ import { BiHome } from "react-icons/bi";
 import { VscFilePdf } from "react-icons/vsc";
 import { AiOutlineClose, AiOutlineVideoCameraAdd } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
+import { PlusOutlined } from "@ant-design/icons";
+
+const getBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
 
 // quill-modules
 const modules = {
@@ -67,6 +86,76 @@ const CreateSubject = () => {
   const params = useParams();
   const [pdfToken, setPdfTokens] = useState();
   const [videoToken, setVideoTokens] = useState();
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState("");
+  const [previewTitle, setPreviewTitle] = useState("");
+  const [fileList, setFileList] = useState([]);
+  const [imagesToken, setImagesToken] = useState();
+
+  // img-Upload
+  const uploadButton = (
+    <div>
+      <PlusOutlined />
+      <div
+        style={{
+          marginTop: 8,
+        }}
+      >
+        Upload
+      </div>
+    </div>
+  );
+  const handlePreview = async (file) => {
+    if (!file.url && !file.preview) {
+      file.preview = await getBase64(file.originFileObj);
+    }
+    setPreviewImage(file.url || file.preview);
+    setPreviewOpen(true);
+    setPreviewTitle(
+      file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
+    );
+  };
+
+  const handleCancel = () => setPreviewOpen(false);
+
+  const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
+
+  // handleGetToken
+  const handleGetToken = async (options) => {
+    const { onSuccess, onError, file, onProgress } = options;
+    const fmData = new FormData();
+    const config = {
+      headers: { "Content-Type": "multipart/form-data" },
+      onUploadProgress: (event) => {
+        onProgress({ percent: (event.loaded / event.total) * 100 });
+      },
+    };
+    fmData.append("file", file);
+    fmData.append("type", "image");
+    try {
+      const res = await api.post(`api/media/upload`, fmData, config);
+      if (res.data.token) {
+        onSuccess("Ok");
+        setImagesToken((prev) => (prev = res.data.token));
+      } else {
+        onError({ res });
+      }
+    } catch (err) {
+      console.log("upload error", err);
+      onError({ err });
+    }
+  };
+  // onRemove
+  const onRemove = () => {
+    const body = {
+      token: imagesToken,
+    };
+    api.post(`api/media/delete`, body).then((res) => {
+      if (res) {
+        console.log(res.data, "res");
+      }
+    });
+  };
 
   //   create
   const onFinish = (values) => {
@@ -80,6 +169,7 @@ const CreateSubject = () => {
         body.subject_type = "topic";
         body.name = values.name;
         body.teaser = values.teaser;
+        body.images = imagesToken.split();
       } else {
         body.content = contentValue;
         body.course_id = parseInt(params.id);
@@ -87,6 +177,7 @@ const CreateSubject = () => {
         body.name = values.name;
         body.teaser = values.teaser;
         body.type = "text";
+        body.images = imagesToken.split();
       }
     } else {
       body.course_id = parseInt(params.id);
@@ -97,6 +188,7 @@ const CreateSubject = () => {
       body.time = values.time;
       body.resubmit = values.resubmit;
       body.teaser = values.teaser;
+      body.images = imagesToken.split();
     }
 
     api
@@ -228,11 +320,7 @@ const CreateSubject = () => {
             ),
           },
           {
-            title: (
-              <p style={{ color: "grey" }}>
-                Yaratish
-              </p>
-            ),
+            title: <p style={{ color: "grey" }}>Yaratish</p>,
           },
         ]}
       />
@@ -292,6 +380,31 @@ const CreateSubject = () => {
           >
             {type == 0 ? (
               <>
+                <Upload
+                  maxCount={1}
+                  customRequest={handleGetToken}
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  onRemove={onRemove}
+                >
+                  {fileList.length >= 8 ? null : uploadButton}
+                </Upload>
+                <Modal
+                  open={previewOpen}
+                  title={previewTitle}
+                  footer={null}
+                  onCancel={handleCancel}
+                >
+                  <img
+                    alt="example"
+                    style={{
+                      width: "100%",
+                    }}
+                    src={previewImage}
+                  />
+                </Modal>
                 <Form.Item
                   name="name"
                   rules={[{ required: true, whitespace: true }]}
@@ -443,6 +556,31 @@ const CreateSubject = () => {
                 >
                   <Input placeholder="tizer" disabled={loading} />
                 </Form.Item>
+                <Upload
+                  maxCount={1}
+                  customRequest={handleGetToken}
+                  listType="picture-card"
+                  fileList={fileList}
+                  onPreview={handlePreview}
+                  onChange={handleChange}
+                  onRemove={onRemove}
+                >
+                  {fileList.length >= 8 ? null : uploadButton}
+                </Upload>
+                <Modal
+                  open={previewOpen}
+                  title={previewTitle}
+                  footer={null}
+                  onCancel={handleCancel}
+                >
+                  <img
+                    alt="example"
+                    style={{
+                      width: "100%",
+                    }}
+                    src={previewImage}
+                  />
+                </Modal>
               </>
             )}
             <Form.Item>

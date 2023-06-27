@@ -1,14 +1,16 @@
 import { Button, Card, Tooltip } from "antd";
 import "./style.scss";
 import Meta from "antd/es/card/Meta";
-import { BiBook, BiPencil, BiShow, BiSync } from "react-icons/bi";
+import { BiBook, BiPencil } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
+import { api } from "../../../utils/api";
+import AltImg from "../../../assets/bgImg/3.jpeg";
 
 const MyCardSubjectList = ({
   title,
   teaser,
   subject,
-  click,
+
   disabled,
   item,
 }) => {
@@ -22,15 +24,26 @@ const MyCardSubjectList = ({
     }
     return navigate(`subject/test/${id}`, { state: { message: param.id } });
   };
-   // showResult
-   const showResult = (id) => {
+  // showResult
+  const showResult = (id) => {
     navigate("/nurse/answers", { state: { message: id } });
   };
 
   return (
     <Card
       className="cardSubject"
-      cover={<img className="card__img" src="" alt="img" />}
+      cover={
+        <img
+          style={{ objectFit: "cover" }}
+          className="card__img"
+          src={
+            item?.image
+              ? `${api.defaults.baseURL}${item?.image?.file_url} `
+              : AltImg
+          }
+          alt="img"
+        />
+      }
       actions={[
         item.subject.subject_type == "test" && item.status === 2 ? (
           <div className="test_btn d-flex flex-column align-center gap-1">
