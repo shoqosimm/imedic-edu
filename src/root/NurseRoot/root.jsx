@@ -135,6 +135,7 @@ const Nurse = () => {
             Chiqish
           </Button>
         </Header>
+        <marquee className='running__text' behavior="smooth" direction="left">Sayt test holatida ishlamoqda!</marquee>
         <Content className="layout_content">
           <Suspense fallback={<Loading />}>
             <Outlet />
