@@ -163,6 +163,7 @@ const MySubjectTest = () => {
           toast.success("Javoblar qa'bul qilindi", {
             position: "bottom-right",
           });
+          localStorage.removeItem('testPagination')
           setCoverNav(false);
           setTimeout(() => {
             navigate("/nurse/answers", { state: { message: id } });
