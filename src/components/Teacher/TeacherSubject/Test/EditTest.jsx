@@ -109,7 +109,7 @@ const EditTest = () => {
   // getSubjectForSelect
   const getSubjectForSelect = () => {
     const body = {
-      course_subject_id: parseInt(param.id),
+      course_subject_id: parseInt(location.state.message),
     };
     api.post("api/select/subject", body).then((res) => {
       setSubjectItems(
@@ -142,14 +142,14 @@ const EditTest = () => {
             ),
           },
           {
-            title: <div style={{cursor:'pointer',}} onClick={() => navigate(-1)}>Ortga</div>,
+            title: (
+              <div style={{ cursor: "pointer" }} onClick={() => navigate(-1)}>
+                Ortga
+              </div>
+            ),
           },
           {
-            title: (
-              <p style={{ color: "grey" }}>
-               Testni o'zgartirish
-              </p>
-            ),
+            title: <p style={{ color: "grey" }}>Testni o'zgartirish</p>,
           },
         ]}
       />
