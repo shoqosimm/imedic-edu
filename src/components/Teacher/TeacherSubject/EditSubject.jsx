@@ -212,17 +212,17 @@ const EditSubject = () => {
       if (pdfToken || videoToken) {
         values.content = [pdfToken, videoToken];
         (values.type = "media"), (values.subject_type = "topic");
-        values.image = imagesToken && imagesToken.split();
+        values.images = imagesToken && imagesToken.split();
       } else {
         // values.content = [pdfToken, videoToken];
         // (values.type = "media"),
         values.subject_type = "topic";
-        values.image = imagesToken && imagesToken.split();
+        values.images = imagesToken && imagesToken.split();
       }
     } else {
       values.subject_type = "topic";
       values.type = "text";
-      values.image = imagesToken && imagesToken.split();
+      values.images = imagesToken && imagesToken.split();
     }
     try {
       api

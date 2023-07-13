@@ -1,3 +1,18 @@
+.coverNav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 110px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 99999999;
+  font-size: 20px;
+}
+
 .test {
   flex: 1;
   height: 100%;
@@ -27,7 +42,7 @@
       justify-content: center;
       @media screen and (max-width: 565px) {
         width: 100%;
-        p{
+        p {
           font-size: 18px;
         }
       }
@@ -73,6 +88,7 @@
     font-size: 18px;
     @media screen and (max-width: 565px) {
       font-size: 14px;
+      padding: 5px 8px;
     }
 
     &:hover {
@@ -85,10 +101,7 @@
     width: 100% !important;
     margin: 2rem 0;
     flex-wrap: wrap;
-   
   }
-
- 
 }
 
 .drawer {
@@ -110,7 +123,7 @@
   min-width: 50px;
   margin: 0 0.5rem;
 }
-.paginate__btns{
+.paginate__btns {
   border-radius: 4px;
   background: whitesmoke;
   color: #252525;
@@ -132,5 +145,12 @@
       display: flex;
       width: 100px;
     }
+  }
+}
+
+@media screen and (max-width: 565px) {
+  .ant-radio-button-wrapper {
+    height: fit-content;
+    padding: 0px;
   }
 }

@@ -22,6 +22,7 @@ const MySubjectTest = () => {
   const [testTime, setTestTime] = useState();
   const [startTest, setStartTest] = useState(false);
   const [testAmount, setTestAmount] = useState([]);
+  const [coverNav, setCoverNav] = useState(false);
   const [pagination, setPagination] = useState({
     ordering: localStorage.getItem("testPagination") ?? 1,
     total: 10,
@@ -50,6 +51,13 @@ const MySubjectTest = () => {
       console.log(err, "err");
     }
   };
+  // disableBackButton
+  const disableBackButton = () => {
+    history.pushState(null, document.title, location.href);
+    window.addEventListener("popstate", function (event) {
+      history.pushState(null, document.title, location.href);
+    });
+  };
 
   // handleStartTest
   const handleStartTest = () => {
@@ -67,9 +75,11 @@ const MySubjectTest = () => {
           const endTest = new Date(res.data.test_end).getTime();
           const now = new Date().getTime();
           const difference = endTest - now;
-          const resultTime = moment(difference).format("mm");
+          const resultTime = Math.round(difference / 60000);
           setTestTime(resultTime);
         }
+        setCoverNav(true);
+        disableBackButton();
         setTest({
           id: res.data.id,
           title: res.data.question,
@@ -130,7 +140,6 @@ const MySubjectTest = () => {
 
   // handleBackFromTest
   const handleBackFromTest = () => {
-    // setOpenModal(false);
     navigate(-1);
   };
 
@@ -154,16 +163,21 @@ const MySubjectTest = () => {
           toast.success("Javoblar qa'bul qilindi", {
             position: "bottom-right",
           });
+          setCoverNav(false);
           setTimeout(() => {
             navigate("/nurse/answers", { state: { message: id } });
           }, 1500);
         }
       })
       .catch((err) => console.log(err, "err"));
-  },[]);
+  }, []);
 
   useEffect(() => {
-    !startTest && getTest();
+    if (!startTest) {
+      getTest();
+    } else {
+      disableBackButton();
+    }
     if (testAmount.length === 0) {
       for (let i = 1; i <= pagination?.total; i++) {
         setTestAmount((prev) => [...prev, i]);
@@ -177,6 +191,11 @@ const MySubjectTest = () => {
 
   return (
     <div className="container__test d-flex gap-x-2">
+      {coverNav && (
+        <div className="coverNav">
+          Test boshlandi! test yakunlangandan so'ng menu ko'rinadi.
+        </div>
+      )}
       <div className="drawer">
         <Menu
           selectedKeys={[localStorage.getItem("testPagination") ?? "1"]}
