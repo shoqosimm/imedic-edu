@@ -1,4 +1,13 @@
-import { Breadcrumb, Button, Card, Form, Input, Modal, Upload } from "antd";
+import {
+  Breadcrumb,
+  Button,
+  Card,
+  Divider,
+  Form,
+  Input,
+  Modal,
+  Upload,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import { useParams, useLocation, useNavigate, Link } from "react-router-dom";
@@ -82,6 +91,9 @@ const EditSubject = () => {
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
   const [imagesToken, setImagesToken] = useState();
+  const [deleted_pdf, setDeletedPdf] = useState(false);
+  const [deleted_video, setDeletedVideo] = useState(false);
+  const [updateBtn, setUpdateBtn] = useState(false);
 
   // img-Upload
   const uploadButton = (
@@ -135,17 +147,6 @@ const EditSubject = () => {
       console.log("upload error", err);
       onError({ err });
     }
-  };
-  // onRemove
-  const onRemove = () => {
-    const body = {
-      token: imagesToken,
-    };
-    api.post(`api/media/delete`, body).then((res) => {
-      if (res) {
-        console.log(res.data, "res");
-      }
-    });
   };
 
   //   getSubject
@@ -209,20 +210,47 @@ const EditSubject = () => {
   const onFinish = (values) => {
     setLoading(true);
     if (pdfUrl || videoUrl) {
-      if (pdfToken || videoToken) {
+      if (pdfToken && videoToken) {
         values.content = [pdfToken, videoToken];
         (values.type = "media"), (values.subject_type = "topic");
         values.images = imagesToken && imagesToken.split();
+        values.deleted = {
+          deleted_pdf,
+          deleted_video,
+        };
+      } else if (pdfToken) {
+        values.content = [pdfToken];
+        (values.type = "media"), (values.subject_type = "topic");
+        values.images = imagesToken && imagesToken.split();
+        values.deleted = {
+          deleted_pdf,
+          deleted_video,
+        };
+      } else if (videoToken) {
+        values.content = [videoToken];
+        (values.type = "media"), (values.subject_type = "topic");
+        values.images = imagesToken && imagesToken.split();
+        values.deleted = {
+          deleted_pdf,
+          deleted_video,
+        };
       } else {
-        // values.content = [pdfToken, videoToken];
-        // (values.type = "media"),
         values.subject_type = "topic";
         values.images = imagesToken && imagesToken.split();
+        values.type = "media";
+        values.deleted = {
+          deleted_pdf,
+          deleted_video,
+        };
       }
     } else {
       values.subject_type = "topic";
       values.type = "text";
       values.images = imagesToken && imagesToken.split();
+      values.deleted = {
+        deleted_pdf,
+        deleted_video,
+      };
     }
     try {
       api
@@ -268,6 +296,7 @@ const EditSubject = () => {
 
   // handlePdf
   const handlePdf = async (e) => {
+    setUpdateBtn(true);
     setPdfUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
@@ -286,6 +315,7 @@ const EditSubject = () => {
       res.status === 200 &&
         toast.success("Загружено", { position: "bottom-right" });
       setPdfTokens((prev) => (prev = res.data.token));
+      setUpdateBtn(false);
     } catch (err) {
       console.log(err, "err");
       toast.warn(err.message, { position: "bottom-right" });
@@ -294,6 +324,7 @@ const EditSubject = () => {
 
   // handleVideo
   const handleVideo = async (e) => {
+    setUpdateBtn(true);
     setVideoUrl({
       url: URL.createObjectURL(e.target.files[0]),
       file: e.target.files[0],
@@ -312,37 +343,23 @@ const EditSubject = () => {
       res.status === 200 &&
         toast.success("Загружено", { position: "bottom-right" });
       setVideoTokens((prev) => (prev = res.data.token));
+      setUpdateBtn(false);
     } catch (err) {
       console.log(err, "err");
       toast.warn(err.message, { position: "bottom-right" });
     }
   };
 
-  // handleCloseFiles
-  const handleCloseFilesVideo = async () => {
-    setVideoUrl(false);
-    try {
-      const res = await api.post(`api/media/delete`, { token: videoToken });
-      res.status === 200 &&
-        toast.success("Отменено", { position: "bottom-right" });
-      setVideoTokens(false);
-    } catch (err) {
-      console.log(err, "err");
-      toast.warn(err.message, { position: "bottom-right" });
-    }
-  };
-
-  // handleCloseFilesPdf
-  const handleCloseFilesPdf = async () => {
-    setPdfUrl(false);
-    try {
-      const res = await api.post(`api/media/delete`, { token: pdfToken });
-      res.status === 200 &&
-        toast.success("Отменено", { position: "bottom-right" });
+  // handleDeleteFiles
+  const handleDeleteFiles = (file) => {
+    if (file === "pdf") {
+      setDeletedPdf(true);
+      setPdfUrl(false);
       setPdfTokens(false);
-    } catch (err) {
-      console.log(err, "err");
-      toast.warn(err.message, { position: "bottom-right" });
+    } else if (file === "video") {
+      setDeletedVideo(true);
+      setVideoUrl(false);
+      setVideoTokens(false);
     }
   };
 
@@ -384,7 +401,6 @@ const EditSubject = () => {
               fileList={fileList}
               onPreview={handlePreview}
               onChange={handleChange}
-              onRemove={onRemove}
             >
               {fileList.length >= 8 ? null : uploadButton}
             </Upload>
@@ -408,69 +424,51 @@ const EditSubject = () => {
             <Form.Item name="teaser">
               <Input disabled={loading} />
             </Form.Item>
-            <div
-              style={{ margin: "1rem 0", flexWrap: "wrap" }}
-              className="d-flex align-center gap-1"
-            >
-              <label
-                htmlFor="pdf"
-                className={
-                  pdfToken
-                    ? "disabled d-flex align-center gap-x-1"
-                    : "uploadLabelPDF d-flex align-center gap-x-1"
-                }
+            <div className="d-flex align-center justify-between flex-wrap gap-1">
+              <div
+                style={{ margin: "1rem 0", flexWrap: "wrap" }}
+                className="d-flex align-center gap-1"
               >
-                <VscFilePdf style={{ fontSize: "18px" }} />
-                PDF yuklash
-                <input
-                  disabled={pdfToken}
-                  type="file"
-                  id="pdf"
-                  accept="application/pdf"
-                  onChange={handlePdf}
-                />
-              </label>
+                <label
+                  htmlFor="pdf"
+                  className={
+                    pdfToken
+                      ? "disabled d-flex align-center gap-x-1"
+                      : "uploadLabelPDF d-flex align-center gap-x-1"
+                  }
+                >
+                  <VscFilePdf style={{ fontSize: "18px" }} />
+                  PDF yuklash
+                  <input
+                    disabled={pdfToken}
+                    type="file"
+                    id="pdf"
+                    accept="application/pdf"
+                    onChange={handlePdf}
+                  />
+                </label>
 
-              <label
-                htmlFor="video"
-                className={
-                  videoToken
-                    ? "disabled d-flex align-center gap-x-1"
-                    : "uploadLabelVideo d-flex align-center gap-x-1"
-                }
-              >
-                <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
-                Video yuklash
-                <input
-                  disabled={videoToken}
-                  type="file"
-                  id="video"
-                  accept="video/mp4,video/x-m4v,video/*"
-                  onChange={handleVideo}
-                />
-              </label>
-              {pdfToken && (
-                <Button
-                  className="restore-btn d-flex align-center gap-1"
-                  onClick={handleCloseFilesPdf}
-                  style={{ background: "red", color: "#fff" }}
+                <label
+                  htmlFor="video"
+                  className={
+                    videoToken
+                      ? "disabled d-flex align-center gap-x-1"
+                      : "uploadLabelVideo d-flex align-center gap-x-1"
+                  }
                 >
-                  <AiOutlineClose style={{ fill: "#fff" }} />
-                  Сбросить pdf
-                </Button>
-              )}
-              {videoToken && (
-                <Button
-                  className="restore-btn d-flex align-center gap-1"
-                  onClick={handleCloseFilesVideo}
-                  style={{ background: "red", color: "#fff" }}
-                >
-                  <AiOutlineClose style={{ fill: "#fff" }} />
-                  Сбросить video
-                </Button>
-              )}
+                  <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
+                  Video yuklash
+                  <input
+                    disabled={videoToken}
+                    type="file"
+                    id="video"
+                    accept="video/mp4,video/x-m4v,video/*"
+                    onChange={handleVideo}
+                  />
+                </label>
+              </div>
             </div>
-
+            <Divider />
             {pdfUrl && (
               <>
                 <Button
@@ -482,22 +480,37 @@ const EditSubject = () => {
                     PDF -ni ko'rish
                   </a>
                 </Button>
-                <object
-                  data={pdfUrl?.url}
-                  width="100%"
-                  type="application/pdf"
-                  style={{
-                    height: "100%",
-                    aspectRatio: "1",
-                    marginBottom: "1rem",
-                  }}
-                ></object>
+                <div className="pdfWrapper">
+                  <Button
+                    className="closePdf"
+                    onClick={() => handleDeleteFiles("pdf")}
+                  >
+                    X
+                  </Button>
+                  <object
+                    data={pdfUrl?.url}
+                    width="100%"
+                    type="application/pdf"
+                    style={{
+                      height: "100%",
+                      aspectRatio: "1",
+                    }}
+                  ></object>
+                </div>
               </>
             )}
             {videoUrl && (
-              <video controls width="100%">
-                <source src={videoUrl?.url} type="video/mp4" />
-              </video>
+              <div className="videoWrapper">
+                <Button
+                  className="closeVideo"
+                  onClick={() => handleDeleteFiles("video")}
+                >
+                  X
+                </Button>
+                <video controls width="100%">
+                  <source src={videoUrl?.url} type="video/mp4" />
+                </video>
+              </div>
             )}
             {pdfUrl || videoUrl ? null : (
               <Form.Item
@@ -514,6 +527,7 @@ const EditSubject = () => {
                 loading={loading}
                 type="primary"
                 htmlType="submit"
+                disabled={updateBtn}
               >
                 Saqlash
               </Button>
@@ -588,7 +602,6 @@ const EditSubject = () => {
                 fileList={fileList}
                 onPreview={handlePreview}
                 onChange={handleChange}
-                onRemove={onRemove}
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>

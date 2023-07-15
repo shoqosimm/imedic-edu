@@ -210,6 +210,7 @@ const TeacherCourses = () => {
             current: pagination.current_page,
             per_page: pagination.per_page,
             total: pagination.total,
+            showSizeChanger:false,
             onChange: (current, per_page) => {
               getCourse(current, per_page);
               sessionStorage.setItem("course_current_page", current);

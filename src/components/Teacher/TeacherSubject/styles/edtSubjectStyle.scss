@@ -4,6 +4,45 @@
 #video {
   display: none;
 }
+.closePdf {
+  float: right;
+  background: red;
+  border-color: red;
+  border-radius: 4px;
+  &:hover {
+    color: red !important;
+    border-color: red !important;
+  }
+}
+.closeVideo {
+  float: right;
+  background: red;
+  border-color: red;
+  border-radius: 4px;
+  &:hover {
+    color: red !important;
+    border-color: red !important;
+  }
+}
+.videoWrapper {
+  margin: 1rem 0;
+  background: linear-gradient(
+    0deg,
+    rgba(34, 110, 195, 1) 0%,
+    rgba(45, 161, 253, 0.9585084033613446) 100%
+  );
+  border-radius: 4px;
+}
+.pdfWrapper {
+  margin: 1rem 0;
+  background: linear-gradient(
+    0deg,
+    rgba(34, 110, 195, 1) 0%,
+    rgba(45, 161, 253, 0.9585084033613446) 100%
+  );
+  border-radius: 4px;
+}
+
 .uploadLabelPDF {
   min-height: 40px;
   padding: 5px;
