@@ -40,6 +40,11 @@ const ViewSubject = () => {
   const [commentEmptyText, setCommentEmptyText] = useState(false);
   const [comment, setComment] = useState();
   const [paginateComment, setPaginateComment] = useState(12);
+  const [paginationTest, setPaginationTest] = useState({
+    current: 1,
+    perPage: 10,
+    total: 15,
+  });
   const [loadingBtn, setLoadingBtn] = useState(false);
   const [loading, setLoading] = useState(false);
   const [pdfUrl, setPdfUrl] = useState();
@@ -124,11 +129,15 @@ const ViewSubject = () => {
   ];
 
   //   getSubject
-  const getSubject = async (id) => {
+  const getSubject = async (id, page, per_page) => {
     setLoading(true);
+    const params = {
+      page,
+      per_page,
+    };
     try {
       const res1 = await api.get(`api/teacher/course-subject/show/${id}`);
-      const res2 = await api.get(`api/teacher/test/list/${id}`);
+      const res2 = await api.get(`api/teacher/test/list/${id}`, { params });
       if (res1.data.data.type === "media") {
         res1.data.data?.media
           ?.filter((value) => value.type === "pdf")
@@ -156,6 +165,11 @@ const ViewSubject = () => {
           };
         })
       );
+      setPaginationTest({
+        current: res2.data.current_page,
+        perPage: res2.data.per_page,
+        total: res2.data.total,
+      });
       getComments(param.id, paginateComment);
 
       setLoading(false);
@@ -205,7 +219,11 @@ const ViewSubject = () => {
           setModal(false);
           toast.success("Изменено");
           setTimeout(() => {
-            getSubject(param.id);
+            getSubject(
+              param.id,
+              paginationTest.current,
+              paginationTest.perPage
+            );
           }, 1500);
         }
       })
@@ -221,6 +239,7 @@ const ViewSubject = () => {
     const reader = new FileReader();
 
     reader.onload = async (evt) => {
+      evt.preventDefault();
       const bstr = evt.target.result;
       const wb = XLSX.read(bstr, { type: "array" });
       const wsname = wb.SheetNames[0];
@@ -246,7 +265,7 @@ const ViewSubject = () => {
         const res = await api.post(`api/teacher/test/exel`, body);
         res.status === 200 &&
           toast.success("Загружено", { position: "bottom-right" });
-        getSubject(param.id);
+        getSubject(param.id, paginationTest.current, paginationTest.perPage);
       } catch (err) {
         console.log(err, "err");
       } finally {
@@ -257,7 +276,7 @@ const ViewSubject = () => {
   };
 
   useEffect(() => {
-    getSubject(param.id);
+    getSubject(param.id, paginationTest.current, paginationTest.perPage);
   }, []);
 
   return (
@@ -280,11 +299,7 @@ const ViewSubject = () => {
             ),
           },
           {
-            title: (
-              <p style={{ color: "grey" }}>
-                {subject?.name}
-              </p>
-            ),
+            title: <p style={{ color: "grey" }}>{subject?.name}</p>,
           },
         ]}
       />
@@ -396,6 +411,15 @@ const ViewSubject = () => {
                 bordered
                 columns={columns}
                 dataSource={data}
+                pagination={{
+                  current: paginationTest.current,
+                  per_page: paginationTest.perPage,
+                  total: paginationTest.total,
+                  showSizeChanger:false,
+                  onChange: (current, per_page) => {
+                    getSubject(param.id, current, per_page);
+                  },
+                }}
               />
             </Card>
           </Card>
@@ -414,7 +438,7 @@ const ViewSubject = () => {
           <ToastContainer />
         </div>
       )}
-      <Card title="Izohlar" className="izohCard" style={{marginTop:'2rem'}}>
+      <Card title="Izohlar" className="izohCard" style={{ marginTop: "2rem" }}>
         {loading && <Spin />}
         {commentEmptyText && (
           <em

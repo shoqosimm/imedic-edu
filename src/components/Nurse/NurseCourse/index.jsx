@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { motion } from "framer-motion";
 import CardCourseList from "../../generics/CardCourseList";
 import ChooseIllus from "../../../assets/illustration/choose.webp";
+import EmptyBox from '../../../assets/illustration/emptyBox.webp'
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
@@ -121,6 +122,12 @@ const NurseCourse = () => {
           </div>
         </Col>
         <Col span={24} className="list">
+          {course.length === 0 && (
+            <div className="emptyBox">
+              <img src={EmptyBox} alt="imgEmpty" />
+              <h1>Bu turkum bo'yicha kurslar mavjud emas!</h1>
+            </div>
+          )}
           {course ? (
             <>
               {course.map((item) => {
@@ -143,6 +150,7 @@ const NurseCourse = () => {
               <Pagination
                 current={pagination?.current_page}
                 total={pagination?.total}
+                showSizeChanger={false}
                 onChange={(current, per_page) => {
                   getCourse(categoryId, current, per_page);
                 }}

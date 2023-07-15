@@ -36,7 +36,7 @@ const EditCourse = () => {
   const [previewImage, setPreviewImage] = useState("");
   const [previewTitle, setPreviewTitle] = useState("");
   const [fileList, setFileList] = useState([]);
-  const [imagesToken, setImagesToken] = useState([]);
+  const [imagesToken, setImagesToken] = useState(false);
 
   // img-Upload
   const uploadButton = (
@@ -91,17 +91,6 @@ const EditCourse = () => {
       onError({ err });
     }
   };
-  // onRemove
-  const onRemove = () => {
-    const body = {
-      token: imagesToken,
-    };
-    api.post(`api/media/delete`, body).then((res) => {
-      if (res) {
-        console.log(res.data, "res");
-      }
-    });
-  };
 
   // onFinish
   const onFinish = (values) => {
@@ -110,7 +99,7 @@ const EditCourse = () => {
     let body = {
       name: values.title,
       category_id: values.category,
-      images: imagesToken.split(),
+      images: imagesToken && imagesToken.split(),
     };
     api
       .post(`api/teacher/course/update/${params.id}`, body)
@@ -237,7 +226,6 @@ const EditCourse = () => {
             fileList={fileList}
             onPreview={handlePreview}
             onChange={handleChange}
-            onRemove={onRemove}
           >
             {fileList.length >= 8 ? null : uploadButton}
           </Upload>

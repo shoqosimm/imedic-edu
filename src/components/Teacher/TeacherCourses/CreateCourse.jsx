@@ -88,17 +88,6 @@ const CreateCourse = () => {
       onError({ err });
     }
   };
-  // onRemove
-  const onRemove = () => {
-    const body = {
-      token: imagesToken,
-    };
-    api.post(`api/media/delete`,body).then((res) => {
-      if (res) {
-        console.log(res.data, "res");
-      }
-    });
-  };
 
   // create
   const onFinish = (values) => {
@@ -211,7 +200,6 @@ const CreateCourse = () => {
             fileList={fileList}
             onPreview={handlePreview}
             onChange={handleChange}
-            onRemove={onRemove}
           >
             {fileList.length >= 8 ? null : uploadButton}
           </Upload>

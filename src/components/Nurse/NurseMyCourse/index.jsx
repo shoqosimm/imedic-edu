@@ -81,6 +81,7 @@ const NurseMyCourseList = () => {
           <Pagination
             current={pagination?.current_page}
             total={pagination?.total}
+            showSizeChanger={false}
             onChange={(current, per_page) => {
               getCourseList(current, per_page);
             }}

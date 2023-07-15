@@ -358,6 +358,7 @@ const ViewCourse = () => {
               current: pagination.current_page,
               per_page: pagination.per_page,
               total: pagination.total,
+              showSizeChanger:false,
               onChange: (current, per_page) => {
                 getSubjects(params.id, current, per_page);
                 sessionStorage.setItem("subject_current_page", current);
