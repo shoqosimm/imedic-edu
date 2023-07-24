@@ -98,6 +98,27 @@ const Register = () => {
             <h1>Ro'yxatdan o'tish</h1>
           </div>
           <div>
+            <Form.Item
+              name="pinfl"
+              label="PINFL"
+              rules={[
+                {
+                  required: true,
+                  message: "PINFL to'g'ri kiriting (14ta)",
+                  whitespace: true,
+                  min: 14,
+                  max: 14,
+                },
+              ]}
+            >
+              <Input
+                maxLength={14}
+                className="d-flex align-start"
+                disabled={loading}
+                placeholder="14ta son"
+                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
+              />
+            </Form.Item>
             <div className="inputWrapper d-flex align-center gap-2">
               <Form.Item
                 name="first_name"
@@ -128,58 +149,6 @@ const Register = () => {
             </div>
             <Form.Item name="patronymic" label="Otasining ismi">
               <Input disabled={disabled} />
-            </Form.Item>
-            <div className="inputWrapper d-flex align-center gap-2">
-              <Form.Item
-                name="series"
-                label="Pasport seriya"
-                rules={[
-                  {
-                    required: true,
-                    message: "Pasport seriyasini kiriting",
-                    whitespace: true,
-                    min: 2,
-                    max: 2,
-                  },
-                ]}
-              >
-                <Input disabled={loading} placeholder="AA" />
-              </Form.Item>
-              <Form.Item
-                name="number"
-                label="Pasport raqam"
-                rules={[
-                  {
-                    required: true,
-                    message: "Pasport raqamini kiriting",
-                    whitespace: true,
-                    min: 7,
-                    max: 7,
-                  },
-                ]}
-              >
-                <Input disabled={loading} placeholder="1234567" />
-              </Form.Item>
-            </div>
-            <Form.Item
-              name="pinfl"
-              label="PINFL"
-              rules={[
-                {
-                  required: true,
-                  message: "PINFL kiriting",
-                  whitespace: true,
-                  min: 14,
-                  max: 14,
-                },
-              ]}
-            >
-              <Input
-                className="d-flex align-start"
-                disabled={loading}
-                placeholder="14ta son"
-                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
-              />
             </Form.Item>
             <Form.Item name="phone" label="Telefon raqam">
               <Input
