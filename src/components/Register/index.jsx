@@ -62,10 +62,8 @@ const Register = () => {
           birth_date: moment(res.data.birth_date),
           first_name: res.data.first_name,
           last_name: res.data.last_name,
-          number: res.data.number,
           patronymic: res.data.patronymic,
           pinfl: res.data.pinfl,
-          series: res.data.series,
         });
         setDisabled(true);
       }
