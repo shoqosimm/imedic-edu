@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./style.scss";
-import { Button, DatePicker, Form, Input } from "antd";
+import { Button, DatePicker, Form, Input, Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../utils/api";
 import Swal from "sweetalert2";
@@ -165,7 +165,21 @@ const Register = () => {
             <Form.Item name="birth_date" label="Tug'ilgan sanasi">
               <DatePicker disabled />
             </Form.Item>
+            <Form.Item  name="branch_id" label="Markaz filialini tanlang" >
+                <Select 
+                  options={
+                    [
+                        
+                     {
+                      value: '1',
+                      label: 'Toshkent sh',
+                    }
+                    ]
+                  }
+                />
+              </Form.Item>
             <div className="inputWrapper d-flex align-center gap-2">
+           
               <Form.Item
                 name="password"
                 label="Parol"
@@ -194,6 +208,7 @@ const Register = () => {
               >
                 <Input disabled={loading} type="password" />
               </Form.Item>
+              
             </div>
           </div>
           <Button
