@@ -1,13 +1,32 @@
 import { Form, Input, Modal } from "antd"
 import { api } from "../../../utils/api";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const AddBranch = ({showModal,setShowModal})=>{
+const AddBranch = ({showModal,setShowModal,itemRecord})=>{
     const [form] = Form.useForm();
-
+    const [edit,setEdit] = useState(false)
+    useEffect(()=>{
+        form.setFieldsValue(itemRecord);
+        setEdit(true);
+    },[itemRecord])
     const addBranch = ()=>{
         var body = form.getFieldsValue();
         if (body.title) {
-            api.post('admin/branch/add',body).then
+            if (edit) {
+            api.put(`api/admin/branch/update/${itemRecord.id}`,body)
+            .then(
+                res=>{
+                        setShowModal(false);
+            }).catch(res=>{console.log(res);})
+            }else{
+            api.post('api/admin/branch/add',body)
+            .then(
+                res=>{if (res.data.data.success==1) {
+                        setShowModal(false);
+                    }}).catch(res=>{console.log(res);})
+            }
+           
         }
     }
     return (<>

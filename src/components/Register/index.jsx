@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./style.scss";
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
@@ -12,7 +12,25 @@ const Register = () => {
   const [form] = Form.useForm();
   const [loading, setloading] = useState(false);
   const [disabled, setDisabled] = useState(true);
+  const [options,setOptions] = useState([])
   const navigate = useNavigate();
+
+  useEffect(()=>{
+    api.get('api/branch/list')
+    .then(res=>{
+      if (res) {
+        setOptions(
+          res.data.data.map((item)=>{
+            return{
+              id:item.id,
+              value:item.id,
+              label:item.title
+            }
+          })
+        )
+      }
+    })
+  },[])
 
   // handleRegister
   const handleRegister = async (values) => {
@@ -167,15 +185,7 @@ const Register = () => {
             </Form.Item>
             <Form.Item  name="branch_id" label="Markaz filialini tanlang" >
                 <Select 
-                  options={
-                    [
-                        
-                     {
-                      value: '1',
-                      label: 'Toshkent sh',
-                    }
-                    ]
-                  }
+                  options={options}
                 />
               </Form.Item>
             <div className="inputWrapper d-flex align-center gap-2">
