@@ -15,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "sweetalert2/src/sweetalert2.scss";
 import ContextWrapper from "./components/Context";
 import ViewAnswers from "./components/Nurse/NurseMyCourse/MySubjectTest/viewAnswers";
+import ListBranch from "./components/Admin/Branch/ListBranch";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -151,6 +152,7 @@ const router = createBrowserRouter(
         <Route index element={<AdminTeacherList />} />
         <Route path="admin-teacher" element={<AdminTeacherList />} />
         <Route path="category" element={<AdminCategory />} />
+        <Route path="branch" element={<ListBranch/>} />
       </Route>
 
       {/* auth */}

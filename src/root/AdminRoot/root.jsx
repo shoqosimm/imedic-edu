@@ -16,6 +16,7 @@ import Loading from "../../components/Loader";
 import { useContext } from "react";
 import { ContextItem } from "../../components/Context";
 import { FaUserShield } from "react-icons/fa";
+import {CgListTree} from "react-icons/cg";
 
 const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -83,10 +84,22 @@ const AdminRoute = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="category"
                 >
-                  Turkum
+                  Yo`nalishlar
                 </Link>
               ),
             },
+            {
+              key: "3",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 3)}
+                  to="branch"
+                >
+                  Filiallar
+                </Link>
+              ),
+            }
           ]}
         />
       </Sider>
@@ -153,7 +166,19 @@ const AdminRoute = () => {
                   onClick={() => localStorage.setItem("activeLink", 2)}
                   to="category"
                 >
-                  Turkum
+                  Yo`nalishlar
+                </Link>
+              ),
+            },
+            {
+              key: "3",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 3)}
+                  to="branch"
+                >
+                  Filiallar
                 </Link>
               ),
             },
