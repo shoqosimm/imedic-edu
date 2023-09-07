@@ -20,8 +20,9 @@ const Register = () => {
     .then(res=>{
       if (res) {
         setOptions(
-          res.data.data.map((item)=>{
+          res.data.map((item,index)=>{
             return{
+              key:index,
               id:item.id,
               value:item.id,
               label:item.title
@@ -185,6 +186,7 @@ const Register = () => {
             </Form.Item>
             <Form.Item  name="branch_id" label="Markaz filialini tanlang" >
                 <Select 
+                  size="large"
                   options={options}
                 />
               </Form.Item>
