@@ -99,6 +99,18 @@ const AdminRoute = () => {
                   Filiallar
                 </Link>
               ),
+            },
+            {
+              key: "4",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 4)}
+                  to="nurses"
+                >
+                  Hamshiralar
+                </Link>
+              ),
             }
           ]}
         />
@@ -179,6 +191,18 @@ const AdminRoute = () => {
                   to="branch"
                 >
                   Filiallar
+                </Link>
+              ),
+            },
+            {
+              key: "4",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 4)}
+                  to="nurses"
+                >
+                  Hamshiralar
                 </Link>
               ),
             },

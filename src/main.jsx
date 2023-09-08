@@ -16,6 +16,7 @@ import "sweetalert2/src/sweetalert2.scss";
 import ContextWrapper from "./components/Context";
 import ViewAnswers from "./components/Nurse/NurseMyCourse/MySubjectTest/viewAnswers";
 import ListBranch from "./components/Admin/Branch/ListBranch";
+import List from "./components/Admin/Nurses/List";
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -136,6 +137,8 @@ const router = createBrowserRouter(
         <Route path="subject/view/:id" element={<ViewSubjectPage />} />
         <Route path="subject/create/test/:id" element={<CreateTestPage />} />
         <Route path="subject/edit/test/:id" element={<EditTest />} />
+        <Route path="nurses" element={<List/>} />
+
       </Route>
 
       {/* admin */}
@@ -153,6 +156,7 @@ const router = createBrowserRouter(
         <Route path="admin-teacher" element={<AdminTeacherList />} />
         <Route path="category" element={<AdminCategory />} />
         <Route path="branch" element={<ListBranch/>} />
+        <Route path="nurses" element={<List/>} />
       </Route>
 
       {/* auth */}
