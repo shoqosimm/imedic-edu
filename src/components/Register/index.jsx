@@ -167,24 +167,35 @@ const Register = () => {
             <Form.Item name="patronymic" label="Otasining ismi">
               <Input disabled={disabled} />
             </Form.Item>
-            <Form.Item name="phone" label="Telefon raqam">
+            <Form.Item name="phone" label="Telefon raqam"
+               rules={[
+                {
+                  required: true,
+                  message: "Telefon raqam kiriting",
+                  whitespace: true,
+                  min: 12,
+                },
+              ]}
+            >
               <Input
                 disabled={loading}
                 placeholder="998901234567"
-                rules={[
-                  {
-                    required: true,
-                    message: "Telefon raqam kiriting",
-                    whitespace: true,
-                    min: 12,
-                  },
-                ]}
+               
               />
             </Form.Item>
             <Form.Item name="birth_date" label="Tug'ilgan sanasi">
               <DatePicker disabled />
             </Form.Item>
-            <Form.Item  name="branch_id" label="Markaz filialini tanlang" >
+            <Form.Item  name="branch_id" label="Markaz filialini tanlang" 
+              rules={[
+                {
+                  required: true,
+                  message: "Filialni tanlang",
+                  whitespace: true,
+                },
+              
+              ]}
+            >
                 <Select 
                   size="large"
                   options={options}
@@ -204,7 +215,7 @@ const Register = () => {
                   },
                 ]}
               >
-                <Input disabled={loading} type="password" />
+                <Input disabled={loading} defaultValue={'123456'} type="text" />
               </Form.Item>
               <Form.Item
                 name="password_confirmation"
@@ -218,7 +229,7 @@ const Register = () => {
                   },
                 ]}
               >
-                <Input disabled={loading} type="password" />
+                <Input disabled={loading} defaultValue={'123456'}  type="text" />
               </Form.Item>
               
             </div>
