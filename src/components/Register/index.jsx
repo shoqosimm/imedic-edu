@@ -187,14 +187,7 @@ const Register = () => {
               <DatePicker disabled />
             </Form.Item>
             <Form.Item  name="branch_id" label="Markaz filialini tanlang" 
-              rules={[
-                {
-                  required: true,
-                  message: "Filialni tanlang",
-                  whitespace: true,
-                },
               
-              ]}
             >
                 <Select 
                   size="large"
