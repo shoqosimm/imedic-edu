@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./style.scss";
-import { Button, Divider, Menu, Modal, Radio } from "antd";
+import { Button, Divider, Menu, Modal, Radio, Skeleton } from "antd";
 import {
   MdKeyboardDoubleArrowLeft,
   MdKeyboardDoubleArrowRight,
@@ -22,16 +22,19 @@ const MySubjectTest = () => {
   const [testTime, setTestTime] = useState();
   const [startTest, setStartTest] = useState(false);
   const [testAmount, setTestAmount] = useState([]);
+  const [testTrueList, setTestTrueList] = useState([]);
   const [coverNav, setCoverNav] = useState(false);
+  const [fixPage, setFixPage] = useState(false);
   const [pagination, setPagination] = useState({
     ordering: localStorage.getItem("testPagination") ?? 1,
-    total: 10,
+    total: 0,
   });
   const [test, setTest] = useState({
     id: "",
     title: "",
     variant: [],
   });
+  const [loading, setLoading] = useState(true);
 
   const controller = new AbortController();
 
@@ -85,6 +88,8 @@ const MySubjectTest = () => {
           title: res.data.question,
           variant: res.data.answer,
         });
+        setFixPage(true);
+        setLoading(false);
         setPagination({
           ...pagination,
           total: res.data.total_count,
@@ -106,6 +111,7 @@ const MySubjectTest = () => {
 
   // handleChangePagination
   const handleChangePagination = (current) => {
+    setLoading(true);
     localStorage.setItem("testPagination", current);
     setPagination({ ...pagination, ordering: current });
     const body = {
@@ -119,6 +125,7 @@ const MySubjectTest = () => {
           title: res.data.question,
           variant: res.data.answer,
         });
+        setLoading(false);
         res?.data?.choose !== null
           ? setAnswer(Number(res.data.choose))
           : setAnswer(null);
@@ -133,11 +140,12 @@ const MySubjectTest = () => {
       choose: String(e.target.value),
       ordering: pagination.ordering,
     };
+    setTestTrueList((prev) => [...prev, parseInt(pagination.ordering)]);
     api
       .post(`api/nurse/test/choose/${id}`, body)
       .then((res) => console.log(res, "sendAnswer"));
   };
-
+  console.log(testTrueList, "testTrueList");
   // handleBackFromTest
   const handleBackFromTest = () => {
     navigate(-1);
@@ -145,6 +153,7 @@ const MySubjectTest = () => {
 
   // hadlePaginateBtns
   const hadlePaginateBtns = (type) => {
+    setLoading(true);
     if (type === "prev") {
       handleChangePagination(--pagination.ordering);
     } else if (type === "next") {
@@ -179,16 +188,18 @@ const MySubjectTest = () => {
     } else {
       disableBackButton();
     }
+    return () => {
+      controller.abort();
+    };
+  }, []);
+  useEffect(() => {
     if (testAmount.length === 0) {
       for (let i = 1; i <= pagination?.total; i++) {
         setTestAmount((prev) => [...prev, i]);
       }
     }
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
+  }, [fixPage]);
+  console.log(testAmount, "testAmount",pagination?.total);
 
   return (
     <div className="container__test d-flex gap-x-2">
@@ -203,11 +214,19 @@ const MySubjectTest = () => {
           mode="inline"
           inlineCollapsed
           multiple={false}
+          className={testAmount?.map((item) => {
+              testTrueList?.map((item2) => {
+                if (item === item2) {
+                  return "belgilangan";
+                }
+              });
+          })}
           onSelect={(e) => handleChangePagination(e.key)}
           items={testAmount?.map((item) => {
             return {
               label: item,
               key: item,
+              
             };
           })}
         />
@@ -243,33 +262,37 @@ const MySubjectTest = () => {
               Yakunlash
             </Button>
           </div>
-          <div className="test__part">
-            <h1>
-              {pagination.ordering}. {test.title}
-            </h1>
-            {test.variant?.map((item, index) => {
-              return (
-                <Radio.Group
-                  buttonStyle="solid"
-                  optionType="button"
-                  key={index}
-                  style={{ display: "flex" }}
-                  onChange={handleSendAnswer}
-                  value={answer}
-                >
-                  <Radio value={index} className="test__questions">
-                    {item}
-                  </Radio>
-                </Radio.Group>
-              );
-            })}
-          </div>
+          <Skeleton loading={loading} >
+            <div className="test__part">
+              <h1>
+                {pagination.ordering}. {test.title}
+              </h1>
+              {test.variant?.map((item, index) => {
+                return (
+                  <Radio.Group
+                    buttonStyle="solid"
+                    optionType="button"
+                    key={index}
+                    style={{ display: "flex" }}
+                    onChange={handleSendAnswer}
+                    value={answer}
+                  >
+                    <Radio value={index} className="test__questions">
+                      {item}
+                    </Radio>
+                  </Radio.Group>
+                );
+              })}
+            </div>
+          </Skeleton>
+          
         </div>
         <Divider />
         <div className="d-flex justify-between align-center">
           <Button
+            
             className="paginate__btns d-flex align-center gap-1"
-            disabled={pagination?.ordering === 1}
+            disabled= {loading ? true :false && pagination?.ordering === 1}
             onClick={() => hadlePaginateBtns("prev")}
           >
             <MdKeyboardDoubleArrowLeft />
@@ -278,6 +301,7 @@ const MySubjectTest = () => {
           <Button
             className="paginate__btns d-flex align-center gap-1"
             disabled={
+              loading ? true : false &&
               pagination?.ordering === testInfo?.course_subject.count_test
             }
             onClick={() => hadlePaginateBtns("next")}
@@ -309,7 +333,7 @@ const MySubjectTest = () => {
               </p>
               <p>
                 Qayta topshirish oraliq vaqti:
-                <strong> {testInfo?.course_subject.resubmit}</strong> min
+                <strong> {testInfo?.course_subject.resubmit}</strong> Soat
               </p>
             </div>
             <div className="test__modal__desctiption">
