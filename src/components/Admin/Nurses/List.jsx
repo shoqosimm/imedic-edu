@@ -1,9 +1,10 @@
-import { Button, Form, Input, Modal, Table } from "antd";
+import { Button, Form, Input, Modal, Steps, Table } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
 import { api } from "../../../utils/api";
+import {MdPassword} from "react-icons/md"
+import {RiLockPasswordLine} from "react-icons/ri"
 import { t } from "i18next";
-
 const List = () => {
     const [form] = Form.useForm();
     const [nurse,setNurse] = useState([])
@@ -11,6 +12,7 @@ const List = () => {
     const [tableLoading, setTableLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editId,setEditId] = useState(null)
+    const[current,setCurrent]=useState(0)
     
     const [pagination,setPagination] = useState({
         page:1,
@@ -26,8 +28,6 @@ const List = () => {
         const body = {
             page: page,
             pageSize: pageSize,
-            search:searchText
-
         };
         const res = await api.get("api/admin/nurse/list", { params: body });
         try {
@@ -59,13 +59,14 @@ const List = () => {
           setTableLoading(false);
         }
       };
-    const getNurses = async () => {
-        const body = {
+    useEffect(()=>{
+          const body = {
             search:searchText
         }
         api.get('api/admin/nurse/list')
         .then(res=>{
             if (res) {
+                console.log(res)
                 setNurse(
                     res.data.data.map((item,index)=>{
                         return{
@@ -86,8 +87,7 @@ const List = () => {
                   });
             }
         })
-    }
-
+    },[])
     const columns = [
         {
             title: 'F.I.O',
@@ -132,12 +132,9 @@ const List = () => {
                     setIsModalOpen(false);
                     form.resetFields();
                 }
-            })
-            
+            })       
         } 
     }
-
-
     return (
         <div>
             <Input.Search placeholder="Qidiruv" onChange={search} />
@@ -173,17 +170,19 @@ const List = () => {
                     name="basic"
                     initialValues={{ remember: true }}
                 >
-                    <Form.Item name={'password'} label="Parol"  >
-                        <Input />
+                    <Steps progressDot current={current}>
+                        <Steps.Step title="password" icon={<MdPassword/>} />
+                        <Steps.Step title="" icon={<RiLockPasswordLine/>} />
+                    </Steps>
+                     <Form.Item name={'password'} label="Parol"  >
+                        <Input /> 
                     </Form.Item>
                     <Form.Item name={'password_confirmation'} label="Parolni takrorlang"  >
                         <Input />
                     </Form.Item>
                 </Form>
-
             </Modal>
             }
-            {}
         </div>
     )}
     export default List;

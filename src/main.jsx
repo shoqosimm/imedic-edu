@@ -17,6 +17,7 @@ import ContextWrapper from "./components/Context";
 import ViewAnswers from "./components/Nurse/NurseMyCourse/MySubjectTest/viewAnswers";
 import ListBranch from "./components/Admin/Branch/ListBranch";
 import List from "./components/Admin/Nurses/List";
+import UserList from "./components/Admin/Users/userList";
 import './utils/i18';
 
 const Login = lazy(() => import("./components/Login"));
@@ -157,6 +158,8 @@ const router = createBrowserRouter(
         <Route path="category" element={<AdminCategory />} />
         <Route path="branch" element={<ListBranch/>} />
         <Route path="nurses" element={<List/>} />
+        <Route path="users" element={<UserList/>} />
+        
       </Route>
 
       {/* auth */}

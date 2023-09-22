@@ -2,11 +2,11 @@ import { Button, Drawer, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiCircleList } from "react-icons/ci";
-import { FiUsers } from "react-icons/fi";
+import { FiUsers} from "react-icons/fi";
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
-  AiOutlineMenuUnfold,
+  AiOutlineMenuUnfold
 } from "react-icons/ai";
 import React, { useState, Suspense } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
@@ -111,6 +111,18 @@ const AdminRoute = () => {
                   Hamshiralar
                 </Link>
               ),
+            },            {
+              key: "5",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="users"
+                  style={{color:'#fff'}}
+                >
+                  Foydalanuvchilar
+                </Link>
+              ),
             }
           ]}
         />
@@ -203,6 +215,18 @@ const AdminRoute = () => {
                   to="nurses"
                 >
                   Hamshiralar
+                </Link>
+              ),
+            },
+            {
+              key: "5",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="users"
+                >
+                  Foydalanuvchilar
                 </Link>
               ),
             },

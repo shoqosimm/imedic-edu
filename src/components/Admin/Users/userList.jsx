@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Button, Table, Modal, Form, Row, Col, Input, DatePicker } from "antd";
+import { Button, Table, Modal, Form, Row, Col, Input, DatePicker, Select,Steps } from "antd";
 import { api } from "../../../utils/api";
 import { BiCheckCircle } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
+
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 import { t } from "i18next";
-import { RiLock2Fill } from "react-icons/ri";
 
-const AdminTeacherList = () => {
+const UserList = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [branch,setBranch]=useState([])
+  const [searchText,setSearchText] = useState('')
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 15,
     total: 100,
   });
+  
   const columns = [
     {
       title: "№",
@@ -95,23 +98,20 @@ const AdminTeacherList = () => {
         );
       },
     },
-    {
-      title:"password",
-      render:()=>{
-        return(<Button  onClick={handelPass}><RiLock2Fill/></Button>)
-      }
-    }
   ];
 
-  // getTeacherList
-  const getTeacherList = async (page, pageSize) => {
+  //getUserList
+  useEffect(()=>{
+    getUserList()
+  },[setSearchText])
+  const  getUserList= async (page, pageSize,search) => {
     setTableLoading(true);
     const body = {
       page,
       pageSize,
+      search:searchText
     };
-    const res = await api.get("api/admin/teacher/list", { params: body });
-    console.log(res)
+    const res = await api.get("api/admin/admin/list",{params:body});  
     try {
       if (res) {
         setData(
@@ -161,21 +161,21 @@ const AdminTeacherList = () => {
       setLoading(false);
     }
   };
-  // addTeacher
+  
+  // addUser
   const handleAdd = () => {
     setIsModalOpen(true);
   };
-  const addTeacher = async (values) => {
-    setLoading(true);
+  const addUser = async (values) => {
+    console.log(values)
     const body = {
       ...values,
       birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
     };
-    const res = await api.post("api/admin/teacher/add", body);
-    console.log(res)
+    console.log(body,"body");
+    const res = await api.post("api/admin/admin/add", body);
     try {
       if (res) {
-        setLoading(false);
         toast.success("Yaratildi!");
       }
       toast.error("Ma'lumotlar noto'g'ri ko'rsatildi");
@@ -187,19 +187,38 @@ const AdminTeacherList = () => {
     }
   };
   useEffect(() => {
-    getTeacherList(1, 15);
+        api.get('api/branch/list').then((res)=>{
+            if (res.status==200) {
+                setBranch(
+                    res.data.map((item)=>{
+                       return{
+                        key:item?.id,
+                        value:item?.id,
+                        label:item?.title,
+                        title:item?.title
+                       }
+                    })
+                    
+                )}
+        }).catch((error)=>{
+            console.log(error);
+        })
+    getUserList(1, 15);
   }, []);
-  const handelPass =async ()=>{
-    const body={
-
+//getBranch
+//serch
+const textSearch = (e) => {
+    const   value = e.target.value
+    if (value.length > 1) {
+        searchText(e.target.value)
     }
-      const res=await api.post(`api/admin/teacher/update/user/password/{id}`)
-  }
+}
   return (
     <div className="admin_teacher">
       <Button onClick={handleAdd} className="teacher_btn" type="primary">
         Qo'shish
       </Button>
+      <Input placeholder="Qidirish..." onChange={textSearch}/>
       <Table
         loading={tableLoading}
         scroll={{ x: 400 }}
@@ -210,7 +229,7 @@ const AdminTeacherList = () => {
           per_page: pagination.pageSize,
           total: pagination.total,
           onChange: (current_page, per_page) => {
-            getTeacherList(current_page, per_page);
+            getUserList(current_page, per_page);
           },
           showTotal: (total, range) =>
             `${range[0]}-${range[1]} of ${total} items`,
@@ -218,7 +237,7 @@ const AdminTeacherList = () => {
       />
       <Modal
         width={720}
-        title="O'qituvchi qo'shish"
+        title="Foydalanuvchi qo'shish"
         open={isModalOpen}
         onCancel={() => {
           form.resetFields();
@@ -238,7 +257,7 @@ const AdminTeacherList = () => {
             </Button>
             <Button
               htmlType="submit"
-              form="addTeacher"
+              form="addUser"
               style={{ borderRadius: "2px", height: "40px" }}
               type="primary"
               loading={loading}
@@ -249,11 +268,13 @@ const AdminTeacherList = () => {
         }
       >
         <Form
-          onFinish={addTeacher}
+          onFinish={addUser}
           form={form}
           layout="vertical"
-          id="addTeacher"
+          id="addUser"
         >
+        
+
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="first_name" label="Ismi">
@@ -262,7 +283,7 @@ const AdminTeacherList = () => {
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="last_name" label="Familiyasi">
-                <Input disabled />
+                <Input disabled  />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
@@ -339,6 +360,14 @@ const AdminTeacherList = () => {
           <Form.Item name={"birth_date"} label={t('birth')}>
             <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
+          <Form.Item
+            name={'branch_id'}
+            label={'Filialni tanlang'}
+          >
+            <Select
+                options={branch}
+             />
+          </Form.Item>
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
@@ -361,13 +390,9 @@ const AdminTeacherList = () => {
           </Row>
         </Form>
       </Modal>
-      <Modal  >
-
-      </Modal>
-      
       <ToastContainer />
     </div>
   );
 };
 
-export default AdminTeacherList;
+export default UserList;

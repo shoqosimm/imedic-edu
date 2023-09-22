@@ -5,6 +5,7 @@ import AddBranch from './AddBranch';
 import { useEffect } from 'react';
 import { api } from '../../../utils/api';
 import { BiEditAlt } from 'react-icons/bi';
+import {t} from 'i18next';
 const  ListBranch = ()=>{
     const [showModal, setShowModal] = useState(false);
     const [itemRecord,setItemRecord] = useState([])

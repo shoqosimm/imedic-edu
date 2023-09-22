@@ -30,7 +30,7 @@ const AdminCategory = () => {
   const [record, setRecord] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 15,
     total: 100,
   });
   const columns = [
