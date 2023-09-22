@@ -17,6 +17,7 @@ import ContextWrapper from "./components/Context";
 import ViewAnswers from "./components/Nurse/NurseMyCourse/MySubjectTest/viewAnswers";
 import ListBranch from "./components/Admin/Branch/ListBranch";
 import List from "./components/Admin/Nurses/List";
+import './utils/i18';
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -74,7 +75,6 @@ const ViewSubjectPage = lazy(() =>
 const AdminRoute = lazy(() => import("./root/AdminRoot/root"));
 const AdminCategory = lazy(() => import("./components/Admin/Category"));
 const AdminTeacherList = lazy(() => import("./components/Admin/TeachersList"));
-
 // router
 const router = createBrowserRouter(
   createRoutesFromElements(

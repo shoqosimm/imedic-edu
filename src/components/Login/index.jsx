@@ -1,14 +1,19 @@
 import React, { useState } from "react";
 import "./style.scss";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, Select } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { api } from "../../utils/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useContext } from "react";
 import { ContextItem } from "../Context";
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
+
 
 const Login = () => {
+const {i18n} = useTranslation();
+  const [lang,setLang] = useState(localStorage.getItem('lang')||'uz')
   const [form] = Form.useForm();
   const [loading, setloading] = useState(false);
   const [, setToken] = useContext(ContextItem);
@@ -39,10 +44,23 @@ const Login = () => {
       setloading(false);
     }
   };
+  const onSelectLang=(val)=>{
+    setLang(val)
+    localStorage.setItem('lang',val);
+    i18n.changeLanguage(val);
+  }
 
   return (
     <div className="loginPage">
       <div className="container form_wrapper">
+        <Select
+        defaultValue={lang}
+        onSelect={onSelectLang}
+          options={[
+            {label:'ru',value:'ru'},
+            {label:'uz',value:'uz'}
+          ]}
+        />
         <Form
           onFinish={handleLogin}
           autoComplete="off"
@@ -51,16 +69,16 @@ const Login = () => {
           id="loginForm"
         >
           <div className="main_text">
-            <h1>Kirish</h1>
+            <h1>{t('login')}</h1>
           </div>
           <div>
             <Form.Item
               name="phone"
-              label="Telefon raqam"
+              label={t('phoneNumber')}
               rules={[
                 {
                   required: true,
-                  message: "Telefon raqami kiriting",
+                  message: t('typingPhoneNumber'),
                   whitespace: true,
                 },
               ]}
@@ -73,7 +91,7 @@ const Login = () => {
             </Form.Item>
             <Form.Item
               name="password"
-              label="Parol"
+              label={t('password')}
               rules={[
                 { required: true, message: "Parol kiriting", whitespace: true },
               ]}
@@ -87,11 +105,11 @@ const Login = () => {
             htmlType="submit"
             style={{ width: "100%" }}
           >
-            Kirish
+            {t('login')}
           </Button>
           <div className="other__sign">
             <p>
-              yoki <Link to="/register">Ro'yxatdan o'ting</Link>
+              {t('else')} <Link to="/register">{t('orRegister')}</Link>
             </p>
           </div>
         </Form>

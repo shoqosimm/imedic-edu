@@ -8,6 +8,7 @@ import { api } from "../../../../utils/api";
 import CommentCard from "../../../generics/CommentCard";
 import CardSubjectList from "../../../generics/CardSubjectList";
 import EmptyBox from '../../../../assets/illustration/emptyBox.webp'
+import { t } from "i18next";
 
 const SubjectPage = () => {
   const param = useParams();
@@ -144,7 +145,7 @@ const SubjectPage = () => {
         </div>
       </div>
 
-      <Card title="Izohlar" className="izohCard">
+      <Card title={t('coments')} className="izohCard">
         {loading && <Spin />}
         {commentEmptyText && (
           <em
@@ -177,7 +178,7 @@ const SubjectPage = () => {
             onClick={handleMoreComment}
             loading={loadingBtn}
           >
-            Ko'proq ko'rsatish
+            {t('leanMore')}
           </Button>
         )}
       </Card>

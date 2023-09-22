@@ -315,7 +315,7 @@ const MySubjectTest = () => {
           onOk={handleStartTest}
           onCancel={handleBackFromTest}
           okText={"Testni boshlash"}
-          cancelText={"Bekor qilish va ortga qaytish"}
+          cancelText={t('notSaveBack')}
           open={openModal}
         >
           <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>

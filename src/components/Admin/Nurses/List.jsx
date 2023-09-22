@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal, Table } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
 import { api } from "../../../utils/api";
+import { t } from "i18next";
 
 const List = () => {
     const [form] = Form.useForm();
@@ -161,8 +162,8 @@ const List = () => {
                 onCancel={() => setIsModalOpen(false)}
                 footer={
                     <div>
-                        <Button className="btn btn-danger" onClick={() => setIsModalOpen(false)}>Bekor qilish</Button>
-                        <Button className="btn btn-success" onClick={savePassword} >Saqlash</Button>
+                        <Button className="btn btn-danger" onClick={() => setIsModalOpen(false)}>{t('notSave')}</Button>
+                        <Button className="btn btn-success" onClick={savePassword} >{t('save')}</Button>
                     </div>
                 }
             >

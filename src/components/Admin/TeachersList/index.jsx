@@ -6,6 +6,7 @@ import { BiCheckCircle } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
+import { t } from "i18next";
 
 const AdminTeacherList = () => {
   const [form] = Form.useForm();
@@ -25,27 +26,27 @@ const AdminTeacherList = () => {
       key: "id",
     },
     {
-      title: "Ism",
+      title: t('name'),
       dataIndex: "first_name",
       key: "first_name",
     },
     {
-      title: "Familiya",
+      title: t('surName'),
       dataIndex: "last_name",
       key: "last_name",
     },
     {
-      title: "Otasining ismi",
+      title: t('midName'),
       dataIndex: "patronymic",
       key: "patronymic",
     },
     {
-      title: "Tug'ilgan yili",
+      title: t('birth'),
       dataIndex: "birth_date",
       key: "birth_date",
     },
     {
-      title: "Telefon raqami",
+      title: t('phoneNumber'),
       dataIndex: "phone",
       key: "phone",
     },
@@ -220,7 +221,7 @@ const AdminTeacherList = () => {
               }}
               style={{ borderRadius: "2px", height: "40px" }}
             >
-              Bekor qilish
+              {t('notSave')}
             </Button>
             <Button
               htmlType="submit"
@@ -306,23 +307,23 @@ const AdminTeacherList = () => {
               },
             ]}
           >
-            <Input suffix={<Button onClick={handlePnfl}>Tekshirish</Button>} />
+            <Input suffix={<Button onClick={handlePnfl}>{t('check')}</Button>} />
           </Form.Item>
           <Form.Item
             name="phone"
-            label="Telefon raqami"
+            label={t('phoneNumber')}
             rules={[
               {
                 required: true,
                 min: 12,
-                message: "Telefon raqam kiriting",
+                message: t('typingPhoneNumber'),
                 whitespace: true,
               },
             ]}
           >
             <Input placeholder="998901234567" disabled={loading} />
           </Form.Item>
-          <Form.Item name={"birth_date"} label="Tug'ilgan yili">
+          <Form.Item name={"birth_date"} label={t('birth')}>
             <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
           <Row gutter={[20]}>

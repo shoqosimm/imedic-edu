@@ -25,6 +25,7 @@ import { AiFillEye } from "react-icons/ai";
 import { MdStarRate } from "react-icons/md";
 import EmptyBox from "../../../../assets/illustration/emptyBox.webp";
 import { motion } from "framer-motion";
+import { t } from "i18next";
 
 const MySubjectItemPage = () => {
   const param = useParams();
@@ -223,7 +224,7 @@ const MySubjectItemPage = () => {
             ),
           },
           {
-            title: <Link to={`/nurse/mycourse/${subject_id}`}>Ortga</Link>,
+            title: <Link to={`/nurse/mycourse/${subject_id}`}>{t('back')}</Link>,
           },
         ]}
       />
@@ -259,11 +260,11 @@ const MySubjectItemPage = () => {
               <ul className="badge__reyting d-flex align-center gap-x-3">
                 <li className="d-flex align-center gap-x-1">
                   <MdStarRate className="icon" />
-                  <p>{subject?.data.average_rate} O'rtacha baho</p>
+                  <p>{subject?.data.average_rate} {t('centerRate')}</p>
                 </li>
                 <li className="d-flex align-center gap-x-1">
                   <BsPeopleFill className="icon" />
-                  <p>{subject?.data.rate_count} Baholaganlar soni</p>
+                  <p>{subject?.data.rate_count} {t('countRate')}</p>
                 </li>
               </ul>
             </div>
@@ -332,7 +333,7 @@ const MySubjectItemPage = () => {
             items={[
               {
                 key: "1",
-                label: "Mavzu",
+                label: t('subject'),
                 children: (
                   <>
                     <div
@@ -367,7 +368,7 @@ const MySubjectItemPage = () => {
                         >
                           <AiFillEye style={{ fontSize: "18px" }} />
                           <a href={`${pdfUrl?.url}`} target="_blank">
-                            PDF -ni ko'rish
+                            {t('viewPdf')}
                           </a>
                         </Button>
                         <object
@@ -395,7 +396,7 @@ const MySubjectItemPage = () => {
               },
               {
                 key: "2",
-                label: "Video",
+                label: t('video'),
                 children: videoUrl ? (
                   <video controls width="100%">
                     <source src={videoUrl?.url} type="video/mp4" />
@@ -403,13 +404,13 @@ const MySubjectItemPage = () => {
                 ) : (
                   <div className="emptyBox">
                     <img src={EmptyBox} alt="imgEmpty" />
-                    <h1>Ushbu mavzuda video fayl mavjud emas!</h1>
+                    <h1>{t('notVideo')}</h1>
                   </div>
                 ),
               },
               {
                 key: "4",
-                label: "Izohlar",
+                label: t('coments'),
                 children: (
                   <div className="wrapperComment">
                     <Form
@@ -418,7 +419,7 @@ const MySubjectItemPage = () => {
                       layout="vertical"
                       form={form}
                     >
-                      <Form.Item label="Sizning ovozingiz">
+                      <Form.Item label={t('rateI')}>
                         <Rate
                           onChange={handleRate}
                           value={subject?.data?.user_rate?.rate}
@@ -429,12 +430,12 @@ const MySubjectItemPage = () => {
                       <div>
                         <Form.Item
                           name="comment"
-                          label="Izoh"
+                          label={t('coment')}
                           rules={[{ required: true }]}
                         >
                           <Input.TextArea
                             autoSize={{ minRows: 5 }}
-                            placeholder="Izoh"
+                            placeholder={t('coment')}
                             disabled={loadingComment}
                           />
                         </Form.Item>
@@ -444,10 +445,10 @@ const MySubjectItemPage = () => {
                           htmlType="submit"
                           form="form"
                         >
-                          Izohni yuborish
+                          {t('sendComent')}
                         </Button>
                       </div>
-                      <Card title="Izohlar" className="izohCard">
+                      <Card title={t('coments')} className="izohCard">
                         {skeleton && <Spin />}
                         {commentEmptyText && (
                           <em
@@ -479,7 +480,7 @@ const MySubjectItemPage = () => {
                           onClick={handleMoreComment}
                           loading={loadingBtn}
                         >
-                          Ko'proq ko'rsatish
+                          {t('leanMore')}
                         </Button>
                       </Card>
                     </Form>
@@ -500,7 +501,7 @@ const MySubjectItemPage = () => {
               type="primary"
               onClick={getNextSubject}
             >
-              Yakunlash va Davom etish
+              {t('endNext')}
             </Button>
           </div>
         </Col>

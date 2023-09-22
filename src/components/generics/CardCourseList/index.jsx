@@ -6,6 +6,8 @@ import { BsFiles } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import AltImg from '../../../assets/bgImg/4.jpg'
+import { t } from "i18next";
+
 
 const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
   const navigate = useNavigate();
@@ -52,7 +54,7 @@ const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
           style={mycourse ? { width: "60%" } : null}
         >
           <div className="content__header d-flex align-center gap-x-1">
-            <p className="header__title">O'qituvchi</p>
+            <p className="header__title">{t('teacher')}</p>
             <span className="header__teacher">
               {!mycourse
                 ? course?.teacher
@@ -65,15 +67,15 @@ const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
           <ul className="content__details d-flex align-center gap-x-3">
             <li className="d-flex align-center gap-1">
               <MdStarRate className="icon" />
-              <p>{course?.rate.average_rate ?? "0"} O'rtacha baho</p>
+              <p>{course?.rate.average_rate ?? "0"} {t('centerRate')}</p>
             </li>
             <li className="d-flex align-center gap-1">
               <BiUserVoice className="icon" />
-              <p>{course?.rate.rate_count ?? "0"} Baholaganlar soni</p>
+              <p>{course?.rate.rate_count ?? "0"} {t('countRate')}</p>
             </li>
             <li className="d-flex align-center gap-1">
               <BsFiles className="icon" />
-              <p>{course?.count_tema} Mavzular</p>
+              <p>{course?.count_tema} {t('subject')}</p>
             </li>
           </ul>
 
@@ -84,7 +86,7 @@ const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
                 icon={<BiPlus />}
                 className="content__btn__item d-flex align-center gap-1"
               >
-                Kursni qo'shish
+                {t('addCourse')}
               </Button>
             )}
             <Button
@@ -96,7 +98,7 @@ const CardCourseList = ({ course, handleAddCourse, mycourse }) => {
               icon={<BiFolder />}
               className="content__btn__item d-flex align-center gap-1"
             >
-              Batafsil
+              {t('more')}
             </Button>
           </div>
         </div>

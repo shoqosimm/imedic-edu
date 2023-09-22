@@ -5,6 +5,7 @@ import { api } from "../../../../utils/api";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import "./style.scss";
+import { t } from "i18next";
 
 const CreateTest = () => {
   const [number, setNumber] = useState(3);
@@ -144,12 +145,12 @@ const CreateTest = () => {
             </Form.Item>
             <Form.Item
               name="from_subject_id"
-              label="Mavzu"
+              label={t('cours')}
               rules={[{ required: true }]}
             >
               <Select
                 className="select"
-                placeholder="mavzuga oid test"
+                placeholder={t('byCoursTest')}
                 options={subjectItems}
               />
             </Form.Item>
@@ -192,7 +193,7 @@ const CreateTest = () => {
               </Form.Item>
               <Form.Item>
                 <Button loading={loading} type="primary" htmlType="submit">
-                  Saqlash
+                  {t('save')}
                 </Button>
               </Form.Item>
             </div>

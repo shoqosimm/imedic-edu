@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import moment from "moment/moment";
+import { t } from "i18next";
 
 const Register = () => {
   const [form] = Form.useForm();
@@ -133,7 +134,7 @@ const Register = () => {
                 className="d-flex align-start"
                 disabled={loading}
                 placeholder="14ta son"
-                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
+                suffix={<Button onClick={getPnflInfo}>{t('check')}</Button>}
               />
             </Form.Item>
             <div className="inputWrapper d-flex align-center gap-2">
@@ -183,7 +184,7 @@ const Register = () => {
                
               />
             </Form.Item>
-            <Form.Item name="birth_date" label="Tug'ilgan sanasi">
+            <Form.Item name="birth_date" label={t('birth')}>
               <DatePicker disabled />
             </Form.Item>
             <Form.Item  name="branch_id" label="Markaz filialini tanlang" 
