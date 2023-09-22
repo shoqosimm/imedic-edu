@@ -49,7 +49,7 @@ const  ListBranch = ()=>{
             key:"title"
         },
         {
-            title:"Telefon raqami",
+            title:t('phoneNumber'),
             dataIndex:"phone",
             key:"phone"
         },

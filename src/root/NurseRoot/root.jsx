@@ -1,5 +1,5 @@
-import React, { Suspense } from "react";
-import { Button, Layout, Menu, Popover } from "antd";
+import React, { Suspense, useState } from "react";
+import { Button, Layout, Menu, Popover, Select } from "antd";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiMenuBurger } from "react-icons/ci";
 import { AiOutlineLogout } from "react-icons/ai";
@@ -11,9 +11,13 @@ import { ContextItem } from "../../components/Context";
 import { useContext } from "react";
 import { BiGlobe } from "react-icons/bi";
 import MedicLogo from "../../assets/logo.png";
+import { useTranslation } from "react-i18next";
 
 const Nurse = () => {
-  const [, setToken] = useContext(ContextItem);
+  const [token, setToken] = useContext(ContextItem);
+  const {t,i18n} = useTranslation();
+  
+  const [lang,setLang] = useState(localStorage.getItem('lang') ||'uz');
   const navigate = useNavigate();
 
   // handleLogOut
@@ -71,6 +75,11 @@ const Nurse = () => {
       ),
     },
   ];
+  const onSelectLang  = (val)=>{
+    setLang(String(val))
+    localStorage.setItem('lang',String(val))
+    i18n.changeLanguage(val)
+  }
   const menuItem = <Menu mode="vertical" items={menus} />;
 
   return (
@@ -104,7 +113,7 @@ const Nurse = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Kurslar
+                  {t('course')}
                 </NavLink>
               </li>
               <li className="menu__item d-flex align-center gap-x-1">
@@ -113,7 +122,7 @@ const Nurse = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="mycourse"
                 >
-                  Mening kurslarim
+                  {t('myCourese')}
                 </NavLink>
               </li>
               <li className="menu__item d-flex align-center gap-x-1">
@@ -122,17 +131,28 @@ const Nurse = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
-                  Sozlamalar
+                  {t('setting')}
                 </NavLink>
               </li>
             </ul>
           </div>
+          <Select
+            className="lang d-flex align-center gap-x-1"
+            onSelect={onSelectLang}
+            defaultValue={lang}
+            options={[
+              {label:'ru',value:'ru'},
+              {label:'uz',value:'uz'}
+            ]}
+          />
+
+          
           <Button
             className="logOut d-flex align-center gap-x-1"
             icon={<AiOutlineLogout />}
             onClick={handleLogOut}
           >
-            Chiqish
+            {t('logOut')}
           </Button>
         </Header>
         <marquee className='running__text' behavior="smooth" direction="left">Sayt test holatida ishlamoqda!</marquee>

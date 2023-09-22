@@ -2,6 +2,7 @@ import { Form, Input, Modal } from "antd"
 import { api } from "../../../utils/api";
 import { useEffect } from "react";
 import { useState } from "react";
+import { t } from "i18next";
 
 const AddBranch = ({showModal,setShowModal,itemRecord})=>{
     const [form] = Form.useForm();
@@ -9,11 +10,11 @@ const AddBranch = ({showModal,setShowModal,itemRecord})=>{
     useEffect(()=>{
         form.setFieldsValue(itemRecord);
         setEdit(true);
-    },[itemRecord])
+    },[itemRecord?.id])
     const addBranch = ()=>{
         var body = form.getFieldsValue();
         if (body.title) {
-            if (edit) {
+            if (itemRecord?.id) {
             api.put(`api/admin/branch/update/${itemRecord.id}`,body)
             .then(
                 res=>{
@@ -33,8 +34,8 @@ const AddBranch = ({showModal,setShowModal,itemRecord})=>{
         <Modal
             open={showModal}
             onCancel={()=>setShowModal(false)}
-            okText="Saqlash"
-            cancelText="Bekor qilish"
+            okText={t('save')}
+            cancelText={t('notSave')}
             onOk={addBranch}
         >
             <Form

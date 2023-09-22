@@ -24,6 +24,7 @@ import {
 } from "react-icons/ai";
 import { VscFilePdf } from "react-icons/vsc";
 import { PlusOutlined } from "@ant-design/icons";
+import { t } from "i18next";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -477,7 +478,7 @@ const EditSubject = () => {
                 >
                   <AiFillEye style={{ fontSize: "18px" }} />
                   <a href={`${pdfUrl?.url}`} target="_blank">
-                    PDF -ni ko'rish
+                    {t('viewPdf')}
                   </a>
                 </Button>
                 <div className="pdfWrapper">
@@ -529,7 +530,7 @@ const EditSubject = () => {
                 htmlType="submit"
                 disabled={updateBtn}
               >
-                Saqlash
+                {t('save')}
               </Button>
             </Form.Item>
           </Form>
@@ -632,7 +633,7 @@ const EditSubject = () => {
                 type="primary"
                 htmlType="submit"
               >
-                Saqlash
+                {t('save')}
               </Button>
             </Form.Item>
           </Form>

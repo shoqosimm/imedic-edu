@@ -10,6 +10,7 @@ import { AiOutlineSync } from "react-icons/ai";
 import "./Indexstyle.scss";
 import { MdStarRate } from "react-icons/md";
 import TitleText from "../../generics/TitleText";
+import { t } from "i18next";
 
 const TeacherCourses = () => {
   const [course, setCourse] = useState([]);
@@ -223,8 +224,8 @@ const TeacherCourses = () => {
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         onOk={handleOk}
-        okText="Saqlash"
-        cancelText="Bekor qilish"
+        okText={t('save')}
+        cancelText={t('notSave')}
         confirmLoading={confirmLoading}
       >
         <p>{ModalText}</p>

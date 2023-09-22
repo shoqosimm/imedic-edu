@@ -7,6 +7,8 @@ import { motion } from "framer-motion";
 import CardCourseList from "../../generics/CardCourseList";
 import ChooseIllus from "../../../assets/illustration/choose.webp";
 import EmptyBox from '../../../assets/illustration/emptyBox.webp'
+import { t } from "i18next";
+
 
 const NurseCourse = () => {
   const [category, setCategory] = useState([]);
@@ -111,7 +113,7 @@ const NurseCourse = () => {
       <Row gutter={24}>
         <Col span={24} className="category__wrapper">
           <div>
-            <label htmlFor="catSelect">Tanlang</label>
+            <label htmlFor="catSelect">{t('select')}</label>
             <Select
               id="catSelect"
               className="subject_select"
@@ -125,7 +127,7 @@ const NurseCourse = () => {
           {course.length === 0 && (
             <div className="emptyBox">
               <img src={EmptyBox} alt="imgEmpty" />
-              <h1>Bu turkum bo'yicha kurslar mavjud emas!</h1>
+              <h1>{t('notCourse')}</h1>
             </div>
           )}
           {course ? (
@@ -166,7 +168,7 @@ const NurseCourse = () => {
               className="d-flex align-center justify-center flex-column"
             >
               <img src={ChooseIllus} alt="chooseIllustrat" width={"400px"} />
-              <em style={{ fontSize: "18px" }}>Yo'nalishni tanglang...</em>
+              <em style={{ fontSize: "18px" }}>{t('selectCategory')}</em>
             </div>
           )}
         </Col>

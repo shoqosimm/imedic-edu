@@ -26,6 +26,7 @@ import { SiMicrosoftexcel } from "react-icons/si";
 import CommentCard from "../../generics/CommentCard";
 import { AiFillEye } from "react-icons/ai";
 import * as XLSX from "xlsx";
+import { t } from "i18next";
 
 const ViewSubject = () => {
   const param = useParams();
@@ -308,7 +309,7 @@ const ViewSubject = () => {
       ) : location.state.subject_type !== "test" ? (
         <div>
           <Card>
-            <Card title="Mavzu" centered="true">
+            <Card title={t('cours')} centered="true">
               <p>{subject?.name}</p>
             </Card>
             <Card centered="true">
@@ -320,7 +321,7 @@ const ViewSubject = () => {
                   >
                     <AiFillEye style={{ fontSize: "18px" }} />
                     <a href={`${pdfUrl?.url}`} target="_blank">
-                      PDF -ni ko'rish
+                      {t('viewPdf')}
                     </a>
                   </Button>
                   <object
@@ -429,8 +430,8 @@ const ViewSubject = () => {
             open={modal}
             onCancel={() => setModal(false)}
             onOk={handleOk}
-            okText="Saqlash"
-            cancelText="Bekor qilish"
+            okText={t('save')}
+            cancelText={t('notSave')}
             confirmLoading={confirmLoading}
           >
             <p>Siz haqiqatdan ham statusni o'zgartirmoqchimisz?</p>

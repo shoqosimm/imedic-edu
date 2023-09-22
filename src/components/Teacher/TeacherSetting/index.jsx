@@ -7,6 +7,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TitleText from "../../generics/TitleText";
+import { t } from "i18next";
 
 const TeacherSetting = () => {
   const [form] = Form.useForm();
@@ -56,7 +57,7 @@ const TeacherSetting = () => {
     } catch (err) {
       Swal.fire({
         icon: "error",
-        title: "Kiritilgan pinfl bo'yicha ma'lumot topilmadi",
+        title: t('notPinflItem'),
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -145,13 +146,13 @@ const TeacherSetting = () => {
                 <strong>Pasport raqami:</strong> {userInfo?.number}
               </li>
               <li>
-                <strong>PINFL:</strong> {userInfo?.pinfl}
+                <strong>{t('pinfl')}</strong> {userInfo?.pinfl}
               </li>
               <li>
-                <strong>Telefon raqami:</strong> {userInfo?.phone}
+                <strong>{t('phoneNumber')}</strong> {userInfo?.phone}
               </li>
               <li>
-                <strong>Tug'ilgan yili:</strong> {userInfo?.birth_date}
+                <strong>{t('birth')}</strong> {userInfo?.birth_date}
               </li>
               <li>
                 <Button
@@ -216,11 +217,11 @@ const TeacherSetting = () => {
             </Row>
             <Form.Item
               name="pinfl"
-              label="PINFL"
+              label={t('pinfl')}
               rules={[
                 {
                   required: true,
-                  message: "PINFL kiriting",
+                  message: t('typingPinfl'),
                   whitespace: true,
                   min: 14,
                   max: 14,
@@ -230,25 +231,25 @@ const TeacherSetting = () => {
               <Input
                 className="d-flex align-center"
                 disabled={loading}
-                placeholder="14ta son"
-                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
+                placeholder={t('count14')}
+                suffix={<Button onClick={getPnflInfo}>{t('check')}</Button>}
               />
             </Form.Item>
-            <Form.Item name="phone" label="Telefon raqam">
+            <Form.Item name="phone" label={t('phoneNumber')}>
               <Input
                 disabled={loading}
                 placeholder="998901234567"
                 rules={[
                   {
                     required: true,
-                    message: "Telefon raqam kiriting",
+                    message: t('typingPhoneNumber'),
                     whitespace: true,
                     min: 12,
                   },
                 ]}
               />
             </Form.Item>
-            <Form.Item name="birth_date" label="Tug'ilgan yili">
+            <Form.Item name="birth_date" label={t('birth')}>
               <DatePicker disabled />
             </Form.Item>
             <Button
@@ -268,10 +269,10 @@ const TeacherSetting = () => {
           footer={
             <>
               <Button onClick={() => setIsModalOpen(false)}>
-                Bekor qilish
+                {t('notSave')}
               </Button>
               <Button type="primary" htmlType="submit" form="passwordUpdate">
-                Saqlash
+                {t('save')}
               </Button>
             </>
           }

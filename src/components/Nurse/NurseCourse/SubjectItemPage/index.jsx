@@ -23,6 +23,8 @@ import CommentCard from "../../../generics/CommentCard";
 import { AiFillEye } from "react-icons/ai";
 import { MdStarRate } from "react-icons/md";
 import EmptyBox from "../../../../assets/illustration/emptyBox.webp";
+import { t } from "i18next";
+
 
 const SubjectItemPage = () => {
   const param = useParams();
@@ -173,7 +175,7 @@ const SubjectItemPage = () => {
           },
           {
             title: (
-              <Link to={`/nurse/course/${location.state.message}`}>Mavzu</Link>
+              <Link to={`/nurse/course/${location.state.message}`}>{t('course')}</Link>
             ),
           },
         ]}
@@ -187,11 +189,11 @@ const SubjectItemPage = () => {
               <ul className="badge__reyting d-flex align-center gap-x-3">
                 <li className="d-flex align-center gap-x-1">
                   <MdStarRate className="icon" />
-                  <p>{subject?.average_rate} O'rtacha baho</p>
+                  <p>{subject?.average_rate} {t('centerRate')}</p>
                 </li>
                 <li className="d-flex align-center gap-x-1">
                   <BsPeopleFill className="icon" />
-                  <p>{subject?.rate_count} Baholaganlar soni</p>
+                  <p>{subject?.rate_count} {t('countRate')}</p>
                 </li>
               </ul>
             </div>
@@ -200,7 +202,7 @@ const SubjectItemPage = () => {
             items={[
               {
                 key: "1",
-                label: "Mavzu",
+                label: t('subject'),
                 children: (
                   <>
                     <div className="teaser"
@@ -234,7 +236,7 @@ const SubjectItemPage = () => {
                         >
                           <AiFillEye style={{ fontSize: "18px" }} />
                           <a href={`${pdfUrl?.url}`} target="_blank">
-                            PDF -ni ko'rish
+                            {t('viewPdf')}
                           </a>
                         </Button>
                         <object
@@ -260,7 +262,7 @@ const SubjectItemPage = () => {
               },
               {
                 key: "2",
-                label: "Video",
+                label: t('video'),
                 children: videoUrl ? (
                   <video controls width="100%">
                     <source src={videoUrl?.url} type="video/mp4" />
@@ -268,15 +270,15 @@ const SubjectItemPage = () => {
                 ) : (
                   <div className="emptyBox">
                     <img src={EmptyBox} alt="imgEmpty" />
-                    <h1>Ushbu mavzuda video fayl mavjud emas!</h1>
+                    <h1>{t('notvideo')}</h1>
                   </div>
                 ),
               },
               {
                 key: "4",
-                label: "Izohlar",
+                label: t('coments'),
                 children: (
-                  <Card title="Izohlar" className="izohCard">
+                  <Card title={t('coments')} className="izohCard">
                     {skeleton && <Spin />}
                     {commentEmptyText && (
                       <em
@@ -308,7 +310,7 @@ const SubjectItemPage = () => {
                       onClick={handleMoreComment}
                       loading={loadingBtn}
                     >
-                      Ko'proq ko'rsatish
+                      {t('leanMore')}
                     </Button>
                   </Card>
                 ),
@@ -327,7 +329,7 @@ const SubjectItemPage = () => {
                 type="primary"
                 onClick={() => setAddCoursList(false)}
               >
-                {'Kursni qo`shish'}
+                {t('addCourse')}
               </Button>
             )}
           </div>
@@ -339,8 +341,8 @@ const SubjectItemPage = () => {
         onOk={() => setAddCoursList(false)}
         confirmLoading={confirmLoading}
         onCancel={handleCancelModal}
-        okText="Ha"
-        cancelText="Yo'q"
+        okText={t('yes')}
+        cancelText={t('no')}
         closable={false}
         maskClosable={false}
       >

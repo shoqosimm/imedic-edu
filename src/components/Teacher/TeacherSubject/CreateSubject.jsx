@@ -26,6 +26,7 @@ import {
 } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import { PlusOutlined } from "@ant-design/icons";
+import { t } from "i18next";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -437,7 +438,7 @@ const CreateSubject = () => {
                   name="name"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="mavzu nomi" disabled={loading} />
+                  <Input placeholder={t('titleCouts')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="teaser"
@@ -496,7 +497,7 @@ const CreateSubject = () => {
                     >
                       <AiFillEye style={{ fontSize: "18px" }} />
                       <a href={`${pdfUrl?.url}`} target="_blank">
-                        PDF -ni ko'rish
+                        {t('viewPdf')}
                       </a>
                     </Button>
                     <div className="pdfWrapper">

@@ -18,6 +18,7 @@ import { BiCheckCircle, BiPencil, BiTrash } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { t } from "i18next";
 
 const AdminCategory = () => {
   const [form] = Form.useForm();
@@ -251,7 +252,7 @@ const AdminCategory = () => {
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
             <Button disabled={loading} onClick={handleReset}>
-              Bekor qilish
+              {t('notSave')}
             </Button>
           </Col>
         </Row>
@@ -282,7 +283,7 @@ const AdminCategory = () => {
               onClick={() => setIsModalOpen(false)}
               style={{ borderRadius: "2px", height: "40px" }}
             >
-              Bekor qilish
+              {t('notSave')}
             </Button>
             <Button
               htmlType="submit"
@@ -290,7 +291,7 @@ const AdminCategory = () => {
               style={{ borderRadius: "2px", height: "40px" }}
               type="primary"
             >
-              Saqlash
+              {t('save')}
             </Button>
           </div>
         }

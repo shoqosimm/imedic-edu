@@ -7,6 +7,7 @@ import moment from "moment";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import TitleText from "../../generics/TitleText";
+import { t } from "i18next";
 
 const NurseSetting = () => {
   const [form] = Form.useForm();
@@ -134,28 +135,28 @@ const NurseSetting = () => {
             {userInfo && (
               <ul>
                 <li>
-                  <strong>Ism:</strong> {userInfo?.first_name}
+                  <strong>{t('name')}</strong> {userInfo?.first_name}
                 </li>
                 <li>
-                  <strong>Familiya:</strong> {userInfo?.last_name}
+                  <strong>{t('surName')}</strong> {userInfo?.last_name}
                 </li>
                 <li>
-                  <strong>Otasining ismi:</strong> {userInfo?.patronymic}
+                  <strong>{t('midName')}</strong> {userInfo?.patronymic}
                 </li>
                 <li>
-                  <strong>Pasport seriyasi:</strong> {userInfo?.series}
+                  <strong>{t('passportSeries')}</strong> {userInfo?.series}
                 </li>
                 <li>
-                  <strong>Pasport raqami:</strong> {userInfo?.number}
+                  <strong>{t('passportNumber')}</strong> {userInfo?.number}
                 </li>
                 <li>
-                  <strong>PINFL:</strong> {userInfo?.pinfl}
+                  <strong>{t('pinfl')}</strong> {userInfo?.pinfl}
                 </li>
                 <li>
-                  <strong>Telefon raqami:</strong> {userInfo?.phone}
+                  <strong>{t('phoneNumber')}</strong> {userInfo?.phone}
                 </li>
                 <li>
-                  <strong>Tug'ilgan:</strong> {userInfo?.birth_date}
+                  <strong>{t('birth')}</strong> {userInfo?.birth_date}
                 </li>
                 <li>
                   <Button
@@ -236,24 +237,24 @@ const NurseSetting = () => {
                 className="d-flex align-center"
                 disabled={loading}
                 placeholder="14 ta son"
-                suffix={<Button onClick={getPnflInfo}>Tekshirish</Button>}
+                suffix={<Button onClick={getPnflInfo}>{t('check')}</Button>}
               />
             </Form.Item>
-            <Form.Item name="phone" label="Telefon raqami">
+            <Form.Item name="phone" label={t('phoneNumber')}>
               <Input
                 disabled={loading}
                 placeholder="998901234567"
                 rules={[
                   {
                     required: true,
-                    message: "Telefon raqamini kiriting",
+                    message: t('typingPhoneNumber'),
                     whitespace: true,
                     min: 12,
                   },
                 ]}
               />
             </Form.Item>
-            <Form.Item name="birth_date" label="Tug'ilgan yili">
+            <Form.Item name="birth_date" label={t('birth')}>
               <DatePicker disabled />
             </Form.Item>
             <Button
@@ -262,7 +263,7 @@ const NurseSetting = () => {
               type="primary"
               style={{ width: "100%", margin: "1rem 0", height: "40px" }}
             >
-              Saqlash
+              {t('save')}
             </Button>
           </Col>
         </Row>
@@ -273,10 +274,10 @@ const NurseSetting = () => {
           footer={
             <>
               <Button onClick={() => setIsModalOpen(false)}>
-                Bekor qilish
+                {t('notSave')}
               </Button>
               <Button type="primary" htmlType="submit" form="passwordUpdate">
-                Saqlash
+                {t('save')}
               </Button>
             </>
           }
