@@ -19,7 +19,6 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { t } from "i18next";
-
 const AdminCategory = () => {
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
@@ -90,7 +89,6 @@ const AdminCategory = () => {
               }}
               style={{ cursor: "pointer" }}
             />
-
             <Popconfirm
               title="O'chirish"
               description="siz haqiqatdan ham ushbu hodimni o'chirmoqchimisiz?"

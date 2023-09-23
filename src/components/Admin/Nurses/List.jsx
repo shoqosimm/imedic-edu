@@ -2,8 +2,6 @@ import { Button, Form, Input, Modal, Steps, Table } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
 import { api } from "../../../utils/api";
-import {MdPassword} from "react-icons/md"
-import {RiLockPasswordLine} from "react-icons/ri"
 import { t } from "i18next";
 const List = () => {
     const [form] = Form.useForm();
@@ -13,13 +11,12 @@ const List = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editId,setEditId] = useState(null)
     const[current,setCurrent]=useState(0)
-    
+    const [onstep,setOnStep]=useState(false)
     const [pagination,setPagination] = useState({
         page:1,
         pageSize:10,
         total:100
     })
-
     useEffect(()=>{
         getListCategory()
     },[searchText])
@@ -88,6 +85,7 @@ const List = () => {
             }
         })
     },[])
+    console.log(searchText)
     const columns = [
         {
             title: 'F.I.O',
@@ -117,13 +115,13 @@ const List = () => {
         setIsModalOpen(true);
         setEditId(id);
     }
-    const savePassword = () => {
+    const savePassword = () => {  setCurrent(current +1)
         const values = form.getFieldsValue()
-        if (values.password==values.password_confirmation) {
+        if (values.phone==values.phone_confirmation) {
             const body = {
                 id:editId,
-                password:values.password,
-                password_confirm:values.password_confirmation
+                phone:values.password,
+                phone_confirm:values.phone_confirmation
             }
             api.post('api/admin/nurse/update/password',body)
             .then(res=>{
@@ -135,9 +133,19 @@ const List = () => {
             })       
         } 
     }
+  //steps 
+  const onSteps=()=>{
+    setOnStep(true)
+    setCurrent(current +1)
+  }
+  const offSteps=()=>{
+    setIsModalOpen(false)
+    setOnStep(false)
+    setCurrent(current==1)
+  }
     return (
         <div>
-            <Input.Search placeholder="Qidiruv" onChange={search} />
+            <Input placeholder="Qidiruv" onChange={search} />
             <Table
                 loading={tableLoading}
                 columns={columns}
@@ -156,11 +164,11 @@ const List = () => {
             {isModalOpen && 
             <Modal
                 open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
+                onCancel={()=>setIsModalOpen(false)}
                 footer={
-                    <div>
-                        <Button className="btn btn-danger" onClick={() => setIsModalOpen(false)}>{t('notSave')}</Button>
-                        <Button className="btn btn-success" onClick={savePassword} >{t('save')}</Button>
+                    <div style={{display:`${onstep?"block":"none"}`}}>
+                        <Button className="btn btn-danger" onClick={offSteps}>{t('notSave')}</Button>
+                        <Button className="btn btn-success"  onClick={savePassword} on >{t('save')}</Button>
                     </div>
                 }
             >
@@ -168,17 +176,22 @@ const List = () => {
                     form={form}
                     layout="vertical"
                     name="basic"
-                    initialValues={{ remember: true }}
+                    width={500}
+                    
                 >
-                    <Steps progressDot current={current}>
-                        <Steps.Step title="password" icon={<MdPassword/>} />
-                        <Steps.Step title="" icon={<RiLockPasswordLine/>} />
+                    <Steps  current={current}>
+                        <Steps.Step title="password"  />
+                        <Steps.Step title="confirmation"/>
+                        <Steps.Step title="finsh" />
                     </Steps>
-                     <Form.Item name={'password'} label="Parol"  >
-                        <Input /> 
+                     <Form.Item name={'pahone'} label="Parol"  rules={[{require:true,message:'yagi parolni kiriting',min:12,max:12,whitespace:true }]} >
+                        <Input placeholder="998901234567" /> 
+                        <Button  style={{display:`${onstep?"none":"inline-block"}`,
+                        margin:'20px 5px 0px 400px'}} onClick={onSteps}>next</Button>
                     </Form.Item>
-                    <Form.Item name={'password_confirmation'} label="Parolni takrorlang"  >
-                        <Input />
+                    <Form.Item style={{display:`${onstep?"block":"none"}`}} 
+                    name={'pahoe_confirmation'} label="Parolni takrorlang" rules={[{require:true,min:12,max:12,whitespace:true}]} >
+                        <Input  />
                     </Form.Item>
                 </Form>
             </Modal>

@@ -3,11 +3,14 @@ import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiCircleList } from "react-icons/ci";
 import { FiUsers} from "react-icons/fi";
+import {FaUserNurse} from 'react-icons/fa'
+import {MdCalendarMonth} from 'react-icons/md'
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
   AiOutlineMenuUnfold
 } from "react-icons/ai";
+import {FaUserGraduate} from 'react-icons/fa'
 import React, { useState, Suspense } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
@@ -66,7 +69,7 @@ const AdminRoute = () => {
           items={[
             {
               key: "1",
-              icon: <FiUsers className="icon" />,
+              icon: <FaUserGraduate className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
@@ -102,7 +105,7 @@ const AdminRoute = () => {
             },
             {
               key: "4",
-              icon: <CgListTree className="icon" />,
+              icon: <FaUserNurse className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 4)}
@@ -113,14 +116,24 @@ const AdminRoute = () => {
               ),
             },            {
               key: "5",
-              icon: <CgListTree className="icon" />,
+              icon: <FiUsers className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 5)}
                   to="users"
-                  style={{color:'#fff'}}
                 >
                   Foydalanuvchilar
+                </Link>
+              ),
+            }, {
+              key: "6",
+              icon: <MdCalendarMonth className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="months"
+                >
+                  Oylar
                 </Link>
               ),
             }
@@ -169,6 +182,7 @@ const AdminRoute = () => {
           theme="dark"
           mode="inline"
           selectedKeys={localStorage.getItem("activeLink")}
+          
           items={[
             {
               key: "1",
@@ -230,6 +244,18 @@ const AdminRoute = () => {
                 </Link>
               ),
             },
+            {
+              key: "6",
+              icon: <MdCalendarMonth className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="months"
+                >
+                  Oylar
+                </Link>
+              ),
+            }
           ]}
         />
       </Drawer>

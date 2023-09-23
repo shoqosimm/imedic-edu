@@ -7,14 +7,16 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 import { t } from "i18next";
-import { RiLock2Fill } from "react-icons/ri";
-
+import {GrUpdate} from 'react-icons/gr'
 const AdminTeacherList = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
   const [tableLoading, setTableLoading] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [modalOpen,setModalOpen]=useState(false)
+  const [editId,setEditId] = useState(null)
+  const [searchText,setSearchText] = useState('')
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -96,19 +98,39 @@ const AdminTeacherList = () => {
       },
     },
     {
-      title:"password",
-      render:()=>{
-        return(<Button  onClick={handelPass}><RiLock2Fill/></Button>)
-      }
-    }
+      title: 'Amallar',
+      dataIndex: 'action',
+      key: 'action',
+  },
   ];
-
+//numberUp
+const handelPass=(id)=>{
+  setEditId(id)
+setModalOpen(true)
+}
+const saveNumber=()=>{
+  const values = form.getFieldsValue()
+  if (values.phone==values.phone_confirmation) {
+    const body = {
+        id:editId,
+        phone: values.phone,
+    }
+    api.post('api/admin/teacher/update/user/phone',body)
+    .then(res=>{
+        if (res) {
+            setIsModalOpen(false);
+            form.resetFields();
+        }
+    })       
+} 
+}
   // getTeacherList
   const getTeacherList = async (page, pageSize) => {
     setTableLoading(true);
     const body = {
       page,
       pageSize,
+      search:searchText
     };
     const res = await api.get("api/admin/teacher/list", { params: body });
     console.log(res)
@@ -120,6 +142,8 @@ const AdminTeacherList = () => {
               ...item,
               key: item.id,
               passport: { series: item.series, number: item.number },
+              action:<div 
+              style={{display:'flex', justifyContent:'center',alignItems:'center'}}><Button  onClick={()=>handelPass(item.id)}><GrUpdate/></Button></div>
             };
           })
         );
@@ -189,17 +213,27 @@ const AdminTeacherList = () => {
   useEffect(() => {
     getTeacherList(1, 15);
   }, []);
-  const handelPass =async ()=>{
-    const body={
-
+  //search
+  useEffect(()=>{
+    getTeacherList()
+  },[searchText])
+  
+  const textSearch = (e) => {
+    const   value = e.target.value
+   
+    if (value.length > 1) {
+        setSearchText(e.target.value)
     }
-      const res=await api.post(`api/admin/teacher/update/user/password/{id}`)
-  }
+}
+  
   return (
     <div className="admin_teacher">
-      <Button onClick={handleAdd} className="teacher_btn" type="primary">
+        <div style={{display:'flex', justifyContent:'flex-end'}}>
+        <Button  onClick={handleAdd} className="teacher_btn " type="primary">
         Qo'shish
       </Button>
+        </div>
+        <Input placeholder="Qidirish..." onChange={textSearch}/>
       <Table
         loading={tableLoading}
         scroll={{ x: 400 }}
@@ -361,13 +395,34 @@ const AdminTeacherList = () => {
           </Row>
         </Form>
       </Modal>
-      <Modal  >
-
-      </Modal>
-      
+      {modalOpen && 
+            <Modal
+                open={modalOpen}
+                onCancel={() => setModalOpen(false)}
+                footer={
+                    <div>
+                        <Button className="btn btn-danger" onClick={() => setModalOpen(false)}>{t('notSave')}</Button>
+                        <Button className="btn btn-success" onClick={saveNumber} >{t('save')}</Button>
+                    </div>
+                }
+            >
+                <Form
+                    form={form}
+                    layout="vertical"
+                    name="basic"
+                    initialValues={{ remember: true }}
+                >
+                     <Form.Item name={'phone'} label="telefon raqim"  >
+                        <Input onClick={()=>setCurrent(current +1)} /> 
+                    </Form.Item>
+                    <Form.Item name={'phone_confirmation'} label="Telefon raqmni kiriting"  >
+                        <Input />
+                    </Form.Item>
+                </Form>
+            </Modal>
+            }
       <ToastContainer />
     </div>
   );
 };
-
 export default AdminTeacherList;

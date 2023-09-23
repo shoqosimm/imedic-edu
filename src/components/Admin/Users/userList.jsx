@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "./style.scss";
-import { Button, Table, Modal, Form, Row, Col, Input, DatePicker, Select,Steps } from "antd";
+import { Button, Table, Modal, Form, Row, Col, Input, DatePicker, Select } from "antd";
 import { api } from "../../../utils/api";
 import { BiCheckCircle } from "react-icons/bi";
 import { AiOutlineCloseCircle } from "react-icons/ai";
-
 import { ToastContainer, toast } from "react-toastify";
 import moment from "moment";
 import { t } from "i18next";
-
 const UserList = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +20,6 @@ const UserList = () => {
     pageSize: 15,
     total: 100,
   });
-  
   const columns = [
     {
       title: "№",
@@ -101,10 +98,7 @@ const UserList = () => {
   ];
 
   //getUserList
-  useEffect(()=>{
-    getUserList()
-  },[setSearchText])
-  const  getUserList= async (page, pageSize,search) => {
+  const  getUserList= async (page, pageSize) => {
     setTableLoading(true);
     const body = {
       page,
@@ -137,6 +131,7 @@ const UserList = () => {
       setTableLoading(false);
     }
   };
+
   // handlePnfl
   const handlePnfl = async () => {
     setLoading(true);
@@ -172,7 +167,6 @@ const UserList = () => {
       ...values,
       birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
     };
-    console.log(body,"body");
     const res = await api.post("api/admin/admin/add", body);
     try {
       if (res) {
@@ -186,38 +180,43 @@ const UserList = () => {
       setLoading(false);
     }
   };
+  //getBranch
   useEffect(() => {
         api.get('api/branch/list').then((res)=>{
             if (res.status==200) {
                 setBranch(
                     res.data.map((item)=>{
                        return{
-                        key:item?.id,
                         value:item?.id,
                         label:item?.title,
-                        title:item?.title
                        }
                     })
-                    
                 )}
         }).catch((error)=>{
             console.log(error);
         })
     getUserList(1, 15);
   }, []);
-//getBranch
+  useEffect(()=>{
+    getUserList()
+  },[searchText])
+
 //serch
 const textSearch = (e) => {
     const   value = e.target.value
+   
     if (value.length > 1) {
-        searchText(e.target.value)
+        setSearchText(e.target.value)
     }
 }
+console.log(searchText)
   return (
     <div className="admin_teacher">
-      <Button onClick={handleAdd} className="teacher_btn" type="primary">
-        Qo'shish
+         <div style={{display:'flex', justifyContent:'flex-end'}}>
+        <Button  onClick={handleAdd} className="teacher_btn " type="primary">
+          Qo'shish
       </Button>
+        </div>
       <Input placeholder="Qidirish..." onChange={textSearch}/>
       <Table
         loading={tableLoading}
