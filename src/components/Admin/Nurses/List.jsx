@@ -56,7 +56,6 @@ const List = () => {
           setTableLoading(false);
         }
       };
-    console.log(searchText)
     const columns = [
         {
             title: 'F.I.O',

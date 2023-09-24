@@ -46,7 +46,6 @@ const Months = () => {
             setTableLoading(false);
             setMonth(
               res.data.data.map((item) => {
-                console.log(item)
                 return {
                     ...item
                 };
@@ -117,7 +116,6 @@ const Months = () => {
     }
     //add Months
 const handleAdd = async(values)=>{
-    console.log(values)
        setData(
         {...data,
         id:values.month.$M+1,

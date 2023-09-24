@@ -139,7 +139,6 @@ const AdminTeacherList = () => {
       if (res) {
         setData(
           res.data.data.map((item) => {
-            console.log(item)
             return {
               ...item,
               key: item.id,
@@ -202,7 +201,6 @@ const AdminTeacherList = () => {
       birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
     };
     const res = await api.post("api/admin/teacher/add", body);
-    console.log(res)
     try {
       if (res) {
         setLoading(false);
@@ -248,7 +246,6 @@ const editPhone=(id)=>{
   setEditModal(true)
   setPhoneId(id)
 }
-console.log(editId)
  const savePhone=(values)=>{
   const body={
     id:phoneId,

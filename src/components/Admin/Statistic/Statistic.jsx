@@ -4,7 +4,6 @@ import { api } from './../../../utils/api';
 import { useForm } from 'antd/es/form/Form';
 import {FaUsers} from 'react-icons/fa'
 import { t } from "i18next";
-
 const  StatisticList = () => {
     const [courseId,setCourseId]=useState(' ')
     const [testId,setTestId]=useState(' ')
@@ -20,7 +19,6 @@ const  StatisticList = () => {
                })
          )})
         api.get(`api/admin/statistic/nurse/test/condition/${testId}`).then(res=>{
-            console.log(res)
          setTest(res.data.data.map(item=>{
             return{...item}
          }))

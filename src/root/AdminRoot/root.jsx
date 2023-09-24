@@ -168,7 +168,7 @@ import{FcStatistics} from "react-icons/fc"
             ></Button>
             <Button
               className="logOut d-flex align-center gap-x-1"
-              icon={<AiOutlineLogout />}
+              icon={ <AiOutlineLogout /> }
               onClick={handleLogOut}
             >
               Chiqish
@@ -191,7 +191,7 @@ import{FcStatistics} from "react-icons/fc"
         <Menu
           theme="dark"
           mode="inline"
-          selectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink") }
           items={[
             {
               key: "1",

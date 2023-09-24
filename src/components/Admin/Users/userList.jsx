@@ -162,7 +162,6 @@ const UserList = () => {
     setIsModalOpen(true);
   };
   const addUser = async (values) => {
-    console.log(values)
     const body = {
       ...values,
       birth_date: moment(values.birth_date).format("YYYY-MM-DD"),
@@ -208,7 +207,6 @@ const textSearch = (e) => {
         setSearchText(e.target.value)
     }
 }
-console.log(searchText)
   return (
     <div className="admin_teacher">
          <div style={{display:'flex', justifyContent:'flex-end'}}>
