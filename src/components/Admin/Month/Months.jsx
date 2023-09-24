@@ -2,21 +2,21 @@ import { Button, Form, Input, Modal, Table,DatePicker, Select,Col,Row } from "an
 import { useEffect } from "react";
 import { useState } from "react";
 import { api } from "../../../utils/api";
+import{BiCheckCircle} from 'react-icons/bi'
+import{AiOutlineCloseCircle} from 'react-icons/ai'
 import { t } from "i18next";
 const Months = () => {
     const [form] = Form.useForm();
     const [month,setMonth] = useState([])
     const [searchText,setSearchText] = useState('')
-    const [tableLoading, setTableLoading] = useState(false);
-    const [value, setValue] = useState([]);
+    const [tableLoading, setTableLoading] = useState(true);
+    const [data, setData] = useState({});
     const [branch,setBranch]=useState([])
     const [pagination,setPagination] = useState({
         page:1,
         pageSize:10,
         total:100
     })
- 
-
     useEffect(()=>{
         api.get('api/branch/list').then((res)=>{
             if (res.status==200) {
@@ -46,6 +46,7 @@ const Months = () => {
             setTableLoading(false);
             setMonth(
               res.data.data.map((item) => {
+                console.log(item)
                 return {
                     ...item
                 };
@@ -67,29 +68,40 @@ const Months = () => {
     console.log(searchText)
     const columns = [
         {
-            title: 'id',
+            title: 'Id',
             dataIndex: 'id',
             key: 'id',
         },
         {
-            title: 'name',
+            title: 'Name',
             dataIndex: 'title',
             key: 'title',
         },
         {
-            title: 'oy',
+            title: 'Oy',
             dataIndex: 'month',
             key: 'month',
         },
         {
-            title: 'year',
+            title: 'Year',
             dataIndex: 'year',
             key: 'year',
         },
         {
-            title: 'holati',
-            dataIndex: 'is_active',
-            key: 'is_active',
+          title: "Status",
+          dataIndex: "is_active",
+          key: "is_active",
+          align: "center",
+          render: (text) => {
+            return (
+              (text === "1" && (
+                <BiCheckCircle style={{ fill: "green", fontSize: "18px" }} />
+              )) ||
+              (text === "0" && (
+                <AiOutlineCloseCircle style={{ fill: "red", fontSize: "18px" }} />
+              ))
+            );
+          },
         },
         {
             title: 'branch_id',
@@ -106,19 +118,17 @@ const Months = () => {
     //add Months
 const handleAdd = async(values)=>{
     console.log(values)
-const data=values
-       setValue(
+       setData(
         {...data,
-        id:data.month.$M+1,
-        branch_id:data.branch_id,
-        title:data.title,
-        year:data.month.$y,
-        month:data.month.$M+1
+        id:values.month.$M+1,
+        branch_id:values.branch_id,
+        title:values.title,
+        year:String(values.month.$y),
+        month:values.month.$M+1
         })
         const body={
-          data:{...value}
+          data:[{...data}]
         }
- console.log(body)
         const res = await api.post("api/admin/month/add", body);
         try {
           if (res) {
@@ -130,7 +140,6 @@ const data=values
           setLoading(false);
         } 
 }
-  console.log(value)
     return (
         <div>
             <Form
@@ -171,7 +180,7 @@ const data=values
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
           <Button  className="teacher_btn " type="primary">
-        Bekor qilish
+        {t('notSave')}
       </Button>
       </Col>
         </Row>

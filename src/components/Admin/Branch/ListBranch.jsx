@@ -10,10 +10,10 @@ const  ListBranch = ()=>{
     const [showModal, setShowModal] = useState(false);
     const [itemRecord,setItemRecord] = useState([])
     const [dataSource,setDataSource] = useState([]);
+    const [tableLoading, setTableLoading] = useState(true);
     const handleAdd= ()=>{
         setShowModal(true);
     }
-
     useEffect(() => {
         api.get('api/admin/branch/list')
         .then(res=>{
@@ -29,6 +29,7 @@ const  ListBranch = ()=>{
                         }
                     })
                 )
+                setTableLoading(false)
             }
         })
       }, []);
@@ -36,9 +37,7 @@ const  ListBranch = ()=>{
         setItemRecord(record)
         setShowModal(true)
       }
-
     const columns=[
-        
         {
             title: "№",
             dataIndex: "id",
@@ -60,7 +59,6 @@ const  ListBranch = ()=>{
                 return <BiEditAlt onClick={()=>editBranch(record)} />
             })
         }
-        
     ]
     return (
         <div className="branch">
@@ -70,6 +68,7 @@ const  ListBranch = ()=>{
             <Table
                 columns={columns}
                 dataSource={dataSource}
+                loading={tableLoading}
                 />
             {showModal && 
                 <AddBranch

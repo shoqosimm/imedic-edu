@@ -20,13 +20,12 @@ import { useContext } from "react";
 import { ContextItem } from "../../components/Context";
 import { FaUserShield } from "react-icons/fa";
 import {CgListTree} from "react-icons/cg";
-
-const AdminRoute = () => {
+import{FcStatistics} from "react-icons/fc"
+ const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
   // handleLogOut
   const handleLogOut = () => {
     Swal.fire({
@@ -43,7 +42,6 @@ const AdminRoute = () => {
       }
     });
   };
-
   return (
     <Layout className="layout">
       <Sider
@@ -136,6 +134,18 @@ const AdminRoute = () => {
                   Oylar
                 </Link>
               ),
+            },
+            {
+              key: "7",
+              icon: <FcStatistics className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="statistic"
+                >
+                  Statistika
+                </Link>
+              ),
             }
           ]}
         />
@@ -182,7 +192,6 @@ const AdminRoute = () => {
           theme="dark"
           mode="inline"
           selectedKeys={localStorage.getItem("activeLink")}
-          
           items={[
             {
               key: "1",
@@ -253,6 +262,18 @@ const AdminRoute = () => {
                   to="months"
                 >
                   Oylar
+                </Link>
+              ),
+            },
+            {
+              key: "7",
+              icon: <FcStatistics className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="statistic"
+                >
+                  Statistika
                 </Link>
               ),
             }

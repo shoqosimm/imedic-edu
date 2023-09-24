@@ -11,8 +11,8 @@ const UserList = () => {
   const [form] = Form.useForm();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [data, setData] = useState(null);
-  const [tableLoading, setTableLoading] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [branch,setBranch]=useState([])
   const [searchText,setSearchText] = useState('')
   const [pagination, setPagination] = useState({
@@ -204,7 +204,6 @@ const UserList = () => {
 //serch
 const textSearch = (e) => {
     const   value = e.target.value
-   
     if (value.length > 1) {
         setSearchText(e.target.value)
     }
@@ -272,22 +271,20 @@ console.log(searchText)
           layout="vertical"
           id="addUser"
         >
-        
-
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="first_name" label="Ismi">
-                <Input disabled />
+                <Input  />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="last_name" label="Familiyasi">
-                <Input disabled  />
+                <Input   />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="patronymic" label="Otasining ismi">
-                <Input disabled />
+                <Input  />
               </Form.Item>
             </Col>
           </Row>
@@ -349,6 +346,8 @@ console.log(searchText)
               {
                 required: true,
                 min: 12,
+                max:12,
+                mask:`/^(998)([0-9]{9})$/`,
                 message: t('typingPhoneNumber'),
                 whitespace: true,
               },
@@ -356,7 +355,10 @@ console.log(searchText)
           >
             <Input placeholder="998901234567" disabled={loading} />
           </Form.Item>
-          <Form.Item name={"birth_date"} label={t('birth')}>
+          <Form.Item 
+          name={"birth_date"} 
+          label={t('birth')}
+            >
             <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
           <Form.Item
@@ -393,5 +395,4 @@ console.log(searchText)
     </div>
   );
 };
-
 export default UserList;

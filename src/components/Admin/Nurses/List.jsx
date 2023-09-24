@@ -7,7 +7,7 @@ const List = () => {
     const [form] = Form.useForm();
     const [nurse,setNurse] = useState([])
     const [searchText,setSearchText] = useState('')
-    const [tableLoading, setTableLoading] = useState(false);
+    const [tableLoading, setTableLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editId,setEditId] = useState(null)
     const[current,setCurrent]=useState(0)
@@ -38,7 +38,7 @@ const List = () => {
                     name:item.last_name + ' ' + item.first_name + ' ' + item.patronymic,
                     phone:item.phone,
                     action:<div>
-                        <Button className="btn btn-danger" onClick={()=>editNurse(item.id)} >Tahrirlash</Button>
+                        <Button   onClick={()=>editNurse(item.id)}> Tahrirlash</Button>
                     </div>
                 };
               })
@@ -56,51 +56,25 @@ const List = () => {
           setTableLoading(false);
         }
       };
-    useEffect(()=>{
-          const body = {
-            search:searchText
-        }
-        api.get('api/admin/nurse/list')
-        .then(res=>{
-            if (res) {
-                console.log(res)
-                setNurse(
-                    res.data.data.map((item,index)=>{
-                        return{
-                            key:index,
-                            id:item.id,
-                            name:item.last_name + ' ' + item.first_name + ' ' + item.patronymic,
-                            phone:item.phone,
-                            action:<div>
-                                <button className="btn btn-danger">O'chirish</button>
-                            </div>
-                        }
-                    })
-                )
-                setPagination({
-                    page: res.data.page,
-                    pageSize: res.data.per_page,
-                    total: res.data.total,
-                  });
-            }
-        })
-    },[])
     console.log(searchText)
     const columns = [
         {
             title: 'F.I.O',
             dataIndex: 'name',
             key: 'name',
+            align:'center'
         },
         {
             title: 'Telefon',
             dataIndex: 'phone',
             key: 'phone',
+             align:'center'
         },
         {
             title: 'Amallar',
             dataIndex: 'action',
             key: 'action',
+            align:'center'
         },
     ];
     const search = (e) => {
@@ -115,13 +89,13 @@ const List = () => {
         setIsModalOpen(true);
         setEditId(id);
     }
-    const savePassword = () => {  setCurrent(current +1)
+    const savePassword = () => { 
+         setCurrent(current +1)
         const values = form.getFieldsValue()
-        if (values.phone==values.phone_confirmation) {
+        if (values.password==values.password_confirmation) {
             const body = {
                 id:editId,
-                phone:values.password,
-                phone_confirm:values.phone_confirmation
+                phone:values.password, 
             }
             api.post('api/admin/nurse/update/password',body)
             .then(res=>{
@@ -179,18 +153,31 @@ const List = () => {
                     width={500}
                     
                 >
-                    <Steps  current={current}>
-                        <Steps.Step title="password"  />
-                        <Steps.Step title="confirmation"/>
-                        <Steps.Step title="finsh" />
-                    </Steps>
-                     <Form.Item name={'pahone'} label="Parol"  rules={[{require:true,message:'yagi parolni kiriting',min:12,max:12,whitespace:true }]} >
-                        <Input placeholder="998901234567" /> 
+                    <Steps  current={current} 
+                    items={[
+                        {
+                            title:'password',
+                            description:'parolni kiriting'
+                        },
+                        {
+                            title:'confirmation',
+                            description:'parolni tekshirish'
+                        },
+                        {
+                            title:'finish',
+                            description:'parolni tasdiqlash'
+                        }
+                    ]}
+                    />
+                    
+                
+                     <Form.Item name={'password'} label="Parol"  rules={[{require:true,message:'new password',whitespace:true }]} >
+                        <Input placeholder="123456" /> 
                         <Button  style={{display:`${onstep?"none":"inline-block"}`,
                         margin:'20px 5px 0px 400px'}} onClick={onSteps}>next</Button>
                     </Form.Item>
                     <Form.Item style={{display:`${onstep?"block":"none"}`}} 
-                    name={'pahoe_confirmation'} label="Parolni takrorlang" rules={[{require:true,min:12,max:12,whitespace:true}]} >
+                    name={'password_confirmation'} label="passwpassword_confirmationrd" rules={[{require:true,whitespace:true}]} >
                         <Input  />
                     </Form.Item>
                 </Form>

@@ -3,7 +3,6 @@ import { api } from "../../../utils/api";
 import { useEffect } from "react";
 import { useState } from "react";
 import { t } from "i18next";
-
 const AddBranch = ({showModal,setShowModal,itemRecord})=>{
     const [form] = Form.useForm();
     const [edit,setEdit] = useState(false)
@@ -16,9 +15,8 @@ const AddBranch = ({showModal,setShowModal,itemRecord})=>{
         if (body.title) {
             if (itemRecord?.id) {
             api.put(`api/admin/branch/update/${itemRecord.id}`,body)
-            .then(
-                res=>{
-                        setShowModal(false);
+            .then(res=>{
+           setShowModal(false);
             }).catch(res=>{console.log(res);})
             }else{
             api.post('api/admin/branch/add',body)
@@ -26,8 +24,7 @@ const AddBranch = ({showModal,setShowModal,itemRecord})=>{
                 res=>{if (res.data.data.success==1) {
                         setShowModal(false);
                     }}).catch(res=>{console.log(res);})
-            }
-           
+            } 
         }
     }
     return (<>
@@ -55,7 +52,6 @@ const AddBranch = ({showModal,setShowModal,itemRecord})=>{
                 <Form.Item name={'branch_name'} label="Filial to`liq nomlanishi"  >
                     <Input/>
                 </Form.Item>
-
             </Form>
         </Modal>
     </>)

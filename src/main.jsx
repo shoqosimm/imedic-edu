@@ -20,6 +20,8 @@ import List from "./components/Admin/Nurses/List";
 import UserList from "./components/Admin/Users/userList";
 import './utils/i18';
 import Months from "./components/Admin/Month/Months";
+import StatisticList from "./components/Admin/Statistic/Statistic";
+
 
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
@@ -161,7 +163,7 @@ const router = createBrowserRouter(
         <Route path="nurses" element={<List/>} />
         <Route path="users" element={<UserList/>} />
         <Route path="months" element={<Months/>}/>
-        
+        <Route path="statistic" element={<StatisticList/>}/>
       </Route>
 
       {/* auth */}

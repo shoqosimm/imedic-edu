@@ -23,7 +23,7 @@ const AdminCategory = () => {
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [tableLoading, setTableLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(true);
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [record, setRecord] = useState(null);
