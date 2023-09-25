@@ -272,17 +272,17 @@ const textSearch = (e) => {
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="first_name" label="Ismi">
-                <Input  />
+                <Input disabled  />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="last_name" label="Familiyasi">
-                <Input   />
+                <Input disabled   />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
               <Form.Item name="patronymic" label="Otasining ismi">
-                <Input  />
+                <Input disabled  />
               </Form.Item>
             </Col>
           </Row>
