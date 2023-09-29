@@ -21,7 +21,6 @@ import { BiHome } from "react-icons/bi";
 import { VscFilePdf } from "react-icons/vsc";
 import {
   AiFillEye,
-  AiOutlineClose,
   AiOutlineVideoCameraAdd,
 } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
@@ -109,7 +108,7 @@ const CreateSubject = () => {
           marginTop: 8,
         }}
       >
-        Upload
+        {t('upload')}
       </div>
     </div>
   );
@@ -344,18 +343,18 @@ const CreateSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state.message}/view`}>
-                Ortga
+                {t('back')}
               </Link>
             ),
           },
           {
-            title: <p style={{ color: "grey" }}>Yaratish</p>,
+            title: <p style={{ color: "grey" }}>{t('create')}</p>,
           },
         ]}
       />
       <Modal
         className="create_subject"
-        title="Yaratish"
+        title={t('create')}
         centered
         closable={false}
         open={openModal}
@@ -377,7 +376,7 @@ const CreateSubject = () => {
               hoverable
               onClick={() => setType(0)}
             >
-              Mavzu
+              {t('cours')}
             </Card>
           </Col>
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
@@ -391,7 +390,7 @@ const CreateSubject = () => {
               hoverable
               onClick={() => setType(1)}
             >
-              Test
+              {t('test')}
             </Card>
           </Col>
         </Row>
@@ -459,7 +458,7 @@ const CreateSubject = () => {
                     }
                   >
                     <VscFilePdf style={{ fontSize: "18px" }} />
-                    PDF yuklash
+                   {t('pdf')}
                     <input
                       disabled={pdfToken}
                       type="file"
@@ -478,7 +477,7 @@ const CreateSubject = () => {
                     }
                   >
                     <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
-                    Video yuklash
+                  {t('videoUpload')}
                     <input
                       disabled={videoToken}
                       type="file"
@@ -552,19 +551,19 @@ const CreateSubject = () => {
                   name="name"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="test nomi" disabled={loading} />
+                  <Input placeholder={t('testName')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="count_test"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="test soni" disabled={loading} />
+                  <Input placeholder={t('testNumber')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="time"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="test vaqti (minut)" disabled={loading} />
+                  <Input placeholder={t('testTime')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="right_test"
@@ -630,7 +629,7 @@ const CreateSubject = () => {
                 htmlType="submit"
                 disabled={updateBtn}
               >
-                Yaratish +
+                {t('create +')}
               </Button>
             </Form.Item>
           </Form>

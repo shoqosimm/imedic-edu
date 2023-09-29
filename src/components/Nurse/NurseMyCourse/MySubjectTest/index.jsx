@@ -310,12 +310,11 @@ const MySubjectTest = () => {
             <MdKeyboardDoubleArrowRight />
           </Button>
         </div>
-
         <Modal
           onOk={handleStartTest}
           onCancel={handleBackFromTest}
           okText={"Testni boshlash"}
-          cancelText={t('notSaveBack')}
+          cancelText={'notSaveBack'}
           open={openModal}
         >
           <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>

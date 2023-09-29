@@ -119,7 +119,7 @@ const TeacherSetting = () => {
         layout="vertical"
         onFinish={handleUpdateInfo}
       >
-          <TitleText title="Sozlamalar" />
+          <TitleText title={t('setting')} />
         <Row className="d-flex align-start justify-between" gutter={[20, 20]}>
           <Col
             className="settingTextPanel"
@@ -131,19 +131,19 @@ const TeacherSetting = () => {
           >
             <ul>
               <li>
-                <strong>Ism:</strong> {userInfo?.first_name}
+                <strong>{t('name')}</strong> {userInfo?.first_name}
               </li>
               <li>
-                <strong>Familiya:</strong> {userInfo?.last_name}
+                <strong>{t('surName')}</strong> {userInfo?.last_name}
               </li>
               <li>
-                <strong>Otasining ismi:</strong> {userInfo?.patronymic}
+                <strong>{t('midName')}</strong> {userInfo?.patronymic}
               </li>
               <li>
-                <strong>Pasport seriyasi:</strong> {userInfo?.series}
+                <strong>{t('passportSeries')}</strong> {userInfo?.series}
               </li>
               <li>
-                <strong>Pasport raqami:</strong> {userInfo?.number}
+                <strong>{t('passportNumber')}</strong> {userInfo?.number}
               </li>
               <li>
                 <strong>{t('pinfl')}</strong> {userInfo?.pinfl}
@@ -160,7 +160,7 @@ const TeacherSetting = () => {
                   type="primary"
                   onClick={() => setIsModalOpen(true)}
                 >
-                  Parolni o'zgartirish
+                  {t('resetPassword')}
                 </Button>
               </li>
             </ul>
@@ -170,7 +170,7 @@ const TeacherSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="first_name"
-                  label="Ism"
+                  label={t('name')}
                   rules={[
                     {
                       required: true,
@@ -185,7 +185,7 @@ const TeacherSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="last_name"
-                  label="Familiya"
+                  label={t('surName')}
                   rules={[
                     {
                       required: true,
@@ -199,18 +199,18 @@ const TeacherSetting = () => {
               </Col>
             </Row>
             <Row>
-              <Form.Item name="patronymic" label="Otasining ismi">
+              <Form.Item name="patronymic" label={t('midName')}>
                 <Input disabled={disabled} />
               </Form.Item>
             </Row>
             <Row gutter={[20]}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="series" label="Pasport seriyasi">
+                <Form.Item name="series" label={t('passportSeries')}>
                   <Input disabled={disabled} placeholder="AA" />
                 </Form.Item>
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="number" label="Pasport raqami">
+                <Form.Item name="number" label= {t('passportNumber')}>
                   <Input disabled={disabled} placeholder="1234567" />
                 </Form.Item>
               </Col>
@@ -258,7 +258,7 @@ const TeacherSetting = () => {
               type="primary"
               style={{ width: "100%", margin: "1rem 0", height: "40px" }}
             >
-              O'zgartirish
+              {t('change')}
             </Button>
           </Col>
         </Row>

@@ -1,4 +1,4 @@
-import { Button, Drawer, Layout, Menu } from "antd";
+import { Button, Drawer, Layout, Menu,Select } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiCircleList } from "react-icons/ci";
@@ -21,11 +21,15 @@ import { ContextItem } from "../../components/Context";
 import { FaUserShield } from "react-icons/fa";
 import {CgListTree} from "react-icons/cg";
 import{FcStatistics} from "react-icons/fc"
+import { useTranslation } from "react-i18next";
+import { t } from "i18next";
  const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const {t,i18n} = useTranslation();
+  const [lang,setLang] = useState(localStorage.getItem('lang') ||'uz');
   // handleLogOut
   const handleLogOut = () => {
     Swal.fire({
@@ -42,6 +46,12 @@ import{FcStatistics} from "react-icons/fc"
       }
     });
   };
+  //lang
+  const onSelectLang  = (val)=>{
+    setLang(String(val))
+    localStorage.setItem('lang',String(val))
+    i18n.changeLanguage(val)
+  }
   return (
     <Layout className="layout">
       <Sider
@@ -73,7 +83,7 @@ import{FcStatistics} from "react-icons/fc"
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="admin-teacher"
                 >
-                  O'qituvchilar
+                {t('teacher')}
                 </Link>
               ),
             },
@@ -85,7 +95,7 @@ import{FcStatistics} from "react-icons/fc"
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="category"
                 >
-                  Yo`nalishlar
+                 {t('direction')}
                 </Link>
               ),
             },
@@ -94,10 +104,10 @@ import{FcStatistics} from "react-icons/fc"
               icon: <CgListTree className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 3)}
+                  onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="branch"
                 >
-                  Filiallar
+                   {t('branch')}
                 </Link>
               ),
             },
@@ -106,10 +116,10 @@ import{FcStatistics} from "react-icons/fc"
               icon: <FaUserNurse className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 4)}
+                  onClick={() => sessionStorage.setItem("activeLink", 4)}
                   to="nurses"
                 >
-                  Hamshiralar
+                 {t('nurse')}
                 </Link>
               ),
             },            {
@@ -117,10 +127,10 @@ import{FcStatistics} from "react-icons/fc"
               icon: <FiUsers className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  onClick={() => sessionStorage.setItem("activeLink", 5)}
                   to="users"
                 >
-                  Foydalanuvchilar
+                  {t('users')}
                 </Link>
               ),
             }, {
@@ -128,10 +138,10 @@ import{FcStatistics} from "react-icons/fc"
               icon: <MdCalendarMonth className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  onClick={() => sessionStorage.setItem("activeLink", 6)}
                   to="months"
                 >
-                  Oylar
+                   {t('months')}
                 </Link>
               ),
             },
@@ -140,10 +150,10 @@ import{FcStatistics} from "react-icons/fc"
               icon: <FcStatistics className="icon" />,
               label: (
                 <Link
-                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  onClick={() => sessionStorage.setItem("activeLink", 7)}
                   to="statistic"
                 >
-                  Statistika
+                  {t('statistics')}
                 </Link>
               ),
             }
@@ -166,13 +176,26 @@ import{FcStatistics} from "react-icons/fc"
               icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
               onClick={() => setCollapsed(!collapsed)}
             ></Button>
+            <div className="d-flex justify-center align-center">
+            <Select
+            className="lang d-flex gap-x-1"
+            onSelect={onSelectLang}
+            defaultValue={lang}
+            style={{width:60,justifyContent:"end"}}
+            options={[
+              {label:'ru',value:'ru'},
+              {label:'uz',value:'uz'}
+            ]}
+          />
             <Button
               className="logOut d-flex align-center gap-x-1"
               icon={ <AiOutlineLogout /> }
               onClick={handleLogOut}
             >
-              Chiqish
+              {t('logOut')}
             </Button>
+            </div>
+        
           </div>
         </Header>
         <Content className="layout_content">

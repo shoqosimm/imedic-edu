@@ -317,7 +317,6 @@ const SubjectItemPage = () => {
               },
             ]}
           />
-
           <div
             style={{ flexWrap: "wrap" }}
             className="d-flex align-center gap-2"

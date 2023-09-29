@@ -71,6 +71,11 @@
     color: #fff !important;
   }
 }
+.lang{
+  width: 10%;
+  -ms-flex-item-align: end;
+}
+
 @media screen and (max-width: 565px) {
   .layout_content {
     padding: 15px !important;

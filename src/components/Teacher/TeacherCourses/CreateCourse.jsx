@@ -15,6 +15,7 @@ import "./styles/createCourseStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import { PlusOutlined } from "@ant-design/icons";
+import { t } from "i18next";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -44,7 +45,7 @@ const CreateCourse = () => {
           marginTop: 8,
         }}
       >
-        Upload
+      {t('upload')}
       </div>
     </div>
   );
@@ -58,11 +59,8 @@ const CreateCourse = () => {
       file.name || file.url.substring(file.url.lastIndexOf("/") + 1)
     );
   };
-
   const handleCancel = () => setPreviewOpen(false);
-
   const handleChange = ({ fileList: newFileList }) => setFileList(newFileList);
-
   // handleGetToken
   const handleGetToken = async (options) => {
     const { onSuccess, onError, file, onProgress } = options;
@@ -141,6 +139,7 @@ const CreateCourse = () => {
     getCategory();
   }, []);
 
+
   return (
     <div className="createCourse_teacher">
       <Breadcrumb
@@ -162,14 +161,14 @@ const CreateCourse = () => {
           },
         ]}
       />
-      <h1 style={{ color: "#fff" }}>Kurs yaratilishi</h1>
+      <h1 style={{ color: "#fff" }}>{t('courseCreate')}</h1>
       <Card>
         <Form form={form} name="create-course" onFinish={onFinish}>
           <Form.Item name="title">
             <Input
               disabled={loading}
               className="create_input"
-              placeholder="Kursning nomi"
+              placeholder={t('courseName')}
               rules={[
                 {
                   required: true,
@@ -183,7 +182,7 @@ const CreateCourse = () => {
               disabled={loading}
               className="create_input"
               options={category}
-              placeholder="Turkumni tanlang"
+              placeholder={t('categoryName')}
               style={{ width: "100%" }}
               rules={[
                 {
@@ -224,7 +223,7 @@ const CreateCourse = () => {
               type="primary"
               htmlType="submit"
             >
-              Yaratish
+              {t('create')}
             </Button>
           </Form.Item>
         </Form>

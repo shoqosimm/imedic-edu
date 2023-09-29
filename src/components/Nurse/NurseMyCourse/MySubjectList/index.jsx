@@ -9,6 +9,7 @@ import CommentCard from "../../../generics/CommentCard";
 import EmptyBox from "../../../../assets/illustration/emptyBox.webp";
 import { motion } from "framer-motion";
 import MyCardSubjectList from "../../../generics/MyCardSubjectList";
+import { t } from "i18next";
 
 const NurseMyCourse = () => {
   const params = useParams();
@@ -233,7 +234,7 @@ const NurseMyCourse = () => {
                 htmlType="submit"
                 form="form"
               >
-                Izohni yuborish
+                {t('sentComent')}
               </Button>
             </div>
             <Card title="Izohlar" className="izohCard">
@@ -257,7 +258,7 @@ const NurseMyCourse = () => {
                   onClick={handleMoreComment}
                   loading={loadingBtn}
                 >
-                  Ko'proq ko'rsatish
+                 {t('leanMore')}
                 </Button>
               )}
             </Card>

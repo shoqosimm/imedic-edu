@@ -10,7 +10,6 @@ import { ContextItem } from "../Context";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
-
 const Login = () => {
 const {i18n} = useTranslation();
   const [lang,setLang] = useState(localStorage.getItem('lang')||'uz')

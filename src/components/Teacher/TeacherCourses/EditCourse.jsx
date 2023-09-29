@@ -15,6 +15,7 @@ import "./styles/editStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import { PlusOutlined } from "@ant-design/icons";
+import { t } from "i18next";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -47,7 +48,7 @@ const EditCourse = () => {
           marginTop: 8,
         }}
       >
-        Upload
+        {t('upload')}
       </div>
     </div>
   );
@@ -188,7 +189,7 @@ const EditCourse = () => {
         ]}
       />
 
-      <h1 style={{ color: "#fff" }}>Kursni o'zgartirish</h1>
+      <h1 style={{ color: "#fff" }}>{t('changeCourse')}</h1>
       <Card>
         <Form form={form} name="edit-course" onFinish={onFinish}>
           <Form.Item name="title">
@@ -250,7 +251,7 @@ const EditCourse = () => {
               htmlType="submit"
               loading={saveLoading}
             >
-              O'zgartirish
+           {t('change')}
             </Button>
           </Form.Item>
         </Form>

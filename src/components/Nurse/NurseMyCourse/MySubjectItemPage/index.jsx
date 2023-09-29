@@ -124,7 +124,6 @@ const MySubjectItemPage = () => {
           } else {
             setPdfUrl(false);
             setVideoUrl(false);
-
             setSubject({
               data: res.data.content,
               subject_id: res.data.course_subject_id,
@@ -228,30 +227,6 @@ const MySubjectItemPage = () => {
           },
         ]}
       />
-      {/* <div
-        style={{
-          width: "100%",
-          height: "auto",
-          background: "#c55ab5",
-          padding: "1rem ",
-          color: "#fff",
-          borderRadius: "6px",
-          fontSize: "18px",
-        }}
-      >
-        <div className="d-flex align-center gap-1">
-          <p>O'rtacha ball:</p>{" "}
-          <Rate
-            disabled
-            allowClear={false}
-            value={subject?.data?.average_rate}
-          />
-        </div>
-        <div className="d-flex align-center gap-1">
-          <p>Ovoz berganlar soni:</p> <p>{subject?.data?.rate_count}ta</p>
-        </div>
-      </div> */}
-
       <Row gutter={16} className="ItemCard">
         <Col span={24}>
           <div className="card__badge">
@@ -269,66 +244,7 @@ const MySubjectItemPage = () => {
               </ul>
             </div>
           </div>
-          {/* <div className="card">
-            {skeleton ? (
-              <Skeleton title paragraph={false} />
-            ) : (
-              <TitleText style={{ margin: "0" }} title={subject?.data?.name} />
-            )}
-            <div
-              style={{
-                textAlign: "center",
-                letterSpacing: "1.5px",
-                fontSize: "18px",
-                fontWeight: "600",
-                marginBottom: "1.5rem",
-              }}
-            >
-              {skeleton ? (
-                <Skeleton title={false} paragraph />
-              ) : (
-                <>
-                  <p>{subject?.data?.teaser}</p>
-                  <Divider />
-                </>
-              )}
-            </div>
-            {skeleton && <Skeleton title={false} paragraph />}
-            {pdfUrl && (
-              <>
-                <Button
-                  className="d-flex align-center gap-1"
-                  style={{ margin: "1rem auto" }}
-                >
-                  <AiFillEye style={{ fontSize: "18px" }} />
-                  <a href={`${pdfUrl?.url}`} target="_blank">
-                    PDF -ni ko'rish
-                  </a>
-                </Button>
-                <object
-                  data={pdfUrl?.url}
-                  width="100%"
-                  type="application/pdf"
-                  style={{
-                    height: "100%",
-                    aspectRatio: "1",
-                    marginBottom: "1rem",
-                  }}
-                ></object>
-              </>
-            )}
-            {videoUrl && (
-              <video controls width="100%">
-                <source src={videoUrl?.url} type="video/mp4" />
-              </video>
-            )}
-            {pdfUrl && videoUrl ? null : (
-              <div
-                className="teacher__subject__content"
-                dangerouslySetInnerHTML={{ __html: subject?.data.content }}
-              />
-            )}
-          </div> */}
+
           <Tabs
             items={[
               {

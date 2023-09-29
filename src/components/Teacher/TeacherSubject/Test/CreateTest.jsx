@@ -16,19 +16,19 @@ const CreateTest = () => {
   const [answer, setAnswer] = useState([
     {
       id: 0,
-      text: "to'g'ri javob",
+      text:t('correctAnswer') ,
     },
     {
       id: 1,
-      text: `noto'g'ri javob`,
+      text: t('wrongAnswer'),
     },
     {
       id: 2,
-      text: `noto'g'ri javob`,
+      text: t('wrongAnswer'),
     },
     {
       id: 3,
-      text: `noto'g'ri javob`,
+      text: t('wrongAnswer'),
     },
   ]);
   const [form] = Form.useForm();
@@ -47,7 +47,7 @@ const CreateTest = () => {
       .post(`api/teacher/test/add`, body)
       .then((res) => {
         if (res) {
-          toast.success("Создано");
+          toast.success(t('create'));
           setLoading(false);
           form.resetFields();
         }
@@ -67,7 +67,7 @@ const CreateTest = () => {
       ...answer,
       {
         id: parseInt(number),
-        text: `noto'g'ri javob`,
+        text: t('wrongAnswer'),
       },
     ]);
   };
@@ -89,7 +89,6 @@ const CreateTest = () => {
       )
     );
   };
-
   //   deleteOption
   const DeleteField = (id) => {
     setNumber(number - 1);
@@ -99,7 +98,6 @@ const CreateTest = () => {
   useEffect(() => {
     getSubjectForSelect();
   }, []);
-
   return (
     <>
       <Breadcrumb
@@ -115,20 +113,20 @@ const CreateTest = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state.message}/view`}>
-                Ortga
+                {t('back')}
               </Link>
             ),
           },
           {
             title: (
               <p style={{ color: "grey" }}>
-                Test qo'shish
+               {t("testAdd")}
               </p>
             ),
           },
         ]}
       />
-      <Card title="Test qo'shish">
+      <Card title={t('testAdd')}>
         <Card>
           <Form
             form={form}
@@ -138,7 +136,7 @@ const CreateTest = () => {
           >
             <Form.Item
               name="question"
-              label="Savol"
+              label={t('question')}
               rules={[{ required: true }]}
             >
               <Input placeholder="testning savoli" />
@@ -175,7 +173,7 @@ const CreateTest = () => {
                       disabled={loading}
                       onClick={() => DeleteField(item.id)}
                     >
-                      O'chirish
+                      {t('delete')}
                     </Button>
                   ) : null}
                 </div>
@@ -188,7 +186,7 @@ const CreateTest = () => {
                   type="primary"
                   onClick={() => AddForm(answer)}
                 >
-                  Variant qo'shish
+                  {t('addOption')}
                 </Button>
               </Form.Item>
               <Form.Item>

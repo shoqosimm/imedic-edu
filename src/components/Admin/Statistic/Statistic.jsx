@@ -8,7 +8,9 @@ import {
     Progress,
     Space,
   Divider,
-  Typography
+  Typography,
+  Form,
+  Select 
 } from 'antd';
 import {api} from './../../../utils/api';
 import './mian.css'
@@ -18,30 +20,107 @@ import {FaUsers} from 'react-icons/fa'
 import {GiTeacher} from 'react-icons/gi'
 import {GrTestDesktop} from 'react-icons/gr'
 import {AiOutlineDislike, AiOutlineLike} from 'react-icons/ai'
+import { useForm } from 'antd/es/form/Form';
  const StatisticList = () => {
     const [courseId,setCourseId] = useState('1')
     const [testId,setTestId] = useState('1')
     const [course, setCourse] = useState()
-    const [test,setTest] = useState()
+    const [category,setCategory] = useState()
+    const [form]=useForm()
     const Text=Typography
     useEffect(() => {
-        api.post('api/admin/statistic/nurse/count')
-        api .get(`api/admin/statistic/nurse/count/course/end/${courseId}`).then(res => {
-                setCourse(res.data)
-            })
-        api.get(`api/admin/statistic/nurse/test/condition/${testId}`).then(res => {
-          console.log(res)
-          res.data.data.map((item)=>{
-            console.log(item)
-          })
-            })
-    },[{courseId}])
+        api.get(`api/admin/category/list`).then((res)=>{
+            console.log(res)
+            if(res.status==200)
+            {
+                setCategory(
+                    res.data.data.map((item)=>{
+                        return{
+                            value:item.id,
+                            label:item.name
+                        }
+                    })
+                )
+            }
+        })      
+    },[])
     let day=new Date()
    let kun=day.getDate()
-   console.log(course)
+   const courseChange= (value)=>{
+
+   }
     return (
        <> 
+<Form
+        autoComplete="false"
+        layout="vertical"
+        form={form}
+        id="statictik"
+      >
+        <Row gutter={[20, 20]} className="d-flex align-end">
+          <Col xl={7} lg={7} md={24} sm={24} xs={24}>
+            <Form.Item
+              name="category"
+              label="Category"
+              rules={[{ required: true, whitespace: true }]}
+            >
+              <Select options={category} />
+            </Form.Item>
+          </Col>
+          <Col xl={7} lg={7} md={24} sm={24} xs={24}>
+            <Form.Item
+              name="Course"
+              label="Course"
+              rules={[{ required: true }]}
+            >
+             <Select options={[
+              {
+                value:'1',
+                label:'1-course'
+              },  
+              {
+                value:'2',
+                label:'2-course'
+              },  {
+                value:'3',
+                label:'3-course'
+              },  
+              {
+                value:'4',
+                label:'4-course'
+              },  
+              {
+                value:'5',
+                label:'5-course'
+              },  {
+                value:'6',
+                label:'6-course'
+              },
+
+              ]} onChange={courseChange} />
+            </Form.Item>
+          </Col>
+          <Col xl={7} lg={7} md={24} sm={24} xs={24}>
+          <Form.Item
+              name="theme"
+              label="Mavzu"
+              rules={[{ required: true, whitespace: true }]}
+            >
+              <Select options={[{
+                value:'mavzu',
+                label:'Mavzu' },
+                {
+                value:'test',
+                label:'Test'
+                }
+                ]} />
+            </Form.Item>
+          </Col>
+        </Row>
+      </Form>
+
    <div className = 'container-star' > <Row gutter={24}>
+   
         <Col span={12}>
             <div>
                 <Row gutter={10}>
@@ -78,7 +157,7 @@ import {AiOutlineDislike, AiOutlineLike} from 'react-icons/ai'
                                </div>
                                <Divider/>
                                <h2 style={{color:'#666CFF'}}>Course Activity</h2>
-                                <Progress percent={(kun*3)} />
+                                <Progress percent={(Math.round(kun*3.3))} />
                         </Card>
                     </Col>
                 </Row>
@@ -144,7 +223,7 @@ import {AiOutlineDislike, AiOutlineLike} from 'react-icons/ai'
                           <Avatar icon={<GrTestDesktop/>} size={50} style={{backgroundColor:'#FDB528'}} />
                           <Statistic
                                 title="doing"
-                                value={20}
+                                value={10}
                                 valueStyle={{
                                 color: '#FDB528',
                                 fontSize:'1.5rem',margin:'-10px 10px 0'
@@ -167,7 +246,7 @@ import {AiOutlineDislike, AiOutlineLike} from 'react-icons/ai'
                           <Avatar icon={<FaUserClock/>} size={50} style={{backgroundColor:'#666CFF'}} />
                           <Statistic
                                 title="doing"
-                                value={20}
+                                value={10}
                                 valueStyle={{
                                 color: '#666CFF',
                                 fontSize:'1.5rem',margin:'-10px 10px 0'

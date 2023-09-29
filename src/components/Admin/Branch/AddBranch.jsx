@@ -40,16 +40,16 @@ const AddBranch = ({showModal,setShowModal,itemRecord})=>{
                 size="default"
                 layout="vertical"
             >
-                <Form.Item name="title" label="Filial nomi" >
+                <Form.Item name="title" label={t('branchName')} >
                     <Input  />
                 </Form.Item>
-                <Form.Item name={'director'} label="Filial rahbari" >
+                <Form.Item name={'director'} label={t('branchManager')} >
                     <Input/>
                 </Form.Item>
-                <Form.Item name={'phone'} label="Filial raqami"  >
+                <Form.Item name={'phone'} label={t('branchPhoneNumber')}  >
                     <Input/>
                 </Form.Item>
-                <Form.Item name={'branch_name'} label="Filial to`liq nomlanishi"  >
+                <Form.Item name={'branch_name'} label={t('branchFullName')}  >
                     <Input/>
                 </Form.Item>
             </Form>

@@ -52,7 +52,7 @@ const UserList = () => {
       key: "phone",
     },
     {
-      title: "Pasport",
+      title:t('pasport'),
       dataIndex: "passport",
       key: "passport",
       render: (text) => {
@@ -64,7 +64,7 @@ const UserList = () => {
       },
     },
     {
-      title: "Status",
+      title: t("status"),
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -80,7 +80,7 @@ const UserList = () => {
       },
     },
     {
-      title: "Blok",
+      title:t('blok'),
       dataIndex: "is_block",
       key: "is_block",
       align: "center",
@@ -96,7 +96,6 @@ const UserList = () => {
       },
     },
   ];
-
   //getUserList
   const  getUserList= async (page, pageSize) => {
     setTableLoading(true);
@@ -203,7 +202,7 @@ const UserList = () => {
 //serch
 const textSearch = (e) => {
     const   value = e.target.value
-    if (value.length > 1) {
+    if (value.length > 3) {
         setSearchText(e.target.value)
     }
 }
@@ -271,17 +270,17 @@ const textSearch = (e) => {
         >
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="first_name" label="Ismi">
+              <Form.Item name="first_name" label={t('name')}>
                 <Input disabled  />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="last_name" label="Familiyasi">
+              <Form.Item name="last_name" label={t('surName')}>
                 <Input disabled   />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="patronymic" label="Otasining ismi">
+              <Form.Item name="patronymic" label={t('midName')}>
                 <Input disabled  />
               </Form.Item>
             </Col>
@@ -290,7 +289,7 @@ const textSearch = (e) => {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="series"
-                label="Pasport seriyasi"
+                label={t('passportSeries')}
                 rules={[
                   {
                     required: true,
@@ -307,7 +306,7 @@ const textSearch = (e) => {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="number"
-                label="Pasport raqami"
+                label={t('passportNumber')}
                 rules={[
                   {
                     required: true,
@@ -324,7 +323,7 @@ const textSearch = (e) => {
           </Row>
           <Form.Item
             name="pinfl"
-            label="PINFL"
+            label={t('pinfl')}
             rules={[
               {
                 required: true,
@@ -361,7 +360,7 @@ const textSearch = (e) => {
           </Form.Item>
           <Form.Item
             name={'branch_id'}
-            label={'Filialni tanlang'}
+            label={t('branchName')}
           >
             <Select
                 options={branch}
@@ -371,7 +370,7 @@ const textSearch = (e) => {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="password"
-                label="Parol"
+                label={t('password')}
                 required={[{ required: true, min: 6 }]}
               >
                 <Input disabled={loading} />
@@ -380,7 +379,7 @@ const textSearch = (e) => {
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="password_confirmation"
-                label="Parolni takrorlang"
+                label={t('confirmation')}
                 required={[{ required: true, min: 6 }]}
               >
                 <Input disabled={loading} />

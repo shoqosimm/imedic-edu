@@ -44,7 +44,7 @@ const  ListBranch = ()=>{
             key: "id",
         },
         {
-            title:"Filial nomi",
+            title:t('branchName'),
             dataIndex:"title",
             key:"title"
         },
@@ -63,7 +63,7 @@ const  ListBranch = ()=>{
     return (
         <div className="branch">
             <Button onClick={handleAdd} className="add_btn" type="primary">
-                Qo'shish
+             {t('addition')}
             </Button>
             <Table
                 columns={columns}

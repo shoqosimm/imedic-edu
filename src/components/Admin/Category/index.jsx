@@ -40,12 +40,12 @@ const AdminCategory = () => {
       width: "5%",
     },
     {
-      title: "Turkum nomi",
+      title:t('categoryName'),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Yo'nalish",
+      title:t('direction'),
       dataIndex: "is_malaka",
       key: "is_malaka",
       render: (text) => {
@@ -55,7 +55,7 @@ const AdminCategory = () => {
       },
     },
     {
-      title: "Status",
+      title:t("status"),
       dataIndex: "is_active",
       key: "is_active",
       render: (text) => {
@@ -70,7 +70,7 @@ const AdminCategory = () => {
       },
     },
     {
-      title: "O'zgartirish",
+      title:t("change"),
       dataIndex: "edit",
       key: "edit",
       align: "center",
@@ -90,7 +90,7 @@ const AdminCategory = () => {
               style={{ cursor: "pointer" }}
             />
             <Popconfirm
-              title="O'chirish"
+              title="o'chirish"
               description="siz haqiqatdan ham ushbu hodimni o'chirmoqchimisiz?"
               onConfirm={() => deleteCategory(record)}
               onCancel={() => message.error("Bekor qilindi")}
@@ -216,7 +216,7 @@ const AdminCategory = () => {
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="name"
-              label="Turkum nomi"
+              label={t('categoryName')}
               rules={[{ required: true, whitespace: true }]}
             >
               <Input disabled={loading} />
@@ -225,7 +225,7 @@ const AdminCategory = () => {
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="is_malaka"
-              label="Yo'nalish"
+              label={t('direction')}
               rules={[{ required: true, whitespace: true }]}
             >
               <Select
@@ -245,7 +245,7 @@ const AdminCategory = () => {
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
             <Button loading={loading} htmlType="submit" type="primary">
-              Qo'shish
+            {t('addition')}
             </Button>
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
@@ -272,7 +272,7 @@ const AdminCategory = () => {
         }}
       />
       <Modal
-        title="O'zgartirish"
+        title={t('change')}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={
@@ -302,7 +302,7 @@ const AdminCategory = () => {
         >
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="name" label="Turkum nomi">
+              <Form.Item name="name" label={t('categoryName')}>
                 <Input />
               </Form.Item>
             </Col>
@@ -310,7 +310,7 @@ const AdminCategory = () => {
               <Form.Item
                 rules={[{ required: true }]}
                 name="is_malaka"
-                label="Yo'nalish"
+                label={t('direction')}
               >
                 <Select
                   style={{ width: "100%" }}

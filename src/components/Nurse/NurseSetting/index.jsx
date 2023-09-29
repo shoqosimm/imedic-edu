@@ -164,7 +164,7 @@ const NurseSetting = () => {
                     type="primary"
                     onClick={() => setIsModalOpen(true)}
                   >
-                    Parolni o'zgartirish
+                    {t('resetPassword')}
                   </Button>
                 </li>
               </ul>
@@ -175,7 +175,7 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="first_name"
-                  label="Ism"
+                  label={t('name')}
                   rules={[
                     {
                       required: true,
@@ -190,7 +190,7 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="last_name"
-                  label="Familiya"
+                  label={t('surName')}
                   rules={[
                     {
                       required: true,
@@ -204,25 +204,25 @@ const NurseSetting = () => {
               </Col>
             </Row>
             <Row>
-              <Form.Item name="patronymic" label="Otasining ismi">
+              <Form.Item name="patronymic" label={t('midName')}>
                 <Input disabled={disabled} />
               </Form.Item>
             </Row>
             <Row gutter={[20]}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="series" label="Pasport seriyasi">
+                <Form.Item name="series" label={t('passportSeries')}>
                   <Input placeholder="AA" />
                 </Form.Item>
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="number" label="Pasport raqami">
+                <Form.Item name="number" label={t('passportNumber')}>
                   <Input placeholder="1234567" />
                 </Form.Item>
               </Col>
             </Row>
             <Form.Item
               name="pinfl"
-              label="PINFL"
+              label={t('pinfl')}
               rules={[
                 {
                   required: true,
@@ -236,7 +236,7 @@ const NurseSetting = () => {
               <Input
                 className="d-flex align-center"
                 disabled={loading}
-                placeholder="14 ta son"
+                placeholder={t('count14')}
                 suffix={<Button onClick={getPnflInfo}>{t('check')}</Button>}
               />
             </Form.Item>

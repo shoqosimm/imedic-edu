@@ -101,7 +101,6 @@ const Register = () => {
       setloading(false);
     }
   };
-
   return (
     <div className="RegisterPage">
       <div className="container form_wrapper">
@@ -113,7 +112,7 @@ const Register = () => {
           id="registerForm"
         >
           <div className="main_text">
-            <h1>Ro'yxatdan o'tish</h1>
+            <h1>{t('register')}</h1>
           </div>
           <div>
             <Form.Item
@@ -140,7 +139,7 @@ const Register = () => {
             <div className="inputWrapper d-flex align-center gap-2">
               <Form.Item
                 name="first_name"
-                label="Ism"
+                label={t('name')}
                 rules={[
                   {
                     required: true,
@@ -153,7 +152,7 @@ const Register = () => {
               </Form.Item>
               <Form.Item
                 name="last_name"
-                label="Familiya"
+                label={t('surName')}
                 rules={[
                   {
                     required: true,
@@ -165,10 +164,10 @@ const Register = () => {
                 <Input disabled={disabled} />
               </Form.Item>
             </div>
-            <Form.Item name="patronymic" label="Otasining ismi">
+            <Form.Item name="patronymic" label={t('midName')}>
               <Input disabled={disabled} />
             </Form.Item>
-            <Form.Item name="phone" label="Telefon raqam"
+            <Form.Item name="phone" label={t('phoneNumber')}
                rules={[
                 {
                   required: true,
@@ -181,25 +180,21 @@ const Register = () => {
               <Input
                 disabled={loading}
                 placeholder="998901234567"
-               
               />
             </Form.Item>
             <Form.Item name="birth_date" label={t('birth')}>
               <DatePicker disabled />
             </Form.Item>
-            <Form.Item  name="branch_id" label="Markaz filialini tanlang" 
-              
-            >
+            <Form.Item  name="branch_id" label={t('branchSelect')}>
                 <Select 
                   size="large"
                   options={options}
                 />
               </Form.Item>
             <div className="inputWrapper d-flex align-center gap-2">
-           
               <Form.Item
                 name="password"
-                label="Parol"
+                label={t('parol')}
                 rules={[
                   {
                     required: true,
@@ -213,7 +208,7 @@ const Register = () => {
               </Form.Item>
               <Form.Item
                 name="password_confirmation"
-                label="Parolni takrorlang"
+                label={t('confirmation')}
                 rules={[
                   {
                     required: true,
@@ -225,7 +220,6 @@ const Register = () => {
               >
                 <Input disabled={loading} defaultValue={'123456'}  type="text" />
               </Form.Item>
-              
             </div>
           </div>
           <Button
@@ -234,11 +228,11 @@ const Register = () => {
             htmlType="submit"
             style={{ width: "100%", marginTop: "1rem" }}
           >
-            Ro'yxatdan o'tish
+           {t('register')}
           </Button>
           <div className="other__sign">
             <p>
-              sizda akkaunt bormi unday bo'lsa, <Link to="/login">Kirish</Link>
+              {t('loginIn')}  <Link to="/login">{t('login')}</Link>
             </p>
           </div>
         </Form>

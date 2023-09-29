@@ -5,7 +5,7 @@ import { api } from "../../../utils/api";
 import "./style.scss";
 import CardCourseList from "../../generics/CardCourseList";
 import EmptyBox from "../../../assets/illustration/emptyBox.webp";
-
+import { t } from "i18next";
 const NurseMyCourseList = () => {
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -101,7 +101,7 @@ const NurseMyCourseList = () => {
             style={{ background: "#fff", width: "100%", height: "500px" }}
           >
             <img src={EmptyBox} alt="empty" width={"200px"} />
-            <em style={{ fontSize: "18px" }}>Sizda kurslar mavjud emas!</em>
+            <em style={{ fontSize: "18px" }}>{t('noCourse')}</em>
           </div>
         )}
       </Col>

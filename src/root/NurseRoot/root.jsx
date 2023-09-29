@@ -140,16 +140,16 @@ const Nurse = () => {
             className="lang d-flex align-center gap-x-1"
             onSelect={onSelectLang}
             defaultValue={lang}
+           
             options={[
               {label:'ru',value:'ru'},
               {label:'uz',value:'uz'}
             ]}
           />
-
-          
           <Button
             className="logOut d-flex align-center gap-x-1"
             icon={<AiOutlineLogout />}
+            type="primary"
             onClick={handleLogOut}
           >
             {t('logOut')}
