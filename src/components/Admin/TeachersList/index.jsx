@@ -204,9 +204,9 @@ const AdminTeacherList = () => {
     try {
       if (res) {
         setLoading(false);
-        toast.success("Yaratildi!");
+        toast.success(t('wasCreated'));
       }
-      toast.error("Ma'lumotlar noto'g'ri ko'rsatildi");
+      toast.error(t('dateError'));
     } catch (err) {
       console.log(err, "err");
       setLoading(false);
@@ -254,13 +254,13 @@ const editPhone=(id)=>{
   api.post(`api/admin/teacher/update/user/phone`,body).then(res=>{
     if(res){
       notification.success({
-        message:'telefon raqam yangilandi',
+        message:t('telUpdate'),
         icon:null
       })
     }
     else{
       notification.error({
-        message:'qayta urnib ko`ring',
+        message:t('tryAgain'),
         icon:null
       })
     }
@@ -287,13 +287,13 @@ const savePassword=()=>{
           setModalOpen(false)
             form.resetFields();
             notification.success({
-              message:'parol yangilandi',
+              message:t('passwordUpdate'),
               icon:null
             })
         }
         else{
           notification.error({
-            message:'qayta urnib ko`ring',
+            message:t('tryAgain'),
             icon:null
           })
         }
@@ -335,7 +335,7 @@ const offSteps=()=>{
       />
       <Modal
         width={720}
-        title="O'qituvchi qo'shish"
+        title={t('teacherAdd')}
         open={isModalOpen}
         onCancel={() => {
           form.resetFields();
@@ -398,7 +398,7 @@ const offSteps=()=>{
                     required: true,
                     min: 2,
                     max: 2,
-                    message: "Pasport seriyasini kiriting",
+                    message:t('typingPassportSeries'),
                     whitespace: true,
                   },
                 ]}
@@ -415,7 +415,7 @@ const offSteps=()=>{
                     required: true,
                     min: 7,
                     max: 7,
-                    message: "Pasport raqamini kiriting",
+                    message:t('typingPassportNumber'),
                     whitespace: true,
                   },
                 ]}
@@ -432,7 +432,7 @@ const offSteps=()=>{
                 required: true,
                 min: 14,
                 max: 14,
-                message: "Pinfl ni kiriting",
+                message:t('typingPinfl'),
                 whitespace: true,
               },
             ]}
@@ -507,13 +507,13 @@ const offSteps=()=>{
                         <Steps.Step title={t('confirmation')}/>
                         <Steps.Step title={t('finishPassword')} />
                     </Steps>
-                     <Form.Item name='password' label="Parol" style={{marginTop:'30px'}} rules={[{require:true,message:'yagi parolni kiriting',whitespace:true }]} >
+                     <Form.Item name='password' label="Parol" style={{marginTop:'30px'}} rules={[{require:true,message:t('enterNewParol'),whitespace:true }]} >
                         <Input /> 
                         <Button  style={{display:`${onstep?"none":"inline-block"}`,
                         margin:'20px 5px 0px 400px'}} onClick={onSteps}>next</Button>
                     </Form.Item>
                     <Form.Item style={{display:`${onstep?"block":"none"}`}} 
-                    name='password_confirmation' label="Parolni takrorlang" rules={[{require:true,whitespace:true}]} >
+                    name='password_confirmation' label={t('confirmation')} rules={[{require:true,whitespace:true}]} >
                         <Input  />
                     </Form.Item>
                 </Form>

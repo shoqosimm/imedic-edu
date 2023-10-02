@@ -267,7 +267,7 @@ const CreateSubject = () => {
     try {
       const res = await api.post(`api/media/upload`, body, config);
       res.status === 200 &&
-        toast.success("Загружено", { position: "bottom-right" });
+        toast.success(t('uploaded'), { position: "bottom-right" });
       setPdfTokens((prev) => (prev = res.data.token));
       setUpdateBtn(false);
     } catch (err) {
@@ -295,7 +295,7 @@ const CreateSubject = () => {
     try {
       const res = await api.post(`api/media/upload`, body, config);
       res.status === 200 &&
-        toast.success("Загружено", { position: "bottom-right" });
+        toast.success(t('wasCreated'), { position: "bottom-right" });
       setVideoTokens((prev) => (prev = res.data.token));
       setUpdateBtn(false);
     } catch (err) {
@@ -396,7 +396,7 @@ const CreateSubject = () => {
         </Row>
       </Modal>
       <Card loading={openModal}>
-        <Card title="Mavzu yoki Test qo'shish">
+        <Card title={t('cTitle')}>
           <Form
             form={form}
             name="create-topic"
@@ -443,7 +443,7 @@ const CreateSubject = () => {
                   name="teaser"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="tizer" disabled={loading} />
+                  <Input placeholder={t('teaser')} disabled={loading} />
                 </Form.Item>
                 <div
                   style={{ margin: "1rem 0", flexWrap: "wrap" }}
@@ -569,7 +569,7 @@ const CreateSubject = () => {
                   name="right_test"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="o`tish soni " disabled={loading} />
+                  <Input placeholder={t('transitions')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="resubmit"
@@ -578,14 +578,14 @@ const CreateSubject = () => {
                       required: true,
                       whitespace: true,
                       min: 1,
-                      message: "son ko'rinishida bo'lishi kerak!",
+                      message:t('typeNumber'),
                     },
                   ]}
                 >
                   <Input
                     type="number"
                     controls={false}
-                    placeholder="Qayta topshirish vaqti"
+                    placeholder={t('resubmit')}
                     disabled={loading}
                   />
                 </Form.Item>
@@ -593,7 +593,7 @@ const CreateSubject = () => {
                   name="teaser"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="tizer" disabled={loading} />
+                  <Input placeholder={t('teaser')} disabled={loading} />
                 </Form.Item>
                 <Upload
                   maxCount={1}
@@ -629,7 +629,7 @@ const CreateSubject = () => {
                 htmlType="submit"
                 disabled={updateBtn}
               >
-                {t('create +')}
+                {t('create',)}
               </Button>
             </Form.Item>
           </Form>

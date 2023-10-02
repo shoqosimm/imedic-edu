@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 import CountDown from "./CountDown";
 import moment from "moment";
 import { useCallback } from "react";
+import { t } from "i18next";
 
 const MySubjectTest = () => {
   const navigate = useNavigate();
@@ -205,7 +206,7 @@ const MySubjectTest = () => {
     <div className="container__test d-flex gap-x-2">
       {coverNav && (
         <div className="coverNav">
-          Test boshlandi! test yakunlangandan so'ng menu ko'rinadi.
+         {t('testStart')}
         </div>
       )}
       <div className="drawer">
@@ -246,8 +247,8 @@ const MySubjectTest = () => {
             <Button
               onClick={() => {
                 Swal.fire({
-                  title: "Yakunlash",
-                  text: "Siz haqiqatdan ham ushbu testni yakunlamoqchimisz?",
+                  title:t('finish'),
+                  text:t('finishText'),
                   confirmButtonText: "Ha, yakunlash",
                   cancelButtonText: "Yo'q, davom etish",
                   showCancelButton: true,
@@ -259,7 +260,7 @@ const MySubjectTest = () => {
               }}
               className="test__finish"
             >
-              Yakunlash
+              {t('finish')}
             </Button>
           </div>
           <Skeleton loading={loading} >
@@ -320,29 +321,24 @@ const MySubjectTest = () => {
           <div className="d-flex gap-y-3" style={{ flexDirection: "column" }}>
             <div>
               <p>
-                Test vaqti: <strong>{testInfo?.course_subject.time}</strong> min
+                {t('testTime')}: <strong>{testInfo?.course_subject.time}</strong> min
               </p>
               <p>
-                Test soni:{" "}
+                {t('testNumber')}:{" "}
                 <strong>{testInfo?.course_subject.count_test}</strong> ta
               </p>
               <p>
-                To'g'ri javoblarning minimal soni:
+                {t('miniCorrectAnsewer')}
                 <strong> {testInfo?.course_subject.right_test}</strong> ta
               </p>
               <p>
-                Qayta topshirish oraliq vaqti:
-                <strong> {testInfo?.course_subject.resubmit}</strong> Soat
+              {t('resubmit')}
+                <strong> {testInfo?.course_subject.resubmit}</strong> {t('time')}
               </p>
             </div>
             <div className="test__modal__desctiption">
               <p>
-                Test vaqti {testInfo?.course_subject.time} minut bo'lib, ushbu
-                testni yakunlamasdan sahifani tark etish mumkin emas, Agarda
-                testni yakunlamasdan sahifani tark etadigan bo'lsangiz testga
-                ajratilgan vaqt davom etadi va vaqt yakunlangandan so'ng test
-                ham yakunlanadi va testni javoblari qa'bul qilinadi, test
-                "Testni boshlash" tugmasini bosilgandan so'ng boshlanadi.
+                {t('testTime')} {testInfo?.course_subject.time} {t('testInfo')}
               </p>
             </div>
           </div>

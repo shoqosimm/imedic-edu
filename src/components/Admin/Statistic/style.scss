@@ -1,0 +1,43 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.container-star{
+    width: 90%;
+    margin: auto;
+    margin-top: 5%;
+}
+.container-from{
+    width: 90%;
+    margin: auto;
+}
+.cardDesgin{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: 400px;
+}
+.testDesgin{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height:190px;
+}
+.course-btn{
+    display: flex;
+    align-items: center;
+    gap: 5;
+    font-size: 1.5rem;
+    margin: 5px;
+}
+.drawerList{
+    background: #fff;
+     color:white;
+    span{
+        font-size: 1rem;
+        margin: 10px 5px 10px;
+    }
+}

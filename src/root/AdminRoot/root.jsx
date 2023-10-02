@@ -34,7 +34,7 @@ import { t } from "i18next";
   const handleLogOut = () => {
     Swal.fire({
       icon: "warning",
-      title: "Siz haqiqatdan ham tark etmoqchimisiz",
+      title:t('exit'),
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);

@@ -33,7 +33,7 @@ const NurseMyCourse = () => {
       })
       .then((res) => {
         if (res.data.length <= 0) {
-          setEmptyText("Bu kurs bo'yicha mavzular mavjud emas!");
+          setEmptyText(t('notTopic'));
         }
         setCourses(
           res.data.map((item) => {
@@ -101,7 +101,7 @@ const NurseMyCourse = () => {
       try {
         const response = await api.post("api/nurse/notion/comment", body);
         response &&
-          toast.success("Sizning izohingiz qa'bul qilindi", {
+          toast.success(t('commentAdd') , {
             position: "bottom-right",
           });
         setLoadingComment(false);
@@ -112,7 +112,7 @@ const NurseMyCourse = () => {
         setLoadingComment(false);
       }
     } else {
-      toast.warn("Yo'q mavzuga izoh qoldirib bo'lmaydi!", {
+      toast.warn(t('notComment'), {
         position: "bottom-right",
       });
     }
@@ -128,7 +128,7 @@ const NurseMyCourse = () => {
       try {
         const response = await api.post(`api/nurse/notion/rate`, body);
         response &&
-          toast.success("Sizning bahoyingiz qa'bul qilindi", {
+          toast.success(t('price'), {
             position: "bottom-right",
           });
         getRate(courses[0].course_id);
@@ -136,7 +136,7 @@ const NurseMyCourse = () => {
         console.log(err, "err");
       }
     } else {
-      toast.warn("Yo'q mavzuga baho qo'yib bo'lmaydi!", {
+      toast.warn(t('notPrice'), {
         position: "bottom-right",
       });
     }
@@ -208,7 +208,7 @@ const NurseMyCourse = () => {
             layout="vertical"
             form={form}
           >
-            <Form.Item label="Kursni baholang">
+            <Form.Item label={t('coureseRate')}>
               <Rate
                 onChange={handleRate}
                 value={initialRate.rate}
@@ -219,12 +219,12 @@ const NurseMyCourse = () => {
             <div>
               <Form.Item
                 name="comment"
-                label="Izoh"
+                label={t('coment')}
                 rules={[{ required: true }]}
               >
                 <Input.TextArea
                   autoSize={{ minRows: 5 }}
-                  placeholder="Izoh"
+                  placeholder={t('coment')}
                   disabled={loadingComment}
                 />
               </Form.Item>
@@ -237,7 +237,7 @@ const NurseMyCourse = () => {
                 {t('sentComent')}
               </Button>
             </div>
-            <Card title="Izohlar" className="izohCard">
+            <Card title={t('coments')} className="izohCard">
               {loading && <Spin />}
               {comment?.map((item) => {
                 return (

@@ -44,7 +44,7 @@ const Register = () => {
     const res = await api.post("api/user/register", body);
     try {
       if (res) {
-        toast.success("Muvaffaqiyatli", {
+        toast.success(t('successful'), {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setTimeout(() => {
@@ -73,7 +73,7 @@ const Register = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Topildi",
+          title:t('find'),
           showConfirmButton: false,
           timer: 2000,
           timerProgressBar: true,
@@ -90,7 +90,7 @@ const Register = () => {
     } catch (err) {
       Swal.fire({
         icon: "error",
-        title: "Ushbu PINFL bo'yicha ma'lumot topilmadi",
+        title:t('notPinflItem'),
         showConfirmButton: false,
         timer: 2000,
         timerProgressBar: true,
@@ -121,7 +121,7 @@ const Register = () => {
               rules={[
                 {
                   required: true,
-                  message: "PINFL to'g'ri kiriting (14ta)",
+                  message:t('pinflError') ,
                   whitespace: true,
                   min: 14,
                   max: 14,
@@ -143,7 +143,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Ism noto'g'ri kiritildi",
+                    message:t('nameError'),
                     whitespace: true,
                   },
                 ]}
@@ -156,7 +156,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Familiya noto'g'ri kiritildi",
+                    message:t('surNameError'),
                     whitespace: true,
                   },
                 ]}
@@ -171,7 +171,7 @@ const Register = () => {
                rules={[
                 {
                   required: true,
-                  message: "Telefon raqam kiriting",
+                  message:t('typingPhoneNumber'),
                   whitespace: true,
                   min: 12,
                 },
@@ -198,7 +198,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Parol kiriting",
+                    message: t('newPassword'),
                     whitespace: true,
                     min: 6,
                   },
@@ -212,7 +212,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Parol kiriting",
+                    message: t('newPassword'),
                     whitespace: true,
                     min: 6,
                   },

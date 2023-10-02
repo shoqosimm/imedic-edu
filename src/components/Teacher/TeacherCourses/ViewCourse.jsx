@@ -86,17 +86,17 @@ const ViewCourse = () => {
       dataIndex: "rate",
       key: "rate",
       align: "center",
-      render: (t) => {
+      render: () => {
         return (
           <div className="d-flex align-center justify-center gap-x-1">
-            <Tooltip title="o'rtacha baho">
+            <Tooltip title={t('centerRate')} >
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
                 <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
               </div>
             </Tooltip>
             {"-"}
-            <Tooltip title="baho qo'yganlar soni">
+            <Tooltip title={t('countRate')}>
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
                 <BiUser />
@@ -129,22 +129,22 @@ const ViewCourse = () => {
       render: (text, record) =>
         record.subject_type == "topic" ? (
           <Space size="middle">
-            <Tooltip title="O'zgartirish">
+            <Tooltip title={t('change')}>
               <BiPencil className="iconView" onClick={() => edit(record)} />
             </Tooltip>
-            <Tooltip title="Statusni o'zgartirish">
+            <Tooltip title={t('editStatus')}>
               <AiOutlineSync
                 className="iconView"
                 onClick={() => showModal(record)}
               />
             </Tooltip>
-            <Tooltip title="Ko'rish">
+            <Tooltip title={t('toSee')}>
               <BiWindowOpen className="iconView" onClick={() => view(record)} />
             </Tooltip>
           </Space>
         ) : (
           <Space size="middle">
-            <Tooltip title="Test qo'shish">
+            <Tooltip title={t('testAdd')}>
               <BiPlusCircle
                 className="iconView"
                 onClick={() =>
@@ -157,16 +157,16 @@ const ViewCourse = () => {
                 }
               />
             </Tooltip>
-            <Tooltip title="O'zgartirish">
+            <Tooltip title={t('change')}>
               <BiPencil className="iconView" onClick={() => edit(record)} />
             </Tooltip>
-            <Tooltip title="Statusni o'zgartirish">
+            <Tooltip title={t('editStatus')}>
               <AiOutlineSync
                 className="iconView"
                 onClick={() => showModal(record)}
               />
             </Tooltip>
-            <Tooltip title="Ko'rish">
+            <Tooltip title={t('toSee')}>
               <BiWindowOpen className="iconView" onClick={() => view(record)} />
             </Tooltip>
           </Space>

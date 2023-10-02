@@ -44,7 +44,7 @@ const EditTest = () => {
       .post(`api/teacher/test/update/${param.id}`, body)
       .then((res) => {
         if (res) {
-          toast.success("Yaratildi");
+          toast.success(t('wasCreated'));
           setLoading(false);
           form.resetFields();
         }

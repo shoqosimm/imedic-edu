@@ -81,7 +81,7 @@ const SubjectItemPage = () => {
           setAddCours(true);
         }, 10000);
         setAddCourseText(
-          `Kursni o'qishda davom etish uchun ushbu kursni "Ha" tugmasi orqali mening kurslarim ro'yxatiga qo'shing.`
+          t('courseText')
         );
       }
     } catch (err) {
@@ -104,7 +104,7 @@ const SubjectItemPage = () => {
         if (res.data.data.length > 0) {
           setComment(res.data.data);
         } else {
-          setCommentEmptyText("Ushbu mavzu bo'yicha izohlar mavjud emas...");
+          setCommentEmptyText(t('notComent'));
         }
       })
       .catch((err) => {
@@ -137,7 +137,7 @@ const SubjectItemPage = () => {
       })
       .then((res) => {
         if (res.data.success) {
-          Notification("Kurs qo'shildi");
+          Notification(t('courseAdded'));
           setTimeout(() => {
             navigate("/nurse/mycourse");
           }, 1500);

@@ -107,7 +107,7 @@ const EditCourse = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.success) {
-            toast.success("O'zgartirildi");
+            toast.success(t('changed'));
             setTimeout(() => {
               navigate("/teacher/course");
             }, 1500);
@@ -196,11 +196,11 @@ const EditCourse = () => {
             <Input
               className="editInput"
               disabled={loading}
-              placeholder="Kurs nomi"
+              placeholder={t('courseName')}
               rules={[
                 {
                   required: true,
-                  message: "Iltimos, kursning nomini kiriting!",
+                  message: t('typingCourseName'),
                 },
               ]}
             />
@@ -210,12 +210,12 @@ const EditCourse = () => {
               className="editInput"
               disabled={loading}
               options={category}
-              placeholder="Turkum tanlang"
+              placeholder={t('courseCategory')}
               style={{ width: "100%" }}
               rules={[
                 {
                   required: true,
-                  message: "Iltimos, kursga oid turkumni tanlang!",
+                  message:t('typingCourseCategory'),
                 },
               ]}
             />

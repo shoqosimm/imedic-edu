@@ -22,7 +22,6 @@ import './utils/i18';
 import Months from "./components/Admin/Month/Months";
 import StatisticList from "./components/Admin/Statistic/Statistic";
 
-
 const Login = lazy(() => import("./components/Login"));
 const Register = lazy(() => import("./components/Register"));
 

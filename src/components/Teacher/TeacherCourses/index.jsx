@@ -59,17 +59,17 @@ const TeacherCourses = () => {
       dataIndex: "rate",
       key: "rate",
       align: "center",
-      render: (t) => {
+      render: () => {
         return (
           <div className="d-flex align-center justify-center gap-x-1">
-            <Tooltip title="o'rtacha baho">
+            <Tooltip title={t('centerRate')}>
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
                 <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
               </div>
             </Tooltip>
             {"-"}
-            <Tooltip title="baho qo'yganlar soni">
+            <Tooltip title={t('countRate')}>
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
                 <BiUser />
@@ -127,7 +127,7 @@ const TeacherCourses = () => {
   };
   const handleOk = () => {
     setConfirmLoading(true);
-    setModalText("Yuklanmoqda...");
+    setModalText(t('loading'));
     api
       .get(`api/teacher/course/active/${idModal}`)
       .then((res) => {

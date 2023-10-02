@@ -63,7 +63,7 @@ const SubjectPage = () => {
         if (res.data.data.length > 0) {
           setComment(res.data.data);
         } else {
-          setCommentEmptyText("Ushbu kurs bo'yicha izohlar mavjud emas...");
+          setCommentEmptyText(t('notComent'));
         }
       })
       .catch((err) => {

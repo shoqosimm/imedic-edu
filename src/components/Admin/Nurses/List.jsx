@@ -165,7 +165,7 @@ const List = () => {
                         }
                     ]}
                     />
-                     <Form.Item name={'password'} style={{marginTop:30}}  rules={[{require:true,message:'new password',whitespace:true,max:6,min:6 }]} >
+                     <Form.Item name={'password'} style={{marginTop:30}}  rules={[{require:true,message:t('newParol'),whitespace:true,max:6,min:6 }]} >
                         <Input placeholder="123456" /> 
                         <Button  style={{display:`${onstep?"none":"inline-block"}`,
                         margin:'20px 5px 0px 400px'}} onClick={onSteps}>{t('next')}</Button>

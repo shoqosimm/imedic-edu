@@ -130,9 +130,9 @@ const handleAdd = async(values)=>{
         const res = await api.post("api/admin/month/add", body);
         try {
           if (res) {
-            toast.success("Yaratildi!");
+            toast.success(t('wasCreated'));
           }
-          toast.error("Ma'lumotlar noto'g'ri ko'rsatildi");
+          toast.error(t('dateError'));
         } catch (err) {
           console.log(err, "err");
           setLoading(false);
@@ -184,7 +184,7 @@ const handleAdd = async(values)=>{
         </Row>
       </Form>
 
-            <Input placeholder={t('serach')}  onChange={search} />
+            <Input placeholder={t('search')}  onChange={search} />
             <Table
                 loading={tableLoading}
                 columns={columns}

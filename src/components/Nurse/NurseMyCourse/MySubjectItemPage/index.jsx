@@ -151,7 +151,7 @@ const MySubjectItemPage = () => {
         if (res.data.data.length > 0) {
           setComment(res.data.data);
         } else {
-          setCommentEmptyText("Ushbu mavzu bo'yicha izohlar mavjud emas...");
+          setCommentEmptyText(t('notComent'));
         }
       })
       .catch((err) => {
@@ -195,7 +195,7 @@ const MySubjectItemPage = () => {
     };
     try {
       const response = await api.post(`api/nurse/notion/rate`, body);
-      response && toast.success("Sizning bahoyingiz qa'bul qilindi");
+      response && toast.success(t('price'));
     } catch (err) {
       console.log(err, "err");
     }

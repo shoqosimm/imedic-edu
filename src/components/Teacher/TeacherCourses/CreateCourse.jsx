@@ -100,7 +100,7 @@ const CreateCourse = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.success) {
-            toast.success("Yaratildi");
+            toast.success(t('wasCreated'));
             setTimeout(() => {
               setLoading(false);
               form.resetFields();
@@ -172,7 +172,7 @@ const CreateCourse = () => {
               rules={[
                 {
                   required: true,
-                  message: "Iltimos, kursning nomini kiriting!",
+                  message:t('typingCourseName'),
                 },
               ]}
             />
@@ -187,7 +187,7 @@ const CreateCourse = () => {
               rules={[
                 {
                   required: true,
-                  message: "Iltimos,kursga oid turkum tanlang!",
+                  message: t('typingCourseCategory'),
                 },
               ]}
             />

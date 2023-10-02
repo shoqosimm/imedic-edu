@@ -139,7 +139,7 @@ const CreateTest = () => {
               label={t('question')}
               rules={[{ required: true }]}
             >
-              <Input placeholder="testning savoli" />
+              <Input placeholder={t('questionTest')}/>
             </Form.Item>
             <Form.Item
               name="from_subject_id"

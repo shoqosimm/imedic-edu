@@ -210,10 +210,10 @@ const textSearch = (e) => {
     <div className="admin_teacher">
          <div style={{display:'flex', justifyContent:'flex-end'}}>
         <Button  onClick={handleAdd} className="teacher_btn " type="primary">
-          Qo'shish
+          {t('addition')}
       </Button>
         </div>
-      <Input placeholder="Qidirish..." onChange={textSearch}/>
+      <Input placeholder={t('search')} onChange={textSearch}/>
       <Table
         loading={tableLoading}
         scroll={{ x: 400 }}
@@ -232,7 +232,7 @@ const textSearch = (e) => {
       />
       <Modal
         width={720}
-        title="Foydalanuvchi qo'shish"
+        title={t('userAdd')}
         open={isModalOpen}
         onCancel={() => {
           form.resetFields();
@@ -257,7 +257,7 @@ const textSearch = (e) => {
               type="primary"
               loading={loading}
             >
-              Qo'shish
+             {t('addition')}
             </Button>
           </div>
         }
@@ -295,7 +295,7 @@ const textSearch = (e) => {
                     required: true,
                     min: 2,
                     max: 2,
-                    message: "Pasport seriyasini kiriting",
+                    message: t('typingPassportSeries'),
                     whitespace: true,
                   },
                 ]}
@@ -312,7 +312,7 @@ const textSearch = (e) => {
                     required: true,
                     min: 7,
                     max: 7,
-                    message: "Pasport raqamini kiriting",
+                    message: t('typingPassportNumber'),
                     whitespace: true,
                   },
                 ]}
@@ -329,7 +329,7 @@ const textSearch = (e) => {
                 required: true,
                 min: 14,
                 max: 14,
-                message: "Pinfl ni kiriting",
+                message:t('typingPassportNumber'),
                 whitespace: true,
               },
             ]}

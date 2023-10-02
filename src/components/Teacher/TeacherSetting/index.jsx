@@ -38,7 +38,7 @@ const TeacherSetting = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Topildi",
+          title:t('find'),
           showConfirmButton: false,
           timer: 2000,
           timerProgressBar: true,
@@ -79,7 +79,7 @@ const TeacherSetting = () => {
     try {
       const res = await api.post(`api/user/update/${userInfo.id}`, body);
       if (res) {
-        Swal.fire({ icon: "success", title: "O'zgartirildi!" });
+        Swal.fire({ icon: "success", title:t('change') });
         getUserInfo();
       }
     } catch (err) {
@@ -99,7 +99,7 @@ const TeacherSetting = () => {
         body
       );
       if (res) {
-        toast.success("O'zgartirildi!");
+        toast.success(t('changed'));
         setIsModalOpen(false);
       }
     } catch (err) {
@@ -174,7 +174,7 @@ const TeacherSetting = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Ism noto'g'ri kiritildi",
+                      message:"nameError",
                       whitespace: true,
                     },
                   ]}
@@ -189,7 +189,7 @@ const TeacherSetting = () => {
                   rules={[
                     {
                       required: true,
-                      message: "Familiya noto'g'ri kiritildi",
+                      message: t('surNameError'),
                       whitespace: true,
                     },
                   ]}
@@ -263,7 +263,7 @@ const TeacherSetting = () => {
           </Col>
         </Row>
         <Modal
-          title="Parolni o'zgartirish"
+          title={t('resetPassword')}
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}
           footer={
@@ -291,11 +291,11 @@ const TeacherSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="old_password"
-                  label="Eski parol"
+                  label={t('oldPassword')}
                   rules={[
                     {
                       required: true,
-                      message: "Parol kiriting",
+                      message:t('newPassword'),
                       whitespace: true,
                       min: 6,
                     },
@@ -307,11 +307,11 @@ const TeacherSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="password"
-                  label="Yangi parol"
+                  label={t('newParol')}
                   rules={[
                     {
                       required: true,
-                      message: "Parol kiriting",
+                      message: t('newPassword'),
                       whitespace: true,
                       min: 6,
                     },
@@ -323,11 +323,11 @@ const TeacherSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="password_confirmation"
-                  label="Yangi parolni takrorlang"
+                  label={t('passwordConfirmation')}
                   rules={[
                     {
                       required: true,
-                      message: "Parol kiriting",
+                      message: t('newPassword'),
                       whitespace: true,
                       min: 6,
                     },

@@ -2,7 +2,7 @@ import { notification } from 'antd';
 
 // notification
 export const Notification = (
-   message = 'Информация сохранена',
+   message = t('informationSaved'),
    placement = 'bottomRight',
    type = 'success',
    time = 3,

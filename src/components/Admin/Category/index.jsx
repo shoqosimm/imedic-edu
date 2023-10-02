@@ -75,7 +75,7 @@ const AdminCategory = () => {
       key: "edit",
       align: "center",
       width: "5%",
-      render: (t, record) => {
+      render: ( record) => {
         return (
           <div className="d-flex align-center gap-x-3">
             <BiPencil
@@ -90,10 +90,10 @@ const AdminCategory = () => {
               style={{ cursor: "pointer" }}
             />
             <Popconfirm
-              title="o'chirish"
-              description="siz haqiqatdan ham ushbu hodimni o'chirmoqchimisiz?"
+              title={t('delete')}
+              description={t('employeeDelete')}
               onConfirm={() => deleteCategory(record)}
-              onCancel={() => message.error("Bekor qilindi")}
+              onCancel={() => message.error(t('notSave'))}
               okText="Ha"
               cancelText="Yo'q"
             >
@@ -146,7 +146,7 @@ const AdminCategory = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Qo'shildi",
+          title:t('added'),
           showConfirmButton: false,
           timer: 1500,
           timerProgressBar: true,
@@ -178,7 +178,7 @@ const AdminCategory = () => {
     const res = await api.post(`api/admin/category/update/${record.id}`, body);
     try {
       if (res) {
-        toast.success("Muvaffaqiyatli", {
+        toast.success(t('successful'), {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setIsModalOpen(false);
@@ -195,7 +195,7 @@ const AdminCategory = () => {
     const res = await api.get(`api/admin/category/delete/${record.id}`);
     try {
       if (res) {
-        message.success("O'chirildi!");
+        message.success(t('delete'));
         getListCategory(pagination.current,pagination.pageSize);
       }
     } catch (err) {
