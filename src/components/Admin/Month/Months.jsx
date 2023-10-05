@@ -72,22 +72,22 @@ const Months = () => {
             key: 'id',
         },
         {
-            title: 'Name',
+            title:t('coment'),
             dataIndex: 'title',
             key: 'title',
         },
         {
-            title: 'Oy',
+            title:t('month'),
             dataIndex: 'month',
             key: 'month',
         },
         {
-            title: 'Year',
+            title:t('year'),
             dataIndex: 'year',
             key: 'year',
         },
         {
-          title: "Status",
+          title: t("status"),
           dataIndex: "is_active",
           key: "is_active",
           align: "center",
@@ -103,14 +103,14 @@ const Months = () => {
           },
         },
         {
-            title: 'branch_id',
+            title: t('branch_id'),
             dataIndex: 'branch_id',
             key: 'branch_id',
         },
     ];
     const search = (e) => {
         const   value = e.target.value
-        if (value.length > 3) {
+        if (value.length >3) {
             setSearchText(e.target.value)
         }
     }
@@ -130,9 +130,9 @@ const handleAdd = async(values)=>{
         const res = await api.post("api/admin/month/add", body);
         try {
           if (res) {
-            toast.success("Yaratildi!");
+            toast.success(t('wasCreated'));
           }
-          toast.error("Ma'lumotlar noto'g'ri ko'rsatildi");
+          toast.error(t('dateError'));
         } catch (err) {
           console.log(err, "err");
           setLoading(false);
@@ -151,7 +151,7 @@ const handleAdd = async(values)=>{
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="title"
-              label="Title"
+              label={t('comment')}
               rules={[{ required: true, }]}
             >
               <Input  />
@@ -160,20 +160,20 @@ const handleAdd = async(values)=>{
           <Col xl={4} lg={4} md={24} sm={24} xs={24}>
             <Form.Item
               name="month"
-              label="Oy ni tanlang"
+              label={t('month')}
               rules={[{ required: true }]}
             >
                <DatePicker size="large" style={{width:190}}  picker="month" />
             </Form.Item>
           </Col>
           <Col  xl={4} lg={4} md={24} sm={24} xs={24}>
-            <Form.Item name='branch_id' label='branchni tanlang' >
+            <Form.Item name='branch_id' label={t('branch_id')} rules={[{required:true}]} >
             <Select size="large" options={branch}/>
             </Form.Item>
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
           <Button htmlType="submit" className="teacher_btn " type="primary">
-        Qo'shish
+        {t('addition')}
       </Button>
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
@@ -184,7 +184,7 @@ const handleAdd = async(values)=>{
         </Row>
       </Form>
 
-            <Input placeholder="Qidiruv" onChange={search} />
+            <Input placeholder={t('search')}  onChange={search} />
             <Table
                 loading={tableLoading}
                 columns={columns}

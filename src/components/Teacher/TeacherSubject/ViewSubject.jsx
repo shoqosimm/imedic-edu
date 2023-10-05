@@ -60,22 +60,22 @@ const ViewSubject = () => {
       width: "5%",
     },
     {
-      title: "Savol",
+      title:t('question'),
       dataIndex: "question",
       key: "question",
     },
     {
-      title: "Yaratilgan",
+      title:t('created'),
       dataIndex: "created_at",
       key: "created_at",
     },
     {
-      title: "Yangilangan",
+      title: t('created'),
       dataIndex: "updated_at",
       key: "updated_at",
     },
     {
-      title: "Status",
+      title:t('status'),
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -88,15 +88,15 @@ const ViewSubject = () => {
       },
     },
     {
-      title: "O'zgartirish",
+      title:t('change'),
       dataIndex: "edit",
       key: "edit",
       align: "center",
       width: "2%",
-      render: (t, record) => {
+      render: (record) => {
         return (
           <div className="d-flex align-center justify-around">
-            <Tooltip title="Statusni o'zgartirish">
+            <Tooltip title={t('editStatus')}>
               <BiSync
                 onClick={() => {
                   setModal(true);
@@ -109,7 +109,7 @@ const ViewSubject = () => {
                 }}
               />
             </Tooltip>
-            <Tooltip title="O'zgartirish">
+            <Tooltip title={t('change')}>
               <BiPencil
                 onClick={() =>
                   navigate(`/teacher/subject/edit/test/${record.id}`, {
@@ -192,7 +192,7 @@ const ViewSubject = () => {
         if (res.data.data.length > 0) {
           setComment(res.data.data);
         } else {
-          setCommentEmptyText("Ushbu kurs bo'yicha izohlar mavjud emas...");
+          setCommentEmptyText(t('notComent'));
         }
       })
       .catch((err) => {
@@ -218,7 +218,7 @@ const ViewSubject = () => {
         if (res.data.success) {
           setConfirmLoading(false);
           setModal(false);
-          toast.success("Изменено");
+          toast.success(t('changed'));
           setTimeout(() => {
             getSubject(
               param.id,
@@ -265,7 +265,7 @@ const ViewSubject = () => {
       try {
         const res = await api.post(`api/teacher/test/exel`, body);
         res.status === 200 &&
-          toast.success("Загружено", { position: "bottom-right" });
+          toast.success(t('uploaded'), { position: "bottom-right" });
         getSubject(param.id, paginationTest.current, paginationTest.perPage);
       } catch (err) {
         console.log(err, "err");
@@ -295,7 +295,7 @@ const ViewSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location?.state?.message}/view`}>
-                Ortga
+                {t('back')}
               </Link>
             ),
           },
@@ -362,13 +362,13 @@ const ViewSubject = () => {
               <h3>{subject?.name}</h3>
               <div style={{ marginBottom: "2rem" }}>
                 <ol>
-                  <li>Test soni : {subject?.count_test} ta</li>
+                  <li>{t('testNumber')} : {subject?.count_test} ta</li>
                   <li>
-                    Minimal o'tish to'gri javob soni : {subject?.right_test} ta
+                    {t('minCorrect')} : {subject?.right_test} ta
                   </li>
-                  <li>Test vaqti : {subject?.time} min</li>
+                  <li>{t('testTime')} : {subject?.time} min</li>
                   <li>
-                    Qayta topshirish oraliq vaqti : {subject?.resubmit} min
+                   {t('resubmit')}: {subject?.resubmit} min
                   </li>
                 </ol>
               </div>
@@ -398,7 +398,7 @@ const ViewSubject = () => {
                 >
                   <p className="d-flex align-center gap-1">
                     <SiMicrosoftexcel style={{ fontSize: "18px" }} />
-                    Образец
+                  {t('sample')}
                   </p>
                 </a>
 
@@ -426,7 +426,7 @@ const ViewSubject = () => {
           </Card>
 
           <Modal
-            title={"Status o'zgartirish"}
+            title={t('editStatusw')}
             open={modal}
             onCancel={() => setModal(false)}
             onOk={handleOk}
@@ -434,12 +434,12 @@ const ViewSubject = () => {
             cancelText={t('notSave')}
             confirmLoading={confirmLoading}
           >
-            <p>Siz haqiqatdan ham statusni o'zgartirmoqchimisz?</p>
+            <p>{t('statusText')}</p>
           </Modal>
           <ToastContainer />
         </div>
       )}
-      <Card title="Izohlar" className="izohCard" style={{ marginTop: "2rem" }}>
+      <Card title={t('coments')} className="izohCard" style={{ marginTop: "2rem" }}>
         {loading && <Spin />}
         {commentEmptyText && (
           <em
@@ -461,8 +461,8 @@ const ViewSubject = () => {
           onClick={handleMoreComment}
           loading={loadingBtn}
         >
-          Ko'proq ko'rsatish
-        </Button>
+            {t('leanMore')}     
+            </Button>
       </Card>
     </>
   );

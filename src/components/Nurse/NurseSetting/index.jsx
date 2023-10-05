@@ -101,7 +101,7 @@ const NurseSetting = () => {
     const res = await api.post(`api/user/password-update/${userInfo.id}`, body);
     try {
       if (res) {
-        toast.success("O'zgartirildi!");
+        toast.success(t('changed'));
         setIsModalOpen(false);
       }
     } catch (err) {
@@ -115,7 +115,7 @@ const NurseSetting = () => {
 
   return (
     <div className="setting">
-      <TitleText title={"Sozlamalar"} />
+      <TitleText title={t('setting')} />
       <Form
         form={form}
         id="settingForm"
@@ -164,7 +164,7 @@ const NurseSetting = () => {
                     type="primary"
                     onClick={() => setIsModalOpen(true)}
                   >
-                    Parolni o'zgartirish
+                    {t('resetPassword')}
                   </Button>
                 </li>
               </ul>
@@ -175,11 +175,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="first_name"
-                  label="Ism"
+                  label={t('name')}
                   rules={[
                     {
                       required: true,
-                      message: "Ism notog'ri ko'rsatildi",
+                      message: t('nameError'),
                       whitespace: true,
                     },
                   ]}
@@ -190,11 +190,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="last_name"
-                  label="Familiya"
+                  label={t('surName')}
                   rules={[
                     {
                       required: true,
-                      message: "Familiya notog'ri ko'rsatildi",
+                      message: t('surNameError'),
                       whitespace: true,
                     },
                   ]}
@@ -204,29 +204,29 @@ const NurseSetting = () => {
               </Col>
             </Row>
             <Row>
-              <Form.Item name="patronymic" label="Otasining ismi">
+              <Form.Item name="patronymic" label={t('midName')}>
                 <Input disabled={disabled} />
               </Form.Item>
             </Row>
             <Row gutter={[20]}>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="series" label="Pasport seriyasi">
+                <Form.Item name="series" label={t('passportSeries')}>
                   <Input placeholder="AA" />
                 </Form.Item>
               </Col>
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-                <Form.Item name="number" label="Pasport raqami">
+                <Form.Item name="number" label={t('passportNumber')}>
                   <Input placeholder="1234567" />
                 </Form.Item>
               </Col>
             </Row>
             <Form.Item
               name="pinfl"
-              label="PINFL"
+              label={t('pinfl')}
               rules={[
                 {
                   required: true,
-                  message: "PINFL kiriting",
+                  message:t('typingPinfl'),
                   whitespace: true,
                   min: 14,
                   max: 14,
@@ -236,7 +236,7 @@ const NurseSetting = () => {
               <Input
                 className="d-flex align-center"
                 disabled={loading}
-                placeholder="14 ta son"
+                placeholder={t('count14')}
                 suffix={<Button onClick={getPnflInfo}>{t('check')}</Button>}
               />
             </Form.Item>
@@ -268,7 +268,7 @@ const NurseSetting = () => {
           </Col>
         </Row>
         <Modal
-          title="Parolni o'zgartirish"
+          title={t('resetPassword')}
           open={isModalOpen}
           onCancel={() => setIsModalOpen(false)}
           footer={
@@ -296,11 +296,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="old_password"
-                  label="Eski parol"
+                  label={t('oldPassword')}
                   rules={[
                     {
                       required: true,
-                      message: "Parolni kiriting",
+                      message: t('newPassword'),
                       whitespace: true,
                       min: 6,
                     },
@@ -312,11 +312,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="password"
-                  label="Yangi parol"
+                  label={t('newParol')}
                   rules={[
                     {
                       required: true,
-                      message: "Parolni kiriting",
+                      message:t('newPassword'),
                       whitespace: true,
                       min: 6,
                     },
@@ -328,11 +328,11 @@ const NurseSetting = () => {
               <Col xl={12} lg={12} md={24} sm={24} xs={24}>
                 <Form.Item
                   name="password_confirmation"
-                  label="Yangi parolni takrorlang"
+                  label={t('passwordConfirmation')}
                   rules={[
                     {
                       required: true,
-                      message: "Parolni kiriting",
+                      message: t('newPassword'),
                       whitespace: true,
                       min: 6,
                     },

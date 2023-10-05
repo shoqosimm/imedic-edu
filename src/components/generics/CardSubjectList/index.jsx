@@ -4,6 +4,7 @@ import Meta from "antd/es/card/Meta";
 import { BiBook, BiPencil } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import AltImg from "../../../assets/bgImg/3.jpeg";
+import { t } from "i18next";
 
 const CardSubjectList = ({ title, teaser, subject, click, disabled, item }) => {
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ const CardSubjectList = ({ title, teaser, subject, click, disabled, item }) => {
           key="more"
           onClick={() => linkToSubject(click)}
         >
-          Batafsil
+          {t('more')}
         </Button>,
       ]}
     >

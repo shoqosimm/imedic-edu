@@ -38,7 +38,7 @@ const List = () => {
                     name:item.last_name + ' ' + item.first_name + ' ' + item.patronymic,
                     phone:item.phone,
                     action:<div>
-                        <Button   onClick={()=>editNurse(item.id)}> Tahrirlash</Button>
+                        <Button   onClick={()=>editNurse(item.id)}> {t('edit')}</Button>
                     </div>
                 };
               })
@@ -58,22 +58,19 @@ const List = () => {
       };
     const columns = [
         {
-            title: 'F.I.O',
+            title:t('fullName'),
             dataIndex: 'name',
-            key: 'name',
-            align:'center'
+            key: 'name'
         },
         {
-            title: 'Telefon',
+            title:t('phoneNumber') ,
             dataIndex: 'phone',
-            key: 'phone',
-             align:'center'
+            key: 'phone'
         },
         {
-            title: 'Amallar',
+            title: t('action'),
             dataIndex: 'action',
-            key: 'action',
-            align:'center'
+            key: 'action'
         },
     ];
     const search = (e) => {
@@ -118,7 +115,7 @@ const List = () => {
   }
     return (
         <div>
-            <Input placeholder="Qidiruv" onChange={search} />
+            <Input placeholder={t('search')} onChange={search} />
             <Table
                 loading={tableLoading}
                 columns={columns}
@@ -156,27 +153,25 @@ const List = () => {
                     items={[
                         {
                             title:'password',
-                            description:'parolni kiriting'
+                            description:t('newPassword')
                         },
                         {
                             title:'confirmation',
-                            description:'parolni tekshirish'
+                            description:t('confirmation')
                         },
                         {
                             title:'finish',
-                            description:'parolni tasdiqlash'
+                            description:t('finishPassword')
                         }
                     ]}
                     />
-                    
-                
-                     <Form.Item name={'password'} label="Parol"  rules={[{require:true,message:'new password',whitespace:true }]} >
+                     <Form.Item name={'password'} style={{marginTop:30}}  rules={[{require:true,message:t('newParol'),whitespace:true,max:6,min:6 }]} >
                         <Input placeholder="123456" /> 
                         <Button  style={{display:`${onstep?"none":"inline-block"}`,
-                        margin:'20px 5px 0px 400px'}} onClick={onSteps}>next</Button>
+                        margin:'20px 5px 0px 400px'}} onClick={onSteps}>{t('next')}</Button>
                     </Form.Item>
                     <Form.Item style={{display:`${onstep?"block":"none"}`}} 
-                    name={'password_confirmation'} label="passwpassword_confirmationrd" rules={[{require:true,whitespace:true}]} >
+                    name={'password_confirmation'} label={t('confirmation')} rules={[{require:true,whitespace:true}]} >
                         <Input  />
                     </Form.Item>
                 </Form>

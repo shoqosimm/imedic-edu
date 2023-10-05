@@ -17,15 +17,15 @@ const EditTest = () => {
   const [answer, setAnswer] = useState([
     {
       id: 0,
-      text: "to'g'ri javob",
+      text: t('correctAnswer'),
     },
     {
       id: 1,
-      text: `noto'g'ri javob`,
+      text:t('wrongAnswer'),
     },
     {
       id: 2,
-      text: `noto'g'ri javob`,
+      text:t('wrongAnswer'),
     },
   ]);
   const [form] = Form.useForm();
@@ -44,7 +44,7 @@ const EditTest = () => {
       .post(`api/teacher/test/update/${param.id}`, body)
       .then((res) => {
         if (res) {
-          toast.success("Yaratildi");
+          toast.success(t('wasCreated'));
           setLoading(false);
           form.resetFields();
         }
@@ -96,7 +96,7 @@ const EditTest = () => {
       ...answer,
       {
         id: parseInt(number),
-        text: `noto'g'ri javob`,
+        text: t('wrongAnswer'),
       },
     ]);
   };
@@ -145,16 +145,16 @@ const EditTest = () => {
           {
             title: (
               <div style={{ cursor: "pointer" }} onClick={() => navigate(-1)}>
-                Ortga
+                {t('back')}
               </div>
             ),
           },
           {
-            title: <p style={{ color: "grey" }}>Testni o'zgartirish</p>,
+            title: <p style={{ color: "grey" }}>{t('editTest')}</p>,
           },
         ]}
       />
-      <Card title="Testni o'zgartirish">
+      <Card title={t('editTest')}>
         <Card>
           <Form
             form={form}
@@ -164,7 +164,7 @@ const EditTest = () => {
           >
             <Form.Item
               name="question"
-              label="Savol"
+              label={t('question')}
               rules={[{ required: true }]}
             >
               <Input placeholder="test savoli" />
@@ -181,9 +181,8 @@ const EditTest = () => {
               />
             </Form.Item>
             <p style={{ marginBottom: "1rem", fontSize: "18px" }}>
-              1-variant har doim to'g'ri javob kiritilishi kerak!
+             {t('alwaysRight')}
             </p>
-
             {answer.map((item, index) => {
               return (
                 <div key={index}>
@@ -204,13 +203,12 @@ const EditTest = () => {
                       disabled={loading}
                       onClick={() => DeleteField(item.id)}
                     >
-                      O'chirish
+                     {t('delete')}
                     </Button>
                   ) : null}
                 </div>
               );
             })}
-
             <div>
               <Form.Item>
                 <Button
@@ -218,7 +216,7 @@ const EditTest = () => {
                   type="primary"
                   onClick={() => AddForm(answer)}
                 >
-                  Variant qo'shish
+                  {t('addOption')}
                 </Button>
               </Form.Item>
               <Form.Item>

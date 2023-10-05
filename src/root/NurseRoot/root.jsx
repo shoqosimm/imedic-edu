@@ -24,7 +24,7 @@ const Nurse = () => {
   const handleLogOut = () => {
     Swal.fire({
       icon: "warning",
-      title: "Siz haqiqatdan ham tark etmoqchimisiz",
+      title: t('exit'),
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
@@ -46,7 +46,7 @@ const Nurse = () => {
           onClick={() => sessionStorage.setItem("activeLink", 1)}
           to="course"
         >
-          Kurslar
+          {t('course')}
         </NavLink>
       ),
     },
@@ -58,7 +58,7 @@ const Nurse = () => {
           onClick={() => sessionStorage.setItem("activeLink", 2)}
           to="mycourse"
         >
-          Mening kurslarim
+        {t('myCourese')}
         </NavLink>
       ),
     },
@@ -70,7 +70,7 @@ const Nurse = () => {
           onClick={() => sessionStorage.setItem("activeLink", 3)}
           to="setting"
         >
-          Sozlamalar
+          {t('setting')}
         </NavLink>
       ),
     },
@@ -140,16 +140,16 @@ const Nurse = () => {
             className="lang d-flex align-center gap-x-1"
             onSelect={onSelectLang}
             defaultValue={lang}
+           
             options={[
               {label:'ru',value:'ru'},
               {label:'uz',value:'uz'}
             ]}
           />
-
-          
           <Button
             className="logOut d-flex align-center gap-x-1"
             icon={<AiOutlineLogout />}
+            type="primary"
             onClick={handleLogOut}
           >
             {t('logOut')}

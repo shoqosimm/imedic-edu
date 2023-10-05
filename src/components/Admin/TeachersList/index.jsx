@@ -67,13 +67,13 @@ const AdminTeacherList = () => {
       align:'center'
     },
     {
-      title: 'phone edit',
+      title: t('edit'),
       dataIndex: "phone_edit",
       key: "phone_edit",
       align:'center'
     },
     {
-      title: "Pasport",
+      title:t('pasport'),
       dataIndex: "passport",
       key: "passport",
       align:'center',
@@ -86,7 +86,7 @@ const AdminTeacherList = () => {
       },
     },
     {
-      title: "Status",
+      title: t("status"),
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -102,7 +102,7 @@ const AdminTeacherList = () => {
       },
     },
     {
-      title: "Blok",
+      title:t('blok'),
       dataIndex: "is_block",
       key: "is_block",
       align: "center",
@@ -118,7 +118,7 @@ const AdminTeacherList = () => {
       },
     },
     {
-      title: 'Password edit',
+      title:t('edit'),
       dataIndex: 'action',
       key: 'action',
       align:'center'
@@ -204,9 +204,9 @@ const AdminTeacherList = () => {
     try {
       if (res) {
         setLoading(false);
-        toast.success("Yaratildi!");
+        toast.success(t('wasCreated'));
       }
-      toast.error("Ma'lumotlar noto'g'ri ko'rsatildi");
+      toast.error(t('dateError'));
     } catch (err) {
       console.log(err, "err");
       setLoading(false);
@@ -237,7 +237,7 @@ const AdminTeacherList = () => {
   
   const textSearch = (e) => {
     const   value = e.target.value
-    if (value.length > 1) {
+    if (value.length > 3) {
         setSearchText(e.target.value)
     }
 }
@@ -254,13 +254,13 @@ const editPhone=(id)=>{
   api.post(`api/admin/teacher/update/user/phone`,body).then(res=>{
     if(res){
       notification.success({
-        message:'telefon raqam yangilandi',
+        message:t('telUpdate'),
         icon:null
       })
     }
     else{
       notification.error({
-        message:'qayta urnib ko`ring',
+        message:t('tryAgain'),
         icon:null
       })
     }
@@ -287,13 +287,13 @@ const savePassword=()=>{
           setModalOpen(false)
             form.resetFields();
             notification.success({
-              message:'parol yangilandi',
+              message:t('passwordUpdate'),
               icon:null
             })
         }
         else{
           notification.error({
-            message:'qayta urnib ko`ring',
+            message:t('tryAgain'),
             icon:null
           })
         }
@@ -313,10 +313,10 @@ const offSteps=()=>{
     <div className="admin_teacher">
         <div style={{display:'flex', justifyContent:'flex-end'}}>
         <Button  onClick={handleAdd} className="teacher_btn " type="primary">
-        Qo'shish
+        {t('addition')}
       </Button>
         </div>
-        <Input placeholder="Qidirish..." onChange={textSearch}/>
+        <Input placeholder={t('search')} onChange={textSearch}/>
       <Table
         loading={tableLoading}
         scroll={{ x: 400 }}
@@ -335,7 +335,7 @@ const offSteps=()=>{
       />
       <Modal
         width={720}
-        title="O'qituvchi qo'shish"
+        title={t('teacherAdd')}
         open={isModalOpen}
         onCancel={() => {
           form.resetFields();
@@ -360,7 +360,7 @@ const offSteps=()=>{
               type="primary"
               loading={loading}
             >
-              Qo'shish
+              {t('addition')}
             </Button>
           </div>
         }
@@ -373,17 +373,17 @@ const offSteps=()=>{
         >
           <Row gutter={[20]}>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="first_name" label="Ismi">
+              <Form.Item name="first_name" label={t('name')}>
                 <Input disabled  />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="last_name" label="Familiyasi">
+              <Form.Item name="last_name" label={ t('surName')}>
                 <Input disabled  />
               </Form.Item>
             </Col>
             <Col xl={8} lg={8} md={24} sm={24} xs={24}>
-              <Form.Item name="patronymic" label="Otasining ismi">
+              <Form.Item name="patronymic" label={ t('midName')}>
                 <Input disabled  />
               </Form.Item>
             </Col>
@@ -392,13 +392,13 @@ const offSteps=()=>{
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="series"
-                label="Pasport seriyasi"
+                label={t('passportSeries')}
                 rules={[
                   {
                     required: true,
                     min: 2,
                     max: 2,
-                    message: "Pasport seriyasini kiriting",
+                    message:t('typingPassportSeries'),
                     whitespace: true,
                   },
                 ]}
@@ -409,13 +409,13 @@ const offSteps=()=>{
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="number"
-                label="Pasport raqami"
+                label={t('passportNumber')}
                 rules={[
                   {
                     required: true,
                     min: 7,
                     max: 7,
-                    message: "Pasport raqamini kiriting",
+                    message:t('typingPassportNumber'),
                     whitespace: true,
                   },
                 ]}
@@ -426,13 +426,13 @@ const offSteps=()=>{
           </Row>
           <Form.Item
             name="pinfl"
-            label="PINFL"
+            label={t('pinfl')}
             rules={[
               {
                 required: true,
                 min: 14,
                 max: 14,
-                message: "Pinfl ni kiriting",
+                message:t('typingPinfl'),
                 whitespace: true,
               },
             ]}
@@ -457,7 +457,7 @@ const offSteps=()=>{
           <Form.Item name={"birth_date"} label={t('birth')}>
             <DatePicker disabled style={{ width: "100%" }} />
           </Form.Item>
-          <Form.Item name='branch_id' label="Filialni tanlang">
+          <Form.Item name='branch_id' label={t('branchName')}>
           <Select
                 options={branch}
              />
@@ -466,7 +466,7 @@ const offSteps=()=>{
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="password"
-                label="Parol"
+                label={t('password')}
                 required={[{ required: true, min: 6 }]}
               >
                 <Input disabled={loading} />
@@ -475,7 +475,7 @@ const offSteps=()=>{
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
               <Form.Item
                 name="password_confirmation"
-                label="Parolni takrorlang"
+                label={t('confirmation')}
                 required={[{ required: true, min: 6 }]}
               >
                 <Input disabled={loading} />
@@ -487,6 +487,7 @@ const offSteps=()=>{
       {modalOpen && 
         <Modal
                 open={modalOpen}
+                width={600}
                 onCancel={()=>{setModalOpen(false);setCurrent(current==0);setOnStep(false) }}
                 footer={
                     <div style={{display:`${onstep?"block":"none"}`}}>
@@ -499,21 +500,20 @@ const offSteps=()=>{
                     form={form}
                     layout="vertical"
                     name="basic"
-                    width={500}
-                    
+                    style={{margin:"8px"}}
                     >
                     <Steps  current={current}>
-                        <Steps.Step title="password"  />
-                        <Steps.Step title="confirmation"/>
-                        <Steps.Step title="finsh" />
+                        <Steps.Step title={t('newPassword')}  />
+                        <Steps.Step title={t('confirmation')}/>
+                        <Steps.Step title={t('finishPassword')} />
                     </Steps>
-                     <Form.Item name='password' label="Parol"  rules={[{require:true,message:'yagi parolni kiriting',whitespace:true }]} >
+                     <Form.Item name='password' label="Parol" style={{marginTop:'30px'}} rules={[{require:true,message:t('enterNewParol'),whitespace:true }]} >
                         <Input /> 
                         <Button  style={{display:`${onstep?"none":"inline-block"}`,
                         margin:'20px 5px 0px 400px'}} onClick={onSteps}>next</Button>
                     </Form.Item>
                     <Form.Item style={{display:`${onstep?"block":"none"}`}} 
-                    name='password_confirmation' label="Parolni takrorlang" rules={[{require:true,whitespace:true}]} >
+                    name='password_confirmation' label={t('confirmation')} rules={[{require:true,whitespace:true}]} >
                         <Input  />
                     </Form.Item>
                 </Form>
@@ -537,7 +537,7 @@ const offSteps=()=>{
                     id="savePhone"
                     width={450}
                 >
-                     <Form.Item name={'phone'} label="Telefon raqamini kiriting"  rules={[{require:true,min:12,max:12,whitespace:true }]} >
+                     <Form.Item name={'phone'} label={t('typingPhoneNumber')}  rules={[{require:true,min:12,max:12,whitespace:true }]} >
                         <Input placeholder="9989012345678"/> 
                     </Form.Item>
                 </Form>

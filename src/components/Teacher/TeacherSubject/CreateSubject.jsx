@@ -21,7 +21,6 @@ import { BiHome } from "react-icons/bi";
 import { VscFilePdf } from "react-icons/vsc";
 import {
   AiFillEye,
-  AiOutlineClose,
   AiOutlineVideoCameraAdd,
 } from "react-icons/ai";
 import { ToastContainer, toast } from "react-toastify";
@@ -109,7 +108,7 @@ const CreateSubject = () => {
           marginTop: 8,
         }}
       >
-        Upload
+        {t('upload')}
       </div>
     </div>
   );
@@ -268,7 +267,7 @@ const CreateSubject = () => {
     try {
       const res = await api.post(`api/media/upload`, body, config);
       res.status === 200 &&
-        toast.success("Загружено", { position: "bottom-right" });
+        toast.success(t('uploaded'), { position: "bottom-right" });
       setPdfTokens((prev) => (prev = res.data.token));
       setUpdateBtn(false);
     } catch (err) {
@@ -296,7 +295,7 @@ const CreateSubject = () => {
     try {
       const res = await api.post(`api/media/upload`, body, config);
       res.status === 200 &&
-        toast.success("Загружено", { position: "bottom-right" });
+        toast.success(t('wasCreated'), { position: "bottom-right" });
       setVideoTokens((prev) => (prev = res.data.token));
       setUpdateBtn(false);
     } catch (err) {
@@ -344,18 +343,18 @@ const CreateSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state.message}/view`}>
-                Ortga
+                {t('back')}
               </Link>
             ),
           },
           {
-            title: <p style={{ color: "grey" }}>Yaratish</p>,
+            title: <p style={{ color: "grey" }}>{t('create')}</p>,
           },
         ]}
       />
       <Modal
         className="create_subject"
-        title="Yaratish"
+        title={t('create')}
         centered
         closable={false}
         open={openModal}
@@ -377,7 +376,7 @@ const CreateSubject = () => {
               hoverable
               onClick={() => setType(0)}
             >
-              Mavzu
+              {t('cours')}
             </Card>
           </Col>
           <Col xl={12} lg={12} md={24} sm={24} xs={24}>
@@ -391,13 +390,13 @@ const CreateSubject = () => {
               hoverable
               onClick={() => setType(1)}
             >
-              Test
+              {t('test')}
             </Card>
           </Col>
         </Row>
       </Modal>
       <Card loading={openModal}>
-        <Card title="Mavzu yoki Test qo'shish">
+        <Card title={t('cTitle')}>
           <Form
             form={form}
             name="create-topic"
@@ -444,7 +443,7 @@ const CreateSubject = () => {
                   name="teaser"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="tizer" disabled={loading} />
+                  <Input placeholder={t('teaser')} disabled={loading} />
                 </Form.Item>
                 <div
                   style={{ margin: "1rem 0", flexWrap: "wrap" }}
@@ -459,7 +458,7 @@ const CreateSubject = () => {
                     }
                   >
                     <VscFilePdf style={{ fontSize: "18px" }} />
-                    PDF yuklash
+                   {t('pdf')}
                     <input
                       disabled={pdfToken}
                       type="file"
@@ -478,7 +477,7 @@ const CreateSubject = () => {
                     }
                   >
                     <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
-                    Video yuklash
+                  {t('videoUpload')}
                     <input
                       disabled={videoToken}
                       type="file"
@@ -552,25 +551,25 @@ const CreateSubject = () => {
                   name="name"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="test nomi" disabled={loading} />
+                  <Input placeholder={t('testName')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="count_test"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="test soni" disabled={loading} />
+                  <Input placeholder={t('testNumber')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="time"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="test vaqti (minut)" disabled={loading} />
+                  <Input placeholder={t('testTime')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="right_test"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="o`tish soni " disabled={loading} />
+                  <Input placeholder={t('transitions')} disabled={loading} />
                 </Form.Item>
                 <Form.Item
                   name="resubmit"
@@ -579,14 +578,14 @@ const CreateSubject = () => {
                       required: true,
                       whitespace: true,
                       min: 1,
-                      message: "son ko'rinishida bo'lishi kerak!",
+                      message:t('typeNumber'),
                     },
                   ]}
                 >
                   <Input
                     type="number"
                     controls={false}
-                    placeholder="Qayta topshirish vaqti"
+                    placeholder={t('resubmit')}
                     disabled={loading}
                   />
                 </Form.Item>
@@ -594,7 +593,7 @@ const CreateSubject = () => {
                   name="teaser"
                   rules={[{ required: true, whitespace: true }]}
                 >
-                  <Input placeholder="tizer" disabled={loading} />
+                  <Input placeholder={t('teaser')} disabled={loading} />
                 </Form.Item>
                 <Upload
                   maxCount={1}
@@ -630,7 +629,7 @@ const CreateSubject = () => {
                 htmlType="submit"
                 disabled={updateBtn}
               >
-                Yaratish +
+                {t('create',)}
               </Button>
             </Form.Item>
           </Form>

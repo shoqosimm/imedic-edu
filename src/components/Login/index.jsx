@@ -10,7 +10,6 @@ import { ContextItem } from "../Context";
 import { t } from "i18next";
 import { useTranslation } from "react-i18next";
 
-
 const Login = () => {
 const {i18n} = useTranslation();
   const [lang,setLang] = useState(localStorage.getItem('lang')||'uz')
@@ -26,7 +25,7 @@ const {i18n} = useTranslation();
     const res = await api.post("api/login", body);
     try {
       if (res) {
-        toast.success("Muvaffaqiyatli", {
+        toast.success(t('successful'), {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToken(res.data.access_token);
@@ -92,7 +91,7 @@ const {i18n} = useTranslation();
               name="password"
               label={t('password')}
               rules={[
-                { required: true, message: "Parol kiriting", whitespace: true },
+                { required: true, message:t('newPassword'), whitespace: true },
               ]}
             >
               <Input autoComplete="false" disabled={loading} type="password" />

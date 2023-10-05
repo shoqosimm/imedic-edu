@@ -5,6 +5,7 @@ import { BiBook, BiPencil } from "react-icons/bi";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../../../utils/api";
 import AltImg from "../../../assets/bgImg/3.jpeg";
+import { t } from "i18next";
 
 const MyCardSubjectList = ({
   title,
@@ -55,7 +56,7 @@ const MyCardSubjectList = ({
                   onClick={() => linkToSubject(item.id)}
                   className={"card__resubmit d-flex align-center"}
                 >
-                  Qayta topshirish
+                {t('again')}
                 </Button>
                 <Button
                   title={disabled ? "not allowed" : " Natijani ko'rish"}
@@ -63,31 +64,32 @@ const MyCardSubjectList = ({
                   onClick={() => showResult(item.id)}
                   className={"card_result"}
                 >
-                  Natijani ko'rish
+                  {t('result')}
                 </Button>
               </>
             )) ||
               (item.is_passed === "1" && (
                 <>
                   <Button
-                    title={disabled ? "not allowed" : " Natijani ko'rish"}
+                    title={disabled ? "not allowed" : t('result')}
                     disabled={disabled}
                     onClick={() => showResult(item.id)}
                     className={"card_result"}
+                    style={{width:180}}
                   >
-                    Natijani ko'rish
+                    {t('result')} 
                   </Button>
                 </>
               ))}
           </div>
         ) : (
           <Button
-            title={disabled ? "not allowed" : "Ko'rish"}
+            title={disabled ? "not allowed" : t('toSee')}
             disabled={disabled}
             onClick={() => linkToSubject(item.id)}
             className={"card__btn"}
           >
-            {item.subject.subject_type === "test" ? "Topshirish" : "Ba'tafsil"}
+          {item.subject.subject_type === "test" ? t('submission') :t('more')}
           </Button>
         ),
       ]}
@@ -95,17 +97,17 @@ const MyCardSubjectList = ({
       <div className="card__type">
         {" "}
         {item.subject.subject_type === "topic"
-          ? (item.status === 0 && <p>Mumkin emas</p>) ||
-            (item.status === 1 && <p>O'qilayotgan</p>) ||
-            (item.status === 2 && <p>O'qib bo'lingan</p>)
-          : (item.status === 1 && <p>Topshirilayotgan test</p>) ||
+          ? (item.status === 0 && <p>{t('notAllow')}</p>) ||
+            (item.status === 1 && <p>{t('reading')}</p>) ||
+            (item.status === 2 && <p>{t('hasBeenRead')}</p>)
+          : (item.status === 1 && <p>{t('testProgress')}</p>) ||
             (item.status === 2 && item.is_passed === "1" && (
-              <p>Topshirilgan test</p>
+              <p>{t('submitTest')}</p>
             )) ||
             (item.status === 2 && item.is_passed === "0" && (
-              <p>O'ta olinmagan test</p>
+              <p>{t("failedTest")}</p>
             )) ||
-            (item.status === 0 && <p>Mumkin emas</p>)}
+            (item.status === 0 && <p>{t('')}</p>)}
       </div>
       <Meta
         avatar={

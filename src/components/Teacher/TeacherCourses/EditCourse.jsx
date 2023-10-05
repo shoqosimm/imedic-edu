@@ -15,6 +15,7 @@ import "./styles/editStyle.scss";
 import { BiHome } from "react-icons/bi";
 import { ToastContainer, toast } from "react-toastify";
 import { PlusOutlined } from "@ant-design/icons";
+import { t } from "i18next";
 
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
@@ -47,7 +48,7 @@ const EditCourse = () => {
           marginTop: 8,
         }}
       >
-        Upload
+        {t('upload')}
       </div>
     </div>
   );
@@ -106,7 +107,7 @@ const EditCourse = () => {
       .then((res) => {
         if (res.status === 200) {
           if (res.data.success) {
-            toast.success("O'zgartirildi");
+            toast.success(t('changed'));
             setTimeout(() => {
               navigate("/teacher/course");
             }, 1500);
@@ -188,18 +189,18 @@ const EditCourse = () => {
         ]}
       />
 
-      <h1 style={{ color: "#fff" }}>Kursni o'zgartirish</h1>
+      <h1 style={{ color: "#fff" }}>{t('changeCourse')}</h1>
       <Card>
         <Form form={form} name="edit-course" onFinish={onFinish}>
           <Form.Item name="title">
             <Input
               className="editInput"
               disabled={loading}
-              placeholder="Kurs nomi"
+              placeholder={t('courseName')}
               rules={[
                 {
                   required: true,
-                  message: "Iltimos, kursning nomini kiriting!",
+                  message: t('typingCourseName'),
                 },
               ]}
             />
@@ -209,12 +210,12 @@ const EditCourse = () => {
               className="editInput"
               disabled={loading}
               options={category}
-              placeholder="Turkum tanlang"
+              placeholder={t('courseCategory')}
               style={{ width: "100%" }}
               rules={[
                 {
                   required: true,
-                  message: "Iltimos, kursga oid turkumni tanlang!",
+                  message:t('typingCourseCategory'),
                 },
               ]}
             />
@@ -250,7 +251,7 @@ const EditCourse = () => {
               htmlType="submit"
               loading={saveLoading}
             >
-              O'zgartirish
+           {t('change')}
             </Button>
           </Form.Item>
         </Form>

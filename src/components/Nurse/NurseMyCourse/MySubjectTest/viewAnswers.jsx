@@ -5,6 +5,7 @@ import { Breadcrumb, Card, Collapse, Divider, Spin } from "antd";
 import moment from "moment";
 import { BiHome } from "react-icons/bi";
 import { BsCheckCircle, BsClock, BsFileCode } from "react-icons/bs";
+import { t } from "i18next";
 import "./viewStyle.scss";
 
 const ViewAnswers = () => {
@@ -48,7 +49,7 @@ const ViewAnswers = () => {
                 style={{ color: "grey", cursor: "pointer" }}
                 onClick={() => navigate('/nurse/mycourse')}
               >
-                Ortga
+               {t('back')}
               </p>
             ),
           },
@@ -69,7 +70,7 @@ const ViewAnswers = () => {
           ) : (
             <>
               <div className="badge__answers" style={{ color: "green" }}>
-                <em>{"Topshirildi"}</em>
+                <em>{t('submitted')}</em>
               </div>
               <Divider />
             </>
@@ -78,15 +79,16 @@ const ViewAnswers = () => {
             <li>
               <p className="d-flex align-center gap-x-1">
                 <BsFileCode className="icon" />
-                Umumiy testlar soni:
+              {t('allTest')}
               </p>
               <div className="d-flex align-center gap-x-1">
-                {info?.subject_result.count_test} ta
+                {info?.subject_result.count_test} {t('ta')}
               </div>
             </li>
             <li>
               <p className="d-flex align-center gap-x-1">
-                <BsClock className="icon" /> Testga ajratilgan vaqt:
+                <BsClock className="icon" />
+                {t('testForTime')}
               </p>
               <div className="d-flex align-center gap-x-1">
                 {info?.subject_result.time} min
@@ -94,7 +96,8 @@ const ViewAnswers = () => {
             </li>
             <li className="d-flex align-center gap-x-1">
               <p className="d-flex align-center gap-x-1">
-                <BsClock className="icon" /> Test topshirilgan vaqt:
+                <BsClock className="icon" /> 
+                {t('theTime')}
               </p>
               <div className="d-flex align-center gap-x-1">
                 {moment(info?.test_start).format("DD.MM.YYYY HH:mm")}
@@ -102,7 +105,7 @@ const ViewAnswers = () => {
             </li>
             <li className="d-flex align-center gap-x-1">
               <p className="d-flex align-center gap-x-1">
-                <BsClock className="icon" /> Test tugatilgan vaqt:
+                <BsClock className="icon" />{t('finishTest')}
               </p>
               <div className="d-flex align-center gap-x-1">
                 {moment(info?.test_end).format("DD.MM.YYYY HH:mm")}
@@ -111,20 +114,20 @@ const ViewAnswers = () => {
             <li>
               <p className="d-flex align-center gap-x-1">
                 <BsCheckCircle className="icon" />
-                To'gri topilgan testlar soni:
+                {t('correctTest')}
               </p>
               <div className="d-flex align-center gap-x-1">
-                {info?.result} ta
+                {info?.result} {t('ta')}
               </div>
             </li>
           </ol>
           <Collapse style={{ margin: "1.5rem 0" }}>
             <Collapse.Panel
-              header="Notog'ri javoblarga tegishli mavzular"
+              header={t('thisSubjectName')}
               key="1"
             >
               <h2 style={{ textAlign: "center", marginBottom: "1rem" }}>
-                Bu yerda mavzular nomi ko'rsatiladi
+                {t('titleCouts')}
               </h2>
               <ol style={{ padding: "0.5rem 2rem" }}>
                 {info?.incorrect.map((item) => {

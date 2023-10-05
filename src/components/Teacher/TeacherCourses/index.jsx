@@ -17,9 +17,7 @@ const TeacherCourses = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loadingTable, setLoadingTable] = useState(false);
-  const [ModalText, setModalText] = useState(
-    "Siz haqiqatdan ham ushbu kursni statusini o'zgartirmoqchimisz?"
-  );
+  const [ModalText, setModalText] = useState(t('statusText'));
   const [idModal, setIdModal] = useState(null);
   const [pagination, setPagination] = useState({
     current_page: sessionStorage.getItem("course_current_page") || 1,
@@ -34,17 +32,17 @@ const TeacherCourses = () => {
       width: "2%",
     },
     {
-      title: "Kursning nomi",
+      title:t('courseName'),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Turkum",
+      title:t('category'),
       dataIndex: "category",
       key: "category",
     },
     {
-      title: "Status",
+      title:t('status'),
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -57,21 +55,21 @@ const TeacherCourses = () => {
       },
     },
     {
-      title: "Reyting",
+      title:t('reyting'),
       dataIndex: "rate",
       key: "rate",
       align: "center",
-      render: (t) => {
+      render: () => {
         return (
           <div className="d-flex align-center justify-center gap-x-1">
-            <Tooltip title="o'rtacha baho">
+            <Tooltip title={t('centerRate')}>
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
                 <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
               </div>
             </Tooltip>
             {"-"}
-            <Tooltip title="baho qo'yganlar soni">
+            <Tooltip title={t('countRate')}>
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
                 <BiUser />
@@ -82,7 +80,7 @@ const TeacherCourses = () => {
       },
     },
     {
-      title: "Yaratilgan",
+      title: t('created'),
       dataIndex: "created_at",
       key: "created_at",
       render: (text) => {
@@ -90,19 +88,19 @@ const TeacherCourses = () => {
       },
     },
     {
-      title: "Ba'tafsil",
+      title:t('more'),
       dataIndex: "action",
       key: "action",
       align: "center",
       width: "5%",
       render: (text, record) => (
         <div className="d-flex justify-center  align-center gap-x-3">
-          <Tooltip title="Изменить">
+          <Tooltip title={t('edit')}>
             <Link to={`/teacher/course/${record.key}/edit`}>
               <BiPencil style={{ color: "#1677ff", fontSize: "16px" }} />
             </Link>
           </Tooltip>
-          <Tooltip title="Изменить cтатус">
+          <Tooltip title={t('editStatus')} >
             <Link>
               <AiOutlineSync
                 style={{ color: "#1677ff", fontSize: "18px" }}
@@ -112,7 +110,7 @@ const TeacherCourses = () => {
               />
             </Link>
           </Tooltip>
-          <Tooltip title="Подробнее">
+          <Tooltip title={t('more')}>
             <Link to={`/teacher/course/${record.key}/view`}>
               <TbEyeTable style={{ color: "#1677ff", fontSize: "16px" }} />
             </Link>
@@ -129,7 +127,7 @@ const TeacherCourses = () => {
   };
   const handleOk = () => {
     setConfirmLoading(true);
-    setModalText("Yuklanmoqda...");
+    setModalText(t('loading'));
     api
       .get(`api/teacher/course/active/${idModal}`)
       .then((res) => {
@@ -195,9 +193,9 @@ const TeacherCourses = () => {
         style={{ flexWrap: "wrap" }}
         className="d-flex align-center justify-between gap-y-2"
       >
-        <TitleText title="Kurslar" />
+        <TitleText title={t('course')} />
         <Link to="/teacher/course/create">
-          <Button type="primary">Kurs yaratish</Button>
+          <Button type="primary">{t('courseCreate')}</Button>
         </Link>
       </div>
       <Card>
@@ -220,7 +218,7 @@ const TeacherCourses = () => {
         />
       </Card>
       <Modal
-        title={"Statusni o'zgartirish"}
+        title={t('editStatus')}
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         onOk={handleOk}
@@ -233,5 +231,4 @@ const TeacherCourses = () => {
     </>
   );
 };
-
 export default TeacherCourses;

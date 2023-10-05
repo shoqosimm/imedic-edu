@@ -1,4 +1,4 @@
-import { Button, Layout, Menu, Drawer } from "antd";
+import { Button, Layout, Menu, Drawer,Select } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiViewList } from "react-icons/ci";
@@ -17,18 +17,27 @@ import Swal from "sweetalert2";
 import Loading from "../../components/Loader";
 import { ContextItem } from "../../components/Context";
 import { useContext } from "react";
-
+import { t } from "i18next";
+import { useTranslation } from "react-i18next";
 const Teacher = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [, setToken] = useContext(ContextItem);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
+  const {t,i18n} = useTranslation();
+  const [lang,setLang] = useState(localStorage.getItem('lang') ||'uz');
 
+  //lang
+  const onSelectLang  = (val)=>{
+    setLang(String(val))
+    localStorage.setItem('lang',String(val))
+    i18n.changeLanguage(val)
+  }
   // handleLogOut
   const handleLogOut = () => {
     Swal.fire({
       icon: "warning",
-      title: "Siz haqiqatdan ham tark etmoqchimisiz",
+      title:t('exit'),
     }).then((result) => {
       if (result.isConfirmed) {
         setToken(null);
@@ -72,7 +81,7 @@ const Teacher = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Kurslar
+                  {t('course')}
                 </Link>
               ),
             },
@@ -84,7 +93,7 @@ const Teacher = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 2)}
                   to="report"
                 >
-                  Hisobot
+                  {t('report')}
                 </Link>
               ),
             },
@@ -96,7 +105,7 @@ const Teacher = () => {
                   onClick={() => sessionStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
-                  Sozlamalar
+                  {t('setting')}
                 </Link>
               ),
             },
@@ -119,13 +128,26 @@ const Teacher = () => {
               icon={collapsed ? <AiOutlineMenuUnfold /> : <AiOutlineMenuFold />}
               onClick={() => setCollapsed(!collapsed)}
             ></Button>
+            <div className=" d-flex justify-center align-center">
+            <Select
+            className="lang d-flex gap-x-1"
+            onSelect={onSelectLang}
+            defaultValue={lang}
+            style={{width:60,justifyContent:"end"}}
+            options={[
+              {label:'ru',value:'ru'},
+              {label:'uz',value:'uz'}
+            ]}
+          />
             <Button
               onClick={handleLogOut}
               className="logOut d-flex align-center gap-x-1"
               icon={<AiOutlineLogout />}
             >
-              Chiqish
+              {t('logOut')}
             </Button>
+            </div>
+            
           </div>
         </Header>
         <Content className="layout_content">
@@ -154,7 +176,7 @@ const Teacher = () => {
                   onClick={() => localStorage.setItem("activeLink", 1)}
                   to="course"
                 >
-                  Kurslar
+                   {t('course')}
                 </Link>
               ),
             },
@@ -166,7 +188,7 @@ const Teacher = () => {
                   onClick={() => localStorage.setItem("activeLink", 2)}
                   to="report"
                 >
-                  Hisobot
+                 {t('report')}
                 </Link>
               ),
             },
@@ -178,7 +200,7 @@ const Teacher = () => {
                   onClick={() => localStorage.setItem("activeLink", 3)}
                   to="setting"
                 >
-                  Sozlamalar
+                  {t('setting')}
                 </Link>
               ),
             },

@@ -105,7 +105,7 @@ const EditSubject = () => {
           marginTop: 8,
         }}
       >
-        Upload
+        {t('upload')}
       </div>
     </div>
   );
@@ -286,7 +286,7 @@ const EditSubject = () => {
         body
       );
       if (res) {
-        toast.success("O'zgartirildi", { position: "bottom-right" });
+        toast.success(t('changed'), { position: "bottom-right" });
         setLoading(false);
       }
     } catch (err) {
@@ -314,7 +314,7 @@ const EditSubject = () => {
     try {
       const res = await api.post(`api/media/upload`, body, config);
       res.status === 200 &&
-        toast.success("Загружено", { position: "bottom-right" });
+        toast.success(t('uploaded'), { position: "bottom-right" });
       setPdfTokens((prev) => (prev = res.data.token));
       setUpdateBtn(false);
     } catch (err) {
@@ -342,7 +342,7 @@ const EditSubject = () => {
     try {
       const res = await api.post(`api/media/upload`, body, config);
       res.status === 200 &&
-        toast.success("Загружено", { position: "bottom-right" });
+        toast.success(t('uploaded'), { position: "bottom-right" });
       setVideoTokens((prev) => (prev = res.data.token));
       setUpdateBtn(false);
     } catch (err) {
@@ -383,7 +383,7 @@ const EditSubject = () => {
           {
             title: (
               <Link to={`/teacher/course/${location.state?.message}/view`}>
-                Ortga
+               {t('back')}
               </Link>
             ),
           },
@@ -392,7 +392,7 @@ const EditSubject = () => {
           },
         ]}
       />
-      <Card title="O'zgartirish">
+      <Card title={t('change')}>
         {location.state?.subject_type !== "test" ? (
           <Form id="sujectForm" name="basic" form={form} onFinish={onFinish}>
             <Upload
@@ -439,7 +439,7 @@ const EditSubject = () => {
                   }
                 >
                   <VscFilePdf style={{ fontSize: "18px" }} />
-                  PDF yuklash
+                  {t('pdf')}
                   <input
                     disabled={pdfToken}
                     type="file"
@@ -458,7 +458,7 @@ const EditSubject = () => {
                   }
                 >
                   <AiOutlineVideoCameraAdd style={{ fontSize: "18px" }} />
-                  Video yuklash
+                  {t('videoUpload')}
                   <input
                     disabled={videoToken}
                     type="file"
@@ -546,55 +546,55 @@ const EditSubject = () => {
               <Form.Item
                 name="name"
                 rules={[{ required: true, whitespace: true }]}
-                label="Test nomi"
+                label={t('testName')}
               >
                 <Input placeholder="Test name" disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="count_test"
                 rules={[{ required: true, whitespace: true }]}
-                label="Test soni"
+                label={t('testNumber')}
               >
-                <Input placeholder="Test count" disabled={loading} />
+                <Input placeholder={t('testNumber')} disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="time"
                 rules={[{ required: true, whitespace: true }]}
-                label="Test vaqti"
+                label={t('testTime')} 
               >
-                <Input placeholder="Test Vaqti (Minut)" disabled={loading} />
+                <Input placeholder={t('testTime')}  disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="right_test"
                 rules={[{ required: true, whitespace: true }]}
-                label="To'g'ri javoblar soni"
+                label={t('correctAnswer')}
               >
-                <Input placeholder="O`tish soni " disabled={loading} />
+                <Input placeholder={t('transitions')}  disabled={loading} />
               </Form.Item>
               <Form.Item
                 name="resubmit"
-                label="Qayta topshirish oraliq vaqti"
+                label={t('resubmit')}
                 rules={[
                   {
                     required: true,
                     whitespace: true,
                     min: 1,
-                    message: "son ko'rinishida bo'lishi kerak!",
+                    message: t('typeNumber'),
                   },
                 ]}
               >
                 <Input
                   type="number"
-                  placeholder="Qayta topshirish vaqti"
+                  placeholder={t('resubmit')}
                   disabled={loading}
                 />
               </Form.Item>
               <Form.Item
                 name="teaser"
                 rules={[{ required: true, whitespace: true }]}
-                label="Tizer"
+                label={t('teaser')}
               >
-                <Input placeholder="tizer" disabled={loading} />
+                <Input placeholder={t('teaser')} disabled={loading} />
               </Form.Item>
               <Upload
                 maxCount={1}

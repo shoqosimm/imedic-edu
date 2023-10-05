@@ -1,10 +1,10 @@
 import React from 'react';
 import TitleText from '../../generics/TitleText';
-
+import { t } from "i18next";
 const TeacherReport = () => {
   return (
     <div>
-       <TitleText title="Hisobot" />
+       <TitleText title={t('report')} />
     </div>
   );
 };

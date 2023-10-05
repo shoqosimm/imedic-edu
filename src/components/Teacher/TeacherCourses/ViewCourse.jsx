@@ -28,15 +28,14 @@ import moment from "moment";
 import CommentCard from "../../generics/CommentCard";
 import { MdStarRate } from "react-icons/md";
 import { ToastContainer } from "react-toastify";
+import { t } from "i18next";
 
 const ViewCourse = () => {
   const params = useParams();
   const [course, setCourse] = useState([]);
   const [subjects, setSubjects] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [ModalText, setModalText] = useState(
-    "Siz haqiqatdan ham ushbu kursni statusini o'zgartirmoqchimisiz?"
-  );
+  const [ModalText, setModalText] = useState(t('statusText'));
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [idModal, setIdModal] = useState(null);
@@ -60,17 +59,17 @@ const ViewCourse = () => {
       align:'center'
     },
     {
-      title: "Mavzular nomi",
+      title:t('subjectName'),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Tavsif",
+      title:t('description'),
       dataIndex: "teaser",
       key: "teaser",
     },
     {
-      title: "Status",
+      title:t('status'),
       dataIndex: "is_active",
       key: "is_active",
       align: "center",
@@ -83,21 +82,21 @@ const ViewCourse = () => {
       },
     },
     {
-      title: "Reyting",
+      title: t("reyting"),
       dataIndex: "rate",
       key: "rate",
       align: "center",
-      render: (t) => {
+      render: () => {
         return (
           <div className="d-flex align-center justify-center gap-x-1">
-            <Tooltip title="o'rtacha baho">
+            <Tooltip title={t('centerRate')} >
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.average_rate ?? "0")}
                 <MdStarRate style={{ fill: "orangered", fontSize: "18px" }} />
               </div>
             </Tooltip>
             {"-"}
-            <Tooltip title="baho qo'yganlar soni">
+            <Tooltip title={t('countRate')}>
               <div className="d-flex align-center gap-1">
                 {new Intl.NumberFormat("en").format(t?.rate_count ?? "0")}
                 <BiUser />
@@ -108,7 +107,7 @@ const ViewCourse = () => {
       },
     },
     {
-      title: "Yaratilgan",
+      title: t("created"),
       dataIndex: "created_at",
       key: "created_at",
       render: (text) => {
@@ -116,13 +115,13 @@ const ViewCourse = () => {
       },
     },
     {
-      title: "Tur",
+      title: t("getUp"),
       dataIndex: "subject_type",
       key: "subject_type",
       align: "center",
     },
     {
-      title: "Ba'tafsil",
+      title: t('more'),
       dataIndex: "action",
       key: "action",
       align: "end",
@@ -130,22 +129,22 @@ const ViewCourse = () => {
       render: (text, record) =>
         record.subject_type == "topic" ? (
           <Space size="middle">
-            <Tooltip title="O'zgartirish">
+            <Tooltip title={t('change')}>
               <BiPencil className="iconView" onClick={() => edit(record)} />
             </Tooltip>
-            <Tooltip title="Statusni o'zgartirish">
+            <Tooltip title={t('editStatus')}>
               <AiOutlineSync
                 className="iconView"
                 onClick={() => showModal(record)}
               />
             </Tooltip>
-            <Tooltip title="Ko'rish">
+            <Tooltip title={t('toSee')}>
               <BiWindowOpen className="iconView" onClick={() => view(record)} />
             </Tooltip>
           </Space>
         ) : (
           <Space size="middle">
-            <Tooltip title="Test qo'shish">
+            <Tooltip title={t('testAdd')}>
               <BiPlusCircle
                 className="iconView"
                 onClick={() =>
@@ -158,16 +157,16 @@ const ViewCourse = () => {
                 }
               />
             </Tooltip>
-            <Tooltip title="O'zgartirish">
+            <Tooltip title={t('change')}>
               <BiPencil className="iconView" onClick={() => edit(record)} />
             </Tooltip>
-            <Tooltip title="Statusni o'zgartirish">
+            <Tooltip title={t('editStatus')}>
               <AiOutlineSync
                 className="iconView"
                 onClick={() => showModal(record)}
               />
             </Tooltip>
-            <Tooltip title="Ko'rish">
+            <Tooltip title={t('toSee')}>
               <BiWindowOpen className="iconView" onClick={() => view(record)} />
             </Tooltip>
           </Space>
@@ -295,7 +294,6 @@ const ViewCourse = () => {
         console.log(err);
       });
   };
-
   useEffect(() => {
     getCourse(params.id);
     getSubjects(params.id, pagination.current_page, pagination.per_page);
@@ -332,7 +330,7 @@ const ViewCourse = () => {
               style={{ flexWrap: "wrap", padding: "0.5rem 0" }}
               className="d-flex align-center justify-between gap-1"
             >
-              Ro'yxat
+              {t('list')}
               <Button
                 type="primary"
                 className="d-flex align-center gap-1"
@@ -343,7 +341,7 @@ const ViewCourse = () => {
                   })
                 }
               >
-                Yaratish
+             {t('create')}
               </Button>
             </div>
           }
@@ -367,7 +365,7 @@ const ViewCourse = () => {
           />
         </Card>
       </Card>
-      <Card title="Kursga oid izohlar" className="izohCard" style={{marginTop:'2rem'}}>
+      <Card title={t('courseNotes')} className="izohCard" style={{marginTop:'2rem'}}>
         {loading && <Spin />}
         {commentEmptyText && (
           <em
@@ -389,16 +387,16 @@ const ViewCourse = () => {
           onClick={handleMoreComment}
           loading={loadingBtn}
         >
-          Ko'proq ko'rsatish
+        {t('showMore')}
         </Button>
       </Card>
       <Modal
-        title={"Изменить статус"}
+        title={t('editStatus')}
         open={modalOpen}
         onCancel={() => setModalOpen(false)}
         onOk={handleOk}
-        okText="Изменить"
-        cancelText="Отменить"
+        okText={t('change')}
+        cancelText={t('notSave')}
         confirmLoading={confirmLoading}
       >
         <p>{ModalText}</p>

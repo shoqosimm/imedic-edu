@@ -40,12 +40,12 @@ const AdminCategory = () => {
       width: "5%",
     },
     {
-      title: "Turkum nomi",
+      title:t('categoryName'),
       dataIndex: "name",
       key: "name",
     },
     {
-      title: "Yo'nalish",
+      title:t('direction'),
       dataIndex: "is_malaka",
       key: "is_malaka",
       render: (text) => {
@@ -55,7 +55,7 @@ const AdminCategory = () => {
       },
     },
     {
-      title: "Status",
+      title:t("status"),
       dataIndex: "is_active",
       key: "is_active",
       render: (text) => {
@@ -70,12 +70,12 @@ const AdminCategory = () => {
       },
     },
     {
-      title: "O'zgartirish",
+      title:t("change"),
       dataIndex: "edit",
       key: "edit",
       align: "center",
       width: "5%",
-      render: (t, record) => {
+      render: ( record) => {
         return (
           <div className="d-flex align-center gap-x-3">
             <BiPencil
@@ -90,10 +90,10 @@ const AdminCategory = () => {
               style={{ cursor: "pointer" }}
             />
             <Popconfirm
-              title="O'chirish"
-              description="siz haqiqatdan ham ushbu hodimni o'chirmoqchimisiz?"
+              title={t('delete')}
+              description={t('employeeDelete')}
               onConfirm={() => deleteCategory(record)}
-              onCancel={() => message.error("Bekor qilindi")}
+              onCancel={() => message.error(t('notSave'))}
               okText="Ha"
               cancelText="Yo'q"
             >
@@ -146,7 +146,7 @@ const AdminCategory = () => {
       if (res) {
         Swal.fire({
           icon: "success",
-          title: "Qo'shildi",
+          title:t('added'),
           showConfirmButton: false,
           timer: 1500,
           timerProgressBar: true,
@@ -178,7 +178,7 @@ const AdminCategory = () => {
     const res = await api.post(`api/admin/category/update/${record.id}`, body);
     try {
       if (res) {
-        toast.success("Muvaffaqiyatli", {
+        toast.success(t('successful'), {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setIsModalOpen(false);
@@ -195,7 +195,7 @@ const AdminCategory = () => {
     const res = await api.get(`api/admin/category/delete/${record.id}`);
     try {
       if (res) {
-        message.success("O'chirildi!");
+        message.success(t('delete'));
         getListCategory(pagination.current,pagination.pageSize);
       }
     } catch (err) {
@@ -216,7 +216,7 @@ const AdminCategory = () => {
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="name"
-              label="Turkum nomi"
+              label={t('categoryName')}
               rules={[{ required: true, whitespace: true }]}
             >
               <Input disabled={loading} />
@@ -225,7 +225,7 @@ const AdminCategory = () => {
           <Col xl={9} lg={9} md={24} sm={24} xs={24}>
             <Form.Item
               name="is_malaka"
-              label="Yo'nalish"
+              label={t('direction')}
               rules={[{ required: true, whitespace: true }]}
             >
               <Select
@@ -245,7 +245,7 @@ const AdminCategory = () => {
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
             <Button loading={loading} htmlType="submit" type="primary">
-              Qo'shish
+            {t('addition')}
             </Button>
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
@@ -272,7 +272,7 @@ const AdminCategory = () => {
         }}
       />
       <Modal
-        title="O'zgartirish"
+        title={t('change')}
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
         footer={
@@ -302,7 +302,7 @@ const AdminCategory = () => {
         >
           <Row gutter={[20]}>
             <Col xl={12} lg={12} md={24} sm={24} xs={24}>
-              <Form.Item name="name" label="Turkum nomi">
+              <Form.Item name="name" label={t('categoryName')}>
                 <Input />
               </Form.Item>
             </Col>
@@ -310,7 +310,7 @@ const AdminCategory = () => {
               <Form.Item
                 rules={[{ required: true }]}
                 name="is_malaka"
-                label="Yo'nalish"
+                label={t('direction')}
               >
                 <Select
                   style={{ width: "100%" }}
