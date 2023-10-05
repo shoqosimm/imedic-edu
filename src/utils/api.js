@@ -2,7 +2,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 export const api = axios.create({
-  baseURL: "https://api.edu.imedic.uz/",
+  baseURL: "https://dev.api.edu.imedic.uz/",
 });
 
 // request for all api's

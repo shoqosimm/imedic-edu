@@ -19,18 +19,17 @@ import { AiOutlineCloseCircle } from "react-icons/ai";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { t } from "i18next";
-
 const AdminCategory = () => {
   const [form] = Form.useForm();
   const [form2] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [tableLoading, setTableLoading] = useState(false);
+  const [tableLoading, setTableLoading] = useState(true);
   const [data, setData] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [record, setRecord] = useState(null);
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 10,
+    pageSize: 15,
     total: 100,
   });
   const columns = [
@@ -90,7 +89,6 @@ const AdminCategory = () => {
               }}
               style={{ cursor: "pointer" }}
             />
-
             <Popconfirm
               title="O'chirish"
               description="siz haqiqatdan ham ushbu hodimni o'chirmoqchimisiz?"

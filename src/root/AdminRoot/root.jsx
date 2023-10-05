@@ -2,12 +2,15 @@ import { Button, Drawer, Layout, Menu } from "antd";
 import Sider from "antd/es/layout/Sider";
 import { Content, Header } from "antd/es/layout/layout";
 import { CiCircleList } from "react-icons/ci";
-import { FiUsers } from "react-icons/fi";
+import { FiUsers} from "react-icons/fi";
+import {FaUserNurse} from 'react-icons/fa'
+import {MdCalendarMonth} from 'react-icons/md'
 import {
   AiOutlineLogout,
   AiOutlineMenuFold,
-  AiOutlineMenuUnfold,
+  AiOutlineMenuUnfold
 } from "react-icons/ai";
+import {FaUserGraduate} from 'react-icons/fa'
 import React, { useState, Suspense } from "react";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import "./style.scss";
@@ -17,13 +20,12 @@ import { useContext } from "react";
 import { ContextItem } from "../../components/Context";
 import { FaUserShield } from "react-icons/fa";
 import {CgListTree} from "react-icons/cg";
-
-const AdminRoute = () => {
+import{FcStatistics} from "react-icons/fc"
+ const AdminRoute = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [, setToken] = useContext(ContextItem);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-
   // handleLogOut
   const handleLogOut = () => {
     Swal.fire({
@@ -40,7 +42,6 @@ const AdminRoute = () => {
       }
     });
   };
-
   return (
     <Layout className="layout">
       <Sider
@@ -66,7 +67,7 @@ const AdminRoute = () => {
           items={[
             {
               key: "1",
-              icon: <FiUsers className="icon" />,
+              icon: <FaUserGraduate className="icon" />,
               label: (
                 <Link
                   onClick={() => sessionStorage.setItem("activeLink", 1)}
@@ -102,13 +103,47 @@ const AdminRoute = () => {
             },
             {
               key: "4",
-              icon: <CgListTree className="icon" />,
+              icon: <FaUserNurse className="icon" />,
               label: (
                 <Link
                   onClick={() => localStorage.setItem("activeLink", 4)}
                   to="nurses"
                 >
                   Hamshiralar
+                </Link>
+              ),
+            },            {
+              key: "5",
+              icon: <FiUsers className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="users"
+                >
+                  Foydalanuvchilar
+                </Link>
+              ),
+            }, {
+              key: "6",
+              icon: <MdCalendarMonth className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="months"
+                >
+                  Oylar
+                </Link>
+              ),
+            },
+            {
+              key: "7",
+              icon: <FcStatistics className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="statistic"
+                >
+                  Statistika
                 </Link>
               ),
             }
@@ -133,7 +168,7 @@ const AdminRoute = () => {
             ></Button>
             <Button
               className="logOut d-flex align-center gap-x-1"
-              icon={<AiOutlineLogout />}
+              icon={ <AiOutlineLogout /> }
               onClick={handleLogOut}
             >
               Chiqish
@@ -156,7 +191,7 @@ const AdminRoute = () => {
         <Menu
           theme="dark"
           mode="inline"
-          selectedKeys={localStorage.getItem("activeLink")}
+          selectedKeys={localStorage.getItem("activeLink") }
           items={[
             {
               key: "1",
@@ -206,6 +241,42 @@ const AdminRoute = () => {
                 </Link>
               ),
             },
+            {
+              key: "5",
+              icon: <CgListTree className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="users"
+                >
+                  Foydalanuvchilar
+                </Link>
+              ),
+            },
+            {
+              key: "6",
+              icon: <MdCalendarMonth className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="months"
+                >
+                  Oylar
+                </Link>
+              ),
+            },
+            {
+              key: "7",
+              icon: <FcStatistics className="icon" />,
+              label: (
+                <Link
+                  onClick={() => localStorage.setItem("activeLink", 5)}
+                  to="statistic"
+                >
+                  Statistika
+                </Link>
+              ),
+            }
           ]}
         />
       </Drawer>

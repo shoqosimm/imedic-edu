@@ -49,7 +49,6 @@ const {i18n} = useTranslation();
     localStorage.setItem('lang',val);
     i18n.changeLanguage(val);
   }
-
   return (
     <div className="loginPage">
       <div className="container form_wrapper">

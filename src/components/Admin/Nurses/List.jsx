@@ -1,23 +1,22 @@
-import { Button, Form, Input, Modal, Table } from "antd";
+import { Button, Form, Input, Modal, Steps, Table } from "antd";
 import { useEffect } from "react";
 import { useState } from "react";
 import { api } from "../../../utils/api";
 import { t } from "i18next";
-
 const List = () => {
     const [form] = Form.useForm();
     const [nurse,setNurse] = useState([])
     const [searchText,setSearchText] = useState('')
-    const [tableLoading, setTableLoading] = useState(false);
+    const [tableLoading, setTableLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editId,setEditId] = useState(null)
-    
+    const[current,setCurrent]=useState(0)
+    const [onstep,setOnStep]=useState(false)
     const [pagination,setPagination] = useState({
         page:1,
         pageSize:10,
         total:100
     })
-
     useEffect(()=>{
         getListCategory()
     },[searchText])
@@ -26,8 +25,6 @@ const List = () => {
         const body = {
             page: page,
             pageSize: pageSize,
-            search:searchText
-
         };
         const res = await api.get("api/admin/nurse/list", { params: body });
         try {
@@ -41,7 +38,7 @@ const List = () => {
                     name:item.last_name + ' ' + item.first_name + ' ' + item.patronymic,
                     phone:item.phone,
                     action:<div>
-                        <Button className="btn btn-danger" onClick={()=>editNurse(item.id)} >Tahrirlash</Button>
+                        <Button   onClick={()=>editNurse(item.id)}> Tahrirlash</Button>
                     </div>
                 };
               })
@@ -59,50 +56,24 @@ const List = () => {
           setTableLoading(false);
         }
       };
-    const getNurses = async () => {
-        const body = {
-            search:searchText
-        }
-        api.get('api/admin/nurse/list')
-        .then(res=>{
-            if (res) {
-                setNurse(
-                    res.data.data.map((item,index)=>{
-                        return{
-                            key:index,
-                            id:item.id,
-                            name:item.last_name + ' ' + item.first_name + ' ' + item.patronymic,
-                            phone:item.phone,
-                            action:<div>
-                                <button className="btn btn-danger">O'chirish</button>
-                            </div>
-                        }
-                    })
-                )
-                setPagination({
-                    page: res.data.page,
-                    pageSize: res.data.per_page,
-                    total: res.data.total,
-                  });
-            }
-        })
-    }
-
     const columns = [
         {
             title: 'F.I.O',
             dataIndex: 'name',
             key: 'name',
+            align:'center'
         },
         {
             title: 'Telefon',
             dataIndex: 'phone',
             key: 'phone',
+             align:'center'
         },
         {
             title: 'Amallar',
             dataIndex: 'action',
             key: 'action',
+            align:'center'
         },
     ];
     const search = (e) => {
@@ -117,13 +88,13 @@ const List = () => {
         setIsModalOpen(true);
         setEditId(id);
     }
-    const savePassword = () => {
+    const savePassword = () => { 
+         setCurrent(current +1)
         const values = form.getFieldsValue()
         if (values.password==values.password_confirmation) {
             const body = {
                 id:editId,
-                password:values.password,
-                password_confirm:values.password_confirmation
+                phone:values.password, 
             }
             api.post('api/admin/nurse/update/password',body)
             .then(res=>{
@@ -132,15 +103,22 @@ const List = () => {
                     setIsModalOpen(false);
                     form.resetFields();
                 }
-            })
-            
+            })       
         } 
     }
-
-
+  //steps 
+  const onSteps=()=>{
+    setOnStep(true)
+    setCurrent(current +1)
+  }
+  const offSteps=()=>{
+    setIsModalOpen(false)
+    setOnStep(false)
+    setCurrent(current==1)
+  }
     return (
         <div>
-            <Input.Search placeholder="Qidiruv" onChange={search} />
+            <Input placeholder="Qidiruv" onChange={search} />
             <Table
                 loading={tableLoading}
                 columns={columns}
@@ -159,11 +137,11 @@ const List = () => {
             {isModalOpen && 
             <Modal
                 open={isModalOpen}
-                onCancel={() => setIsModalOpen(false)}
+                onCancel={()=>setIsModalOpen(false)}
                 footer={
-                    <div>
-                        <Button className="btn btn-danger" onClick={() => setIsModalOpen(false)}>{t('notSave')}</Button>
-                        <Button className="btn btn-success" onClick={savePassword} >{t('save')}</Button>
+                    <div style={{display:`${onstep?"block":"none"}`}}>
+                        <Button className="btn btn-danger" onClick={offSteps}>{t('notSave')}</Button>
+                        <Button className="btn btn-success"  onClick={savePassword} on >{t('save')}</Button>
                     </div>
                 }
             >
@@ -171,19 +149,39 @@ const List = () => {
                     form={form}
                     layout="vertical"
                     name="basic"
-                    initialValues={{ remember: true }}
+                    width={500}
+                    
                 >
-                    <Form.Item name={'password'} label="Parol"  >
-                        <Input />
+                    <Steps  current={current} 
+                    items={[
+                        {
+                            title:'password',
+                            description:'parolni kiriting'
+                        },
+                        {
+                            title:'confirmation',
+                            description:'parolni tekshirish'
+                        },
+                        {
+                            title:'finish',
+                            description:'parolni tasdiqlash'
+                        }
+                    ]}
+                    />
+                    
+                
+                     <Form.Item name={'password'} label="Parol"  rules={[{require:true,message:'new password',whitespace:true }]} >
+                        <Input placeholder="123456" /> 
+                        <Button  style={{display:`${onstep?"none":"inline-block"}`,
+                        margin:'20px 5px 0px 400px'}} onClick={onSteps}>next</Button>
                     </Form.Item>
-                    <Form.Item name={'password_confirmation'} label="Parolni takrorlang"  >
-                        <Input />
+                    <Form.Item style={{display:`${onstep?"block":"none"}`}} 
+                    name={'password_confirmation'} label="passwpassword_confirmationrd" rules={[{require:true,whitespace:true}]} >
+                        <Input  />
                     </Form.Item>
                 </Form>
-
             </Modal>
             }
-            {}
         </div>
     )}
     export default List;
