@@ -6,7 +6,7 @@ import { t } from "i18next";
 const List = () => {
     const [form] = Form.useForm();
     const [nurse,setNurse] = useState([])
-    const [searchText,setSearchText] = useState('')
+    const [searchText,setSearchText] = useState(null)
     const [tableLoading, setTableLoading] = useState(true);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editId,setEditId] = useState(null)
@@ -25,6 +25,7 @@ const List = () => {
         const body = {
             page: page,
             pageSize: pageSize,
+            search:searchText
         };
         const res = await api.get("api/admin/nurse/list", { params: body });
         try {
@@ -74,7 +75,7 @@ const List = () => {
         },
     ];
     const search = (e) => {
-        const   value = e.target.value
+        const value = e.target.value
         if (value.length > 3) {
             setSearchText(e.target.value)
         }
