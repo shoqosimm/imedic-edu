@@ -190,7 +190,19 @@
     "testNot":"Test bajarmagan",
     "nurseData":"Hamshiralar ma'lumotlari",
     "testResult":"Test natijalari",
-    "topic":"natijalarni ko'rish uchun testni tanlang"
+    "topic":"natijalarni ko'rish uchun testni tanlang",
+    "january":"Yanvar",
+    "february":"Fevral",
+    "march":"Mart",
+    "april":"Aprel",
+    "may":"May",
+    "june":"Iyun",
+    "july":"Iyul",
+    "avgust":"Avgust",
+    "september":"Sentabr",
+    "october":"Oktabr",
+    "november":"Noyabr",
+    "december":"Dekabr"
 
 
 

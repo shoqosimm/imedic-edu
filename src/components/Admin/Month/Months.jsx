@@ -8,6 +8,20 @@ import { t } from "i18next";
 const Months = () => {
     const [form] = Form.useForm();
     const [month,setMonth] = useState([])
+    const [monthNumber,setMonthNumber] = useState([
+        {value:1,label:t('january')},
+        {value:2,label:t('february')},
+        {value:3,label:t('march')},
+        {value:4,label:t('april')},
+        {value:5,label:t('may')},
+        {value:6,label:t('june')},
+        {value:7,label:t('july')},
+        {value:8,label:t('august')},
+        {value:9,label:t('september')},
+        {value:10,label:t('october')},
+        {value:11,label:t('november')},
+        {value:12,label:t('december')},
+    ])
     const [searchText,setSearchText] = useState('')
     const [tableLoading, setTableLoading] = useState(true);
     const [data, setData] = useState({});
@@ -116,18 +130,31 @@ const Months = () => {
     }
     //add Months
 const handleAdd = async(values)=>{
-       setData(
-        {...data,
-        id:values.month.$M+1,
-        branch_id:values.branch_id,
-        title:values.title,
-        year:String(values.month.$y),
-        month:values.month.$M+1
-        })
-        const body={
-          data:[{...data}]
-        }
-        const res = await api.post("api/admin/month/add", body);
+    monthNumber.map((item)=>{
+      const bo = {
+        title:item?.label,
+        year:values?.month.$y,
+        month:item?.value,
+
+      }
+      console.log(bo,"bo");
+      setMonth({...month,bo} )
+    })
+    console.log(month,"month");
+    
+      //  setData(
+      //   {...data,
+      //   id:values.month.$M+1,
+      //   branch_id:values.branch_id,
+      //   title:values.title,
+      //   year:String(values.month.$y),
+      //   month:values.month.$M+1
+      //   })
+      //   const body={
+      //     data:[{...data}]
+      //   }
+      //   console.log(body,":bodu");
+        // const res = await api.post("api/admin/month/add", body);
         try {
           if (res) {
             toast.success(t('wasCreated'));
@@ -148,28 +175,19 @@ const handleAdd = async(values)=>{
         id="adminMonthListadd"
       >
          <Row gutter={[20, 20]} className="d-flex align-end">
-          <Col xl={9} lg={9} md={24} sm={24} xs={24}>
-            <Form.Item
-              name="title"
-              label={t('comment')}
-              rules={[{ required: true, }]}
-            >
-              <Input  />
-            </Form.Item>
-          </Col>
-          <Col xl={4} lg={4} md={24} sm={24} xs={24}>
-            <Form.Item
-              name="month"
-              label={t('month')}
-              rules={[{ required: true }]}
-            >
-               <DatePicker size="large" style={{width:190}}  picker="month" />
-            </Form.Item>
-          </Col>
-          <Col  xl={4} lg={4} md={24} sm={24} xs={24}>
-            <Form.Item name='branch_id' label={t('branch_id')} rules={[{required:true}]} >
-            <Select size="large" options={branch}/>
-            </Form.Item>
+          <Col xl={6} lg={6} md={24} sm={24} xs={24}>
+          <Form.Item
+            label={t('month')}
+            name="month"
+            rules={[
+              {
+                required: true,
+                message: t('pleaseInput'),
+              },
+            ]}
+          >
+            <DatePicker picker="year" />
+          </Form.Item>
           </Col>
           <Col xl={3} lg={3} md={24} sm={24} xs={24}>
           <Button htmlType="submit" className="teacher_btn " type="primary">
