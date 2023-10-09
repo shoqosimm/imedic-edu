@@ -92,13 +92,15 @@ const List = () => {
         if (values.password==values.password_confirmation) {
             const body = {
                 id:editId,
-                phone:values.password, 
+                password:values.password, 
+                password_confirmation:values.password_confirmation, 
             }
-            api.post('api/admin/nurse/update/password',body)
+            api.post(`api/admin/teacher/update/user/password/${editId}`,body)
             .then(res=>{
                 if (res) {
                     setEditId(null);
                     setIsModalOpen(false);
+                    setCurrent(current =0);
                     form.resetFields();
                 }
             })       
@@ -137,7 +139,7 @@ const List = () => {
                 open={isModalOpen}
                 onCancel={()=>setIsModalOpen(false)}
                 footer={
-                    <div style={{display:`${onstep?"block":"none"}`}}>
+                    <div >
                         <Button className="btn btn-danger" onClick={offSteps}>{t('notSave')}</Button>
                         <Button className="btn btn-success"  onClick={savePassword} on >{t('save')}</Button>
                     </div>
@@ -148,32 +150,16 @@ const List = () => {
                     layout="vertical"
                     name="basic"
                     width={500}
+                    onFinish={savePassword}
                     
                 >
-                    <Steps  current={current} 
-                    items={[
-                        {
-                            title:'password',
-                            description:t('newPassword')
-                        },
-                        {
-                            title:'confirmation',
-                            description:t('confirmation')
-                        },
-                        {
-                            title:'finish',
-                            description:t('finishPassword')
-                        }
-                    ]}
-                    />
+                    
                      <Form.Item name={'password'} style={{marginTop:30}}  rules={[{require:true,message:t('newParol'),whitespace:true,max:6,min:6 }]} >
-                        <Input placeholder="123456" /> 
-                        <Button  style={{display:`${onstep?"none":"inline-block"}`,
-                        margin:'20px 5px 0px 400px'}} onClick={onSteps}>{t('next')}</Button>
+                        <Input value="123456" /> 
                     </Form.Item>
-                    <Form.Item style={{display:`${onstep?"block":"none"}`}} 
+                    <Form.Item  
                     name={'password_confirmation'} label={t('confirmation')} rules={[{require:true,whitespace:true}]} >
-                        <Input  />
+                        <Input value="123456"  />
                     </Form.Item>
                 </Form>
             </Modal>
