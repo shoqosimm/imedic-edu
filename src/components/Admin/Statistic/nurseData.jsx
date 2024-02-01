@@ -23,13 +23,10 @@ const NurseData = ({showModal, setShowModal, nurseId}) => {
         setCourseId] = useState(null)
     const [testId,
         setTestId] = useState(null)
-    const [testList,
-        setTestList] = useState([])
-    const [open,
-        setOpen] = useState(false)
-    const [loading,
-        setLoading] = useState(true)
-        const [cardLoading,setCardLoading]=useState(true)
+    const [testList,setTestList] = useState([])
+    const [open,setOpen] = useState(false)
+    const [loading,setLoading] = useState(true)
+    const [cardLoading,setCardLoading]=useState(true)
     useEffect(() => {
         api
             .get(`api/admin/nurse/course/list/${nurseId}`)

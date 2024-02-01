@@ -1,8 +1,12 @@
 import { Button, Form, Input, Modal, Steps, Table } from "antd";
+// import { EditButton } from "@refinedev/antd"
 import { useEffect } from "react";
 import { useState } from "react";
 import { api } from "../../../utils/api";
 import { t } from "i18next";
+import DeleteNurse from "./deleteNurse";
+import Addnurse from "./addNurse";
+
 const List = () => {
     const [form] = Form.useForm();
     const [nurse,setNurse] = useState([])
@@ -17,9 +21,11 @@ const List = () => {
         pageSize:10,
         total:100
     })
+    
     useEffect(()=>{
         getListCategory()
     },[searchText])
+
     const getListCategory = async (page, pageSize) => {
         setTableLoading(true);
         const body = {
@@ -27,7 +33,9 @@ const List = () => {
             pageSize: pageSize,
             search:searchText
         };
+
         const res = await api.get("api/admin/nurse/list", { params: body });
+
         try {
           if (res) {
             setTableLoading(false);
@@ -40,15 +48,19 @@ const List = () => {
                     phone:item.phone,
                     action:<div>
                         <Button   onClick={()=>editNurse(item.id)}> {t('edit')}</Button>
+                        <Button onClick={()=>deleteNurse(item?.id)} >Delete</Button>
+                        {/* <EditButton>delete</EditButton> */}
                     </div>
                 };
               })
             );
+
             setPagination({
                 page: res.data.page,
               pageSize: res.data.per_page,
               total: res.data.total,
             });
+
           }
         } catch (err) {
           console.log(err, "err");
@@ -57,6 +69,16 @@ const List = () => {
           setTableLoading(false);
         }
       };
+
+      const [deleteModal,setDeleteModal] = useState(false)
+      const [deleteItemId,setDeleteItemId]  =useState(null);
+      const [addNurseModal,setAddNurseModal] = useState(false)
+
+      const deleteNurse =  (id)=>{
+        setDeleteModal(true);
+        setDeleteItemId(id)
+      }
+
     const columns = [
         {
             title:t('fullName'),
@@ -74,20 +96,24 @@ const List = () => {
             key: 'action'
         },
     ];
+    
     const search = (e) => {
+        
         const value = e.target.value
         if (value.length > 3) {
             setSearchText(e.target.value)
         }
     }
+
     const editNurse = (id) => {
         form.setFieldValue('password','123456');
         form.setFieldValue('password_confirmation','123456');
         setIsModalOpen(true);
         setEditId(id);
     }
+
     const savePassword = () => { 
-         setCurrent(current +1)
+         setCurrent()
         const values = form.getFieldsValue()
         if (values.password==values.password_confirmation) {
             const body = {
@@ -116,8 +142,13 @@ const List = () => {
     setOnStep(false)
     setCurrent(current==1)
   }
+
+  const addNurse = () =>{
+    setAddNurseModal(true)
+} 
     return (
         <div>
+            <Button className="add__btn" onClick={()=>addNurse()}>Qushish</Button>
             <Input placeholder={t('search')} onChange={search} />
             <Table
                 loading={tableLoading}
@@ -157,13 +188,25 @@ const List = () => {
                      <Form.Item name={'password'} style={{marginTop:30}}  rules={[{require:true,message:t('newParol'),whitespace:true,max:6,min:6 }]} >
                         <Input value="123456" /> 
                     </Form.Item>
+
                     <Form.Item  
-                    name={'password_confirmation'} label={t('confirmation')} rules={[{require:true,whitespace:true}]} >
+                       name={'password_confirmation'} label={t('confirmation')} rules={[{require:true,whitespace:true}]} >
                         <Input value="123456"  />
                     </Form.Item>
                 </Form>
             </Modal>
             }
+
+            {deleteModal && 
+                <DeleteNurse deleteModal={deleteModal} id={deleteItemId} setDeleteModal ={setDeleteModal}/>
+            }
+
+            {
+                addNurseModal && 
+                  <Addnurse addNurseModal={addNurseModal} setAddNurseModal={setAddNurseModal}/>
+                  }
+
+            <Addnurse/>
         </div>
     )}
     export default List;

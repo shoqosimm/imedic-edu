@@ -1,43 +1,119 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
 }
-.container-star{
-    width: 90%;
-    margin: auto;
-    margin-top: 5%;
+.container-star {
+	width: 90%;
+	margin: auto;
+	margin-top: 5%;
 }
-.container-from{
-    width: 90%;
-    margin: auto;
+.container-from {
+	width: 90%;
+	margin: auto;
 }
-.cardDesgin{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height: 400px;
+.cardDesgin {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	height: 400px;
 }
-.testDesgin{
-    display:flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    height:190px;
+.testDesgin {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	height: 190px;
 }
-.course-btn{
-    display: flex;
-    align-items: center;
-    gap: 5;
-    font-size: 1.5rem;
-    margin: 5px;
+.course-btn {
+	display: flex;
+	align-items: center;
+	gap: 5;
+	font-size: 1.5rem;
+	margin: 5px;
 }
-.drawerList{
-    background: #fff;
-     color:white;
-    span{
-        font-size: 1rem;
-        margin: 10px 5px 10px;
-    }
+.drawerList {
+	background: #fff;
+	color: white;
+	span {
+		font-size: 1rem;
+		margin: 10px 5px 10px;
+	}
+}
+
+.name__list {
+	overflow: auto;
+}
+
+.list__item:hover {
+	background-color: rgb(73, 140, 241);
+	color: aliceblue;
+}
+
+.list__item:active {
+	background-color: rgb(58, 33, 220);
+}
+
+.card {
+	margin-left: 10px;
+	scroll-behavior: smooth;
+}
+
+.name__card {
+	margin-left: 0;
+}
+
+.desc {
+	margin: 0;
+	margin-bottom: 20px;
+	padding: 0;
+	padding-left: 20px;
+}
+
+.nusre__data {
+	overflow: auto;
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	height: 330px;
+}
+
+.list__item_ {
+	display: flex;
+}
+
+.nurse__id {
+	margin-right: 10px;
+}
+
+.list__item_ {
+	padding: 0;
+	margin: 0;
+	border-radius: 3px;
+}
+.list__item_:hover {
+	background-color: rgb(73, 140, 241);
+	color: #fff;
+}
+
+.line {
+	display: block;
+	width: 223px;
+	height: 1px;
+	background-color: rgb(180, 174, 174);
+	margin-bottom: 7px;
+	border-radius: 5px;
+}
+
+.noutrses__list {
+	overflow: auto;
+	height: 350px;
+}
+
+.headding__ {
+	margin: 0;
+	margin-bottom: 5px;
+	padding: 0;
+	text-align: center;
 }
